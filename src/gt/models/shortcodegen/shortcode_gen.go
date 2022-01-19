@@ -1,5 +1,15 @@
 package shortcodegen
 
+import "errors"
+
+var genMap map[string]ShortCodeGenerator
+
+const (
+	Md5Gen         = "Md5Gen"
+	MathRoundGen   = "MathRoundGen"
+	CryptoRoundGen = "CryptoRoundGen"
+)
+
 // 链接长短转换接口
 type ShortCodeGenerator interface {
 
@@ -8,6 +18,32 @@ type ShortCodeGenerator interface {
 
 	// 获取当前生成短码的方式
 	GetGenMethod() string
+}
+
+// 根据成生短码的方式
+func GetShortCodeGeneratorByMethod(genMethod string) (ShortCodeGenerator, error) {
+
+	if v, ok := genMap[genMethod]; ok {
+
+		return v, nil
+	} else {
+		return nil, errors.New("未找到对应的短码生成器")
+	}
+}
+
+// 将生成器加载到map中
+func init() {
+	genMap = make(map[string]ShortCodeGenerator)
+
+	md5ShortCodeGen := NewMd5ShortCodeGenerator()
+	genMap[md5ShortCodeGen.genMethod] = md5ShortCodeGen
+
+	mathRoundGen := NewRoundShortCodeGenerator()
+	genMap[mathRoundGen.genMethod] = mathRoundGen
+
+	cryptoRoundGen := NewCryptRoundShortCodeGenerator()
+	genMap[cryptoRoundGen.genMethod] = cryptoRoundGen
+
 }
 
 // const chars := []string{"q","w","e","r","t","y","u","i","o","p",

@@ -4,7 +4,9 @@ import (
 	"github.com/beego/beego/v2/core/logs"
 	beego "github.com/beego/beego/v2/server/web"
 	. "github.com/smartystreets/goconvey/convey"
+	"gt/models/shortcodegen"
 	_ "gt/routers"
+	"log"
 	"net/http"
 	"net/http/httptest"
 	"path/filepath"
@@ -34,4 +36,20 @@ func TestBeego(t *testing.T) {
 			So(w.Body.Len(), ShouldBeGreaterThan, 0)
 		})
 	})
+}
+
+func TestGenShortCode(t *testing.T) {
+
+	generator := shortcodegen.NewMd5ShortCodeGenerator()
+	method := generator.GetGenMethod()
+	log.Default().Println(method)
+
+	gen, err := shortcodegen.GetShortCodeGeneratorByMethod(shortcodegen.CryptoRoundGen)
+
+	if err != nil {
+		logs.Error(err.Error())
+	} else {
+		code, _ := gen.GenShortCode("https://www.baidu.com")
+		logs.Info(code)
+	}
 }

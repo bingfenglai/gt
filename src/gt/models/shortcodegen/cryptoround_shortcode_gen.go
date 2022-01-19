@@ -12,17 +12,17 @@ import (
 // 比数学随机函数慢10倍
 // 对于随机数成成的code,可以采取预先生成的策略，
 type CryptRoundShortCodeGenerator struct {
-	GenMethod string
+	genMethod string
 }
 
 func (receiver *CryptRoundShortCodeGenerator) GetGenMethod() string {
-	return receiver.GenMethod
+	return receiver.genMethod
 }
 
 func NewCryptRoundShortCodeGenerator() *CryptRoundShortCodeGenerator {
 
 	return &CryptRoundShortCodeGenerator{
-		GenMethod: "cryptRound",
+		genMethod: CryptoRoundGen,
 	}
 }
 

@@ -12,19 +12,19 @@ import (
 // 对链接计算md5生成code 在目前三种实现当中最慢
 // 对于随机数成功的code,可以采取预先生成的策略，
 type Md5ShortCodeGenerator struct {
-	GenMethod string
+	genMethod string
 }
 
 func NewMd5ShortCodeGenerator() *Md5ShortCodeGenerator {
 	conver := &Md5ShortCodeGenerator{
-		GenMethod: "md5Conver",
+		genMethod: Md5Gen,
 	}
 
 	return conver
 }
 
 func (receiver *Md5ShortCodeGenerator) GetGenMethod() string {
-	return receiver.GenMethod
+	return receiver.genMethod
 }
 
 func (receiver *Md5ShortCodeGenerator) GenShortCode(link string) ([]string, error) {

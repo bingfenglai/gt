@@ -11,20 +11,20 @@ import (
 // 数学函数生成，通过纳秒时间种子
 // 对于随机数成成的code,可以采取预先生成的策略
 type MathRoundShortCodeGenerator struct {
-	GenMethod string
+	genMethod string
 }
 
 func NewRoundShortCodeGenerator() *MathRoundShortCodeGenerator {
 
 	gen := &MathRoundShortCodeGenerator{
-		GenMethod: "mathRound",
+		genMethod: MathRoundGen,
 	}
 
 	return gen
 }
 
 func (receiver *MathRoundShortCodeGenerator) GetGenMethod() string {
-	return receiver.GenMethod
+	return receiver.genMethod
 }
 
 func (receiver *MathRoundShortCodeGenerator) GenShortCode(link string) ([]string, error) {
