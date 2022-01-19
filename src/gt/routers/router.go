@@ -2,7 +2,7 @@ package routers
 
 import (
 	beego "github.com/beego/beego/v2/server/web"
-	"gt/controllers"
+	"github.com/bingfenglai/gt/controllers"
 )
 
 // go 包初始化函数，go语言中在导入一个包的时候，如果被导入包存在init函数，会执行init函数

@@ -1,4 +1,4 @@
-module gt
+module github.com/bingfenglai/gt
 
 go 1.16
 

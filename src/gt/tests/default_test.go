@@ -3,9 +3,9 @@ package test
 import (
 	"github.com/beego/beego/v2/core/logs"
 	beego "github.com/beego/beego/v2/server/web"
+	"github.com/bingfenglai/gt/models/shortcodegen"
+	_ "github.com/bingfenglai/gt/routers"
 	. "github.com/smartystreets/goconvey/convey"
-	"gt/models/shortcodegen"
-	_ "gt/routers"
 	"log"
 	"net/http"
 	"net/http/httptest"

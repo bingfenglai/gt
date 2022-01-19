@@ -3,7 +3,7 @@ package main
 import (
 	"github.com/beego/beego/v2/client/orm"
 	beego "github.com/beego/beego/v2/server/web"
-	_ "gt/routers"
+	_ "github.com/bingfenglai/gt/routers"
 	"log"
 
 	// 导入mysql驱动
