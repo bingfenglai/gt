@@ -7,4 +7,6 @@ Golang implementation of the short link conversion application
 3. Link grouping management
 4. Access statistics
 ...
+## Development Framework
+beego@2.0.1
 
