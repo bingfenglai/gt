@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/bingfenglai/gt/initialization"
 	"github.com/bingfenglai/gt/router"
 	// 导入mysql驱动
 	_ "github.com/go-sql-driver/mysql"
@@ -15,12 +16,17 @@ func main() {
 
 	router.R.Run(fmt.Sprintf("%s:%d", viper.GetString("server.address"), viper.GetInt("server.port")))
 
+	defer func() {
+		initialization.DB.Close()
+	}()
 }
 
 // 初始化方法
 func init() {
 
 	loadConfig()
+
+	initialization.InitDbConfig()
 
 }
 
