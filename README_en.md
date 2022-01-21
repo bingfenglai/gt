@@ -8,5 +8,5 @@ Golang implementation of the short link conversion application
 4. Access statistics
 ...
 ## Development Framework
-beego@2.0.1
+gin@v1.7.7
 
