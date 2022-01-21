@@ -1,55 +1,41 @@
 package main
 
 import (
-	"github.com/beego/beego/v2/client/orm"
-	beego "github.com/beego/beego/v2/server/web"
-	_ "github.com/bingfenglai/gt/routers"
-	"log"
-
+	"fmt"
+	"github.com/bingfenglai/gt/router"
 	// 导入mysql驱动
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/spf13/viper"
+	"os"
 )
+
+// 初始化一个http服务对象
 
 func main() {
 
-	beego.Run()
+	router.R.Run(fmt.Sprintf("%s:%d", viper.GetString("server.address"), viper.GetInt("server.port")))
 
 }
 
 // 初始化方法
 func init() {
 
-	connectMysql()
+	loadConfig()
 
 }
 
-// 连接数据库
-func connectMysql() {
-	mysqlUser, _ := beego.AppConfig.String("mysqlUser")
+// 加载配置文件
 
-	mysqlPass, _ := beego.AppConfig.String("mysqlPass")
+func loadConfig() {
+	// 获取当前工作目录
+	workDir, _ := os.Getwd()
+	viper.SetConfigName("app.yml")
+	viper.SetConfigType("yml")
+	viper.AddConfigPath(workDir + "/conf")
 
-	mysqlIp, _ := beego.AppConfig.String("mysqlIp")
-
-	mysqlPort, _ := beego.AppConfig.String("mysqlPort")
-
-	mysqlDbname, _ := beego.AppConfig.String("mysqlDbname")
-
-	orm.RegisterDriver("mysql", orm.DRMySQL)
-
-	ds := mysqlUser + ":" + mysqlPass + "@tcp(" + mysqlIp + ":" + mysqlPort + ")" + "/" + mysqlDbname + "?charset=utf8&parseTime=true&loc=Local"
-
-	orm.RegisterDataBase("default", "mysql", ds)
-	orm.SetMaxIdleConns("default", 20)
-	orm.SetMaxOpenConns("default", 20)
-
-	orm.Debug = true
-
-	_, err := orm.NewOrm().Raw("select 1").Exec()
+	err := viper.ReadInConfig()
 
 	if err != nil {
-		log.Default().Println("执行sql出错", err.Error())
-	} else {
-		log.Default().Println("数据库连接成功")
+		panic(err)
 	}
 }
