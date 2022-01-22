@@ -2,12 +2,16 @@ package main
 
 import (
 	"fmt"
+
+	"github.com/bingfenglai/gt/global"
 	"github.com/bingfenglai/gt/initialization"
 	"github.com/bingfenglai/gt/router"
+
 	// 导入mysql驱动
+	"os"
+
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/spf13/viper"
-	"os"
 )
 
 // 初始化一个http服务对象
@@ -17,7 +21,8 @@ func main() {
 	router.R.Run(fmt.Sprintf("%s:%d", viper.GetString("server.address"), viper.GetInt("server.port")))
 
 	defer func() {
-		initialization.DB.Close()
+		global.DB.Close()
+		global.RedisClient.Close()
 	}()
 }
 
@@ -26,7 +31,17 @@ func init() {
 
 	loadConfig()
 
-	initialization.InitDbConfig()
+	go func() {
+		initialization.InitDbConfig()
+	}()
+
+	go func() {
+		initialization.InitRedisConfig()
+	}()
+
+	
+
+	
 
 }
 
