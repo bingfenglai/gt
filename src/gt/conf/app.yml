@@ -1,26 +1,26 @@
 server:
   port: 9527
   address: 0.0.0.0
-  profiles:
-    active: dev
+  activeProfiles: dev
 
 database:
-  type: mysql
+  dbType: mysql
   url: app_gt:app_gt@2022@tcp(localhost:3306)/gt?charset=utf8&parseTime=True&loc=Local
   maxConn: 20
   maxOpen: 20
 
 redis:
-  addr: 192.168.3.19:6379
-  password: yihui@2021
+  addr: redis.microcloud.com:3307
+  password: hewenping
   defaultDb: 3
-  timeout: 3000
+  # 单位 秒
+  timeout: 10
   poolSize: 20
   minConn: 1
   maxConn: 20
 
 swagger:
-  host: localhost:9527
+  Host: localhost:9527
   version: 1.0
   basePath: localhost:9527
   Schemes:

@@ -2,13 +2,12 @@ package main
 
 import (
 	"fmt"
-	"log"
-
 	"github.com/bingfenglai/gt/config"
 	"github.com/bingfenglai/gt/conmon/constants"
 	"github.com/bingfenglai/gt/global"
 	"github.com/bingfenglai/gt/initialization"
 	"github.com/bingfenglai/gt/router"
+	"log"
 
 	// 导入mysql驱动
 	"os"
@@ -21,7 +20,10 @@ import (
 
 func main() {
 
-	router.R.Run(fmt.Sprintf("%s:%d", viper.GetString("server.address"), viper.GetInt("server.port")))
+	//router.R.Run(fmt.Sprintf("%s:%d", viper.GetString("server.address"), viper.GetInt("server.port")))
+
+	log.Println(config.Conf.Server)
+	router.R.Run(fmt.Sprintf("%s:%d", config.Conf.Server.Address, config.Conf.Server.Port))
 
 	defer func() {
 		global.DB.Close()
@@ -33,30 +35,24 @@ func main() {
 func init() {
 
 	loadConfig()
-	config.Init()
 
 	go func() {
-		initialization.InitDbConfig()	
+		initialization.InitDbConfig()
 	}()
 
 	go func() {
 		initialization.InitRedisConfig()
 	}()
 
-	
 	go func() {
-		log.Default().Printf("active: %s",config.ServerConfigInfo.ActiveProfiles)
-		if config.ServerConfigInfo.ActiveProfiles == constants.Dev {
+		log.Default().Printf("active: %s", config.Conf.Server.ActiveProfiles)
+		if config.Conf.Server.ActiveProfiles == constants.Dev {
 			initialization.RunSwagCmd()
+
 			initialization.InitApiConfig()
-			
+
 		}
 	}()
-		
-	
-	
-		
-	
 
 }
 
@@ -74,4 +70,13 @@ func loadConfig() {
 	if err != nil {
 		panic(err)
 	}
+
+	err = viper.Unmarshal(&config.Conf)
+
+	if err != nil {
+		log.Default().Println("初始化配置信息失败\n", err.Error())
+	} else {
+		log.Default().Println("config info:\n", config.Conf.Redis, "\n", config.Conf.Server)
+	}
+
 }

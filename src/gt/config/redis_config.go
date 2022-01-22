@@ -1,14 +1,11 @@
 package config
 
-var RedisConfigInfo *RedisConfig
-
 type RedisConfig struct {
-	Addr     string
-	Password string
-	DefaultDb       int
-	Timeout int
-	PoolSize int
-	MinConn int
-	MaxConn int
-
+	Addr      string
+	Password  string
+	DefaultDb int
+	Timeout   int
+	PoolSize  int
+	MinConn   int
+	MaxConn   int
 }
