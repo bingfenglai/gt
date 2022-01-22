@@ -40,12 +40,9 @@ func init() {
 	go func() {
 		initialization.InitRedisConfig()
 	}()
-	
+
 	initialization.RunSwagCmd()
 	initialization.InitApiConfig()
-
-	
-
 	
 
 }
