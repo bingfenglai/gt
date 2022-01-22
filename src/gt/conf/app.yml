@@ -22,7 +22,7 @@ redis:
 swagger:
   Host: localhost:9527
   version: 1.0
-  basePath: localhost:9527
+  basePath: /
   Schemes:
     -
   title: gt api doc

@@ -41,7 +41,7 @@ func initSwagConfig() {
 
 	docs.SwaggerInfo.Version = config.Conf.Swagger.Version
 	docs.SwaggerInfo.Host = config.Conf.Swagger.Host
-	//docs.SwaggerInfo.BasePath =config.Conf.Swagger.BasePath
+	docs.SwaggerInfo.BasePath = config.Conf.Swagger.BasePath
 	docs.SwaggerInfo.Schemes = config.Conf.Swagger.Schemes
 	docs.SwaggerInfo.Title = config.Conf.Swagger.Title
 	docs.SwaggerInfo.Description = config.Conf.Swagger.Description
