@@ -1,6 +1,8 @@
 server:
   port: 9527
   address: 0.0.0.0
+  profiles:
+    active: dev
 
 database:
   type: mysql
@@ -16,3 +18,13 @@ redis:
   poolSize: 20
   minConn: 1
   maxConn: 20
+
+swagger:
+  host: localhost:9527
+  version: 1.0
+  basePath: localhost:9527
+  Schemes:
+    -
+  title: gt api doc
+  description: gt api doc
+  url: http://localhost:9527/swagger/doc.json

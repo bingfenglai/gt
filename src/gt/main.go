@@ -2,7 +2,10 @@ package main
 
 import (
 	"fmt"
+	"log"
 
+	"github.com/bingfenglai/gt/config"
+	"github.com/bingfenglai/gt/conmon/constants"
 	"github.com/bingfenglai/gt/global"
 	"github.com/bingfenglai/gt/initialization"
 	"github.com/bingfenglai/gt/router"
@@ -12,8 +15,6 @@ import (
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/spf13/viper"
-	
-	
 )
 
 // 初始化一个http服务对象
@@ -32,17 +33,29 @@ func main() {
 func init() {
 
 	loadConfig()
+	config.Init()
 
 	go func() {
-		initialization.InitDbConfig()
+		initialization.InitDbConfig()	
 	}()
 
 	go func() {
 		initialization.InitRedisConfig()
 	}()
 
-	initialization.RunSwagCmd()
-	initialization.InitApiConfig()
+	
+	go func() {
+		log.Default().Printf("active: %s",config.ServerConfigInfo.ActiveProfiles)
+		if config.ServerConfigInfo.ActiveProfiles == constants.Dev {
+			initialization.RunSwagCmd()
+			initialization.InitApiConfig()
+			
+		}
+	}()
+		
+	
+	
+		
 	
 
 }

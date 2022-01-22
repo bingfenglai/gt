@@ -1,21 +1,22 @@
 package initialization
 
 import (
-	
-
-	"github.com/bingfenglai/gt/router"
-	// "github.com/go-openapi/swag"
-	"github.com/swaggo/gin-swagger"
-	"github.com/swaggo/gin-swagger/swaggerFiles"
-	_ "github.com/bingfenglai/gt/docs"
 	"bytes"
 	"log"
-	"os/exec"
 	"os"
+	"os/exec"
+	
+	"github.com/bingfenglai/gt/docs"
+	
+	"github.com/bingfenglai/gt/router"
+	"github.com/spf13/viper"
+	"github.com/swaggo/gin-swagger"
+	"github.com/swaggo/gin-swagger/swaggerFiles"
 )
 
 func InitApiConfig(){
-	url := ginSwagger.URL("http://localhost:9527/swagger/doc.json")
+	url := ginSwagger.URL(viper.GetString("swagger.url"))
+	
 	router.R.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
 }
 
@@ -33,5 +34,15 @@ func RunSwagCmd(){
 	}
 	log.Default().Println(out.String())
 
+}
+
+func InitSwagConfig(){
+	docs.SwaggerInfo.Version = viper.GetString("swagger.version")
+	docs.SwaggerInfo.Host	= viper.GetString("swagger.host")
+	docs.SwaggerInfo.BasePath =	viper.GetString("sawgger.basePath")
+	docs.SwaggerInfo.Schemes = 	[]string{}
+	docs.SwaggerInfo.Title = 	viper.GetString("swagger.title")
+	docs.SwaggerInfo.Description = 	viper.GetString("swagger.description")
+	log.Default().Fatalln("api 文档初始化成功")
 }
 

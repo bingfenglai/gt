@@ -1,6 +1,7 @@
 package router
 
 import (
+	v1 "github.com/bingfenglai/gt/api/v1"
 	"github.com/gin-gonic/gin"
 )
 
@@ -19,10 +20,11 @@ func init() {
 	})
 
 	// 设置一个get请求的路由，url为/ping, 处理函数（或者叫控制器函数）是一个闭包函数。
-	groupV1.GET("/ping", func(c *gin.Context) {
-		// 通过请求上下文对象Context, 直接往客户端返回一个json
-		c.JSON(200, gin.H{
-			"message": "pong",
-		})
-	})
+	// groupV1.GET("/ping", func(c *gin.Context) {
+	// 	// 通过请求上下文对象Context, 直接往客户端返回一个json
+	// 	c.JSON(200, gin.H{
+	// 		"message": "pong",
+	// 	})
+	// })
+	groupV1.GET("/ping",v1.Ping)
 }
