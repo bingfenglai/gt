@@ -12,6 +12,8 @@ import (
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/spf13/viper"
+	
+	
 )
 
 // 初始化一个http服务对象
@@ -38,6 +40,9 @@ func init() {
 	go func() {
 		initialization.InitRedisConfig()
 	}()
+	
+	initialization.RunSwagCmd()
+	initialization.InitApiConfig()
 
 	
 
