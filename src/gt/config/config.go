@@ -1,5 +1,7 @@
 package config
 
+import "log"
+
 var Conf Config
 
 type Config struct {
@@ -7,8 +9,9 @@ type Config struct {
 	Server   ServerConfig
 	DataBase DataBaseConfig
 	Swagger  SwaggerConfig
+	Log      LogConfig
 }
 
 func init() {
-	println("config init")
+	log.Default().Println("装载配置文件信息")
 }

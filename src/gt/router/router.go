@@ -26,5 +26,5 @@ func init() {
 	// 		"message": "pong",
 	// 	})
 	// })
-	groupV1.GET("/ping",v1.Ping)
+	groupV1.GET("/ping", v1.Ping)
 }
