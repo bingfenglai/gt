@@ -3,7 +3,7 @@ package config
 // 日志配置
 type LogConfig struct {
 	// 日志写入文件的路径
-	Path string
+	Filename string
 	// 当前日志记录级别
 	Level string
 	// 日志编码方式
@@ -13,6 +13,6 @@ type LogConfig struct {
 	// 文件保存天数
 	MaxAge int
 
-	//备份数
-	maxBackup int
+	//保留的旧日志文件做大个数
+	MaxBackups int
 }

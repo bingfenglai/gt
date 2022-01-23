@@ -37,6 +37,10 @@ func init() {
 	loadConfig()
 
 	go func() {
+		initialization.InitLogConfig()
+	}()
+
+	go func() {
 		initialization.InitDbConfig()
 	}()
 
@@ -76,7 +80,7 @@ func loadConfig() {
 	if err != nil {
 		log.Default().Println("初始化配置信息失败\n", err.Error())
 	} else {
-		log.Default().Println("config info:\n", config.Conf.Redis, "\n", config.Conf.Server)
+		log.Default().Println("config info:\n", config.Conf.Redis, "\n", config.Conf.Server, "\nlog: ", config.Conf.Log)
 	}
 
 }

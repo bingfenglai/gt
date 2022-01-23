@@ -5,7 +5,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-var R = gin.Default()
+//var R = gin.Default()
+var R = gin.New()
 
 func init() {
 

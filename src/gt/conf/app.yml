@@ -2,6 +2,7 @@ server:
   port: 9527
   address: 0.0.0.0
   activeProfiles: dev
+  mode: debug
 
 database:
   dbType: mysql
@@ -28,3 +29,13 @@ swagger:
   title: gt api doc
   description: gt api doc
   url: http://localhost:9527/swagger/doc.json
+
+log:
+  filename: ./log/gt.log
+  level: debug
+  # 单位 m
+  maxSize: 10
+  maxAge: 15
+  maxBackups: 3
+
+
