@@ -20,13 +20,7 @@ func Ping(c *gin.Context) {
 
 	zap.L().Info("健康检查接口调用")
 
-	// if cache.CacheImpl==nil {
-	// 	zap.L().Error("缓存实例为nil")
-	// 	cache.InitCache()
-	// }
-
-	
-	service.CacheService.SetWithDefaultExpiration(c.Request.Host,c.Request.UserAgent())
+	service.CacheService.SetWithDefaultExpiration(c.Request.Host, c.Request.UserAgent())
 
 	c.JSON(http.StatusOK, gin.H{
 		"message": "pong",

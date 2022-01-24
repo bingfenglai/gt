@@ -11,7 +11,7 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-func InitDbConfig() {
+func initDbConfig() {
 
 	var count = 0
 

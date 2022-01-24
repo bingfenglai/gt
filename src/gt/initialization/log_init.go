@@ -13,7 +13,7 @@ import (
 	"go.uber.org/zap/zapcore"
 )
 
-func InitLogConfig() {
+func initLogConfig() {
 
 	writeSyncer := getLogWriter(config.Conf.Log.Filename, config.Conf.Log.MaxSize, config.Conf.Log.MaxBackups, config.Conf.Log.MaxAge)
 	encoder := getEncoder()
@@ -25,7 +25,7 @@ func InitLogConfig() {
 	core := zapcore.NewCore(encoder, writeSyncer, l)
 
 	global.Log = zap.New(core, zap.AddCaller())
-	
+
 	zap.ReplaceGlobals(global.Log) // 替换zap包中全局的logger实例，后续在其他包中只需使用zap.L()调用即可
 
 	adaptGinLogToZap()
@@ -39,12 +39,12 @@ func getEncoder() zapcore.Encoder {
 	encoderConfig.EncodeDuration = zapcore.SecondsDurationEncoder
 	encoderConfig.EncodeCaller = zapcore.ShortCallerEncoder
 
-	if config.Conf.Server.Mode==gin.DebugMode {
+	if config.Conf.Server.Mode == gin.DebugMode {
 		return zapcore.NewConsoleEncoder(encoderConfig)
 	}
 
 	return zapcore.NewJSONEncoder(encoderConfig)
-	
+
 }
 
 func getLogWriter(filename string, maxSize, maxBackup, maxAge int) zapcore.WriteSyncer {
@@ -55,13 +55,13 @@ func getLogWriter(filename string, maxSize, maxBackup, maxAge int) zapcore.Write
 		MaxAge:     maxAge,
 	}
 
-	if config.Conf.Server.Mode==gin.DebugMode {
+	if config.Conf.Server.Mode == gin.DebugMode {
 		return zapcore.AddSync(os.Stdout)
 	}
 
 	// 同时输出到控制台跟文件
 	return zapcore.NewMultiWriteSyncer(zapcore.AddSync(lumberJackLogger), zapcore.AddSync(os.Stdout))
-	
+
 }
 
 // 将gin日志使用zap输出

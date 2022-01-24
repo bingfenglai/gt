@@ -13,14 +13,13 @@ import (
 	"go.uber.org/zap"
 )
 
-
-func InitCacheConfig(){
-	b,_ :=json.Marshal(config.Conf.Cache)
-	zap.L().Info("缓存配置"+string(b))
+func initCacheConfig() {
+	b, _ := json.Marshal(config.Conf.Cache)
+	zap.L().Info("缓存配置" + string(b))
 	if config.Conf.Cache.CacheType == constants.RedisCache {
 		initRedisConfig()
 		cache.InitCache()
-	}else{
+	} else {
 		zap.L().Warn("未配置缓存")
 	}
 }
@@ -49,7 +48,7 @@ func initRedisConfig() {
 			count++
 			log.Default().Println(err, config.Conf.Redis)
 			if count > 30 {
-				panic("redis 初始化失败"+err.Error())
+				panic("redis 初始化失败" + err.Error())
 			}
 			time.Sleep(1 * 1e9)
 			continue

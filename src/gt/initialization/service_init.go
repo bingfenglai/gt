@@ -2,9 +2,8 @@ package initialization
 
 import (
 	"github.com/bingfenglai/gt/service"
-	
 )
 
-func InitService() {
+func initService() {
 	service.InitService()
 }

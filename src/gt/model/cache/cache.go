@@ -1,7 +1,6 @@
 package cache
 
 import (
-	
 	"time"
 
 	"github.com/bingfenglai/gt/config"
@@ -11,40 +10,31 @@ import (
 	"github.com/bingfenglai/gt/global"
 )
 
-
 var cacheImpl Cache
 
-
-
 type Cache interface {
-	Set(key string, value interface{},expiration time.Duration) bool
-	SetWithDefaultExpiration(key string, value interface{}) bool
+	Set(key string, value interface{}, expiration time.Duration) (bool, string)
+	SetWithDefaultExpiration(key string, value interface{}) (bool, string)
 
-	// Get(key string) (bool,interface{})
-	// Keys(keyPrefix string) (bool,[]string)
+	Get(key string) (bool, string)
+	Keys(keyPrefix string) (bool, []string)
 
-	// Delete(key string)bool
+	Delete(key ...string) (bool, int64)
 }
 
+func InitCache() {
 
-
-func InitCache(){
-	
 	zap.L().Info("初始化cache package")
-	if constants.RedisCache==config.Conf.Cache.CacheType {
-		cacheImpl = newRedisCache(global.RedisClient,time.Second*time.Duration(config.Conf.Cache.DefaultCacheTime))
-	}else{
-		 zap.L().Warn("未配置缓存")
-		 
+	if constants.RedisCache == config.Conf.Cache.CacheType {
+		cacheImpl = newRedisCache(global.RedisClient, time.Second*time.Duration(config.Conf.Cache.DefaultCacheTime))
+	} else {
+		zap.L().Warn("未配置缓存")
+
 	}
 
 }
 
+func GetCacheImpl() Cache {
 
-func GetCacheImpl() Cache{
-	
 	return cacheImpl
 }
-
-
-
