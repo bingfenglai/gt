@@ -1,14 +1,16 @@
 package initialization
 
 import (
+	"os"
+
 	"github.com/bingfenglai/gt/config"
 	"github.com/bingfenglai/gt/global"
 	"github.com/bingfenglai/gt/handler"
 	"github.com/bingfenglai/gt/router"
+	"github.com/gin-gonic/gin"
 	"github.com/natefinch/lumberjack"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
-	"os"
 )
 
 func InitLogConfig() {
@@ -23,6 +25,7 @@ func InitLogConfig() {
 	core := zapcore.NewCore(encoder, writeSyncer, l)
 
 	global.Log = zap.New(core, zap.AddCaller())
+	
 	zap.ReplaceGlobals(global.Log) // 替换zap包中全局的logger实例，后续在其他包中只需使用zap.L()调用即可
 
 	adaptGinLogToZap()
@@ -35,7 +38,13 @@ func getEncoder() zapcore.Encoder {
 	encoderConfig.EncodeLevel = zapcore.CapitalLevelEncoder
 	encoderConfig.EncodeDuration = zapcore.SecondsDurationEncoder
 	encoderConfig.EncodeCaller = zapcore.ShortCallerEncoder
+
+	if config.Conf.Server.Mode==gin.DebugMode {
+		return zapcore.NewConsoleEncoder(encoderConfig)
+	}
+
 	return zapcore.NewJSONEncoder(encoderConfig)
+	
 }
 
 func getLogWriter(filename string, maxSize, maxBackup, maxAge int) zapcore.WriteSyncer {

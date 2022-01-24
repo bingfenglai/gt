@@ -1,7 +1,6 @@
 server:
   port: 9527
   address: 0.0.0.0
-  activeProfiles: dev
   mode: debug
 
 database:

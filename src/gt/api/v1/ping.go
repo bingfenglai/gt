@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/bingfenglai/gt/config"
+	"go.uber.org/zap"
 
 	"github.com/gin-gonic/gin"
 )
@@ -14,6 +15,8 @@ import (
 // @Router /v1/ping [get]
 func Ping(c *gin.Context) {
 	p := config.Conf.Server
+
+	zap.L().Info("健康检查接口调用")
 
 	c.JSON(http.StatusOK, gin.H{
 		"message": "pong",

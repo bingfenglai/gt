@@ -7,4 +7,5 @@ type SwaggerConfig struct {
 	Schemes     []string
 	Title       string
 	Description string
+	
 }

@@ -2,12 +2,14 @@ package main
 
 import (
 	"fmt"
+	"log"
+
 	"github.com/bingfenglai/gt/config"
-	"github.com/bingfenglai/gt/conmon/constants"
+	
 	"github.com/bingfenglai/gt/global"
 	"github.com/bingfenglai/gt/initialization"
 	"github.com/bingfenglai/gt/router"
-	"log"
+	"github.com/gin-gonic/gin"
 
 	// 导入mysql驱动
 	"os"
@@ -23,6 +25,7 @@ func main() {
 	//router.R.Run(fmt.Sprintf("%s:%d", viper.GetString("server.address"), viper.GetInt("server.port")))
 
 	log.Println(config.Conf.Server)
+	gin.SetMode(config.Conf.Server.Mode)
 	router.R.Run(fmt.Sprintf("%s:%d", config.Conf.Server.Address, config.Conf.Server.Port))
 
 	defer func() {
@@ -49,8 +52,8 @@ func init() {
 	}()
 
 	go func() {
-		log.Default().Printf("active: %s", config.Conf.Server.ActiveProfiles)
-		if config.Conf.Server.ActiveProfiles == constants.Dev {
+		log.Default().Printf("active: %s", config.Conf.Server.Mode)
+		if config.Conf.Server.Mode == gin.DebugMode {
 			initialization.RunSwagCmd()
 
 			initialization.InitApiConfig()
