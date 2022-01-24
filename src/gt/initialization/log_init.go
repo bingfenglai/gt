@@ -54,9 +54,14 @@ func getLogWriter(filename string, maxSize, maxBackup, maxAge int) zapcore.Write
 		MaxBackups: maxBackup,
 		MaxAge:     maxAge,
 	}
+
+	if config.Conf.Server.Mode==gin.DebugMode {
+		return zapcore.AddSync(os.Stdout)
+	}
+
 	// 同时输出到控制台跟文件
 	return zapcore.NewMultiWriteSyncer(zapcore.AddSync(lumberJackLogger), zapcore.AddSync(os.Stdout))
-	//return zapcore.AddSync(lumberJackLogger)
+	
 }
 
 // 将gin日志使用zap输出
