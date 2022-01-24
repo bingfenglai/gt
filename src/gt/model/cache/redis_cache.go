@@ -15,7 +15,7 @@ type redisCache struct {
 	
 }
 
-func NewRedisCache(redisClient *redis.Client,defaultExpiration time.Duration) *redisCache {
+func newRedisCache(redisClient *redis.Client,defaultExpiration time.Duration) *redisCache {
 
 	return &redisCache{
 		redisClient: redisClient,

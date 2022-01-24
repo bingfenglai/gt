@@ -1,15 +1,31 @@
 package initialization
 
 import (
+	"encoding/json"
 	"log"
 	"time"
 
 	"github.com/bingfenglai/gt/config"
+	"github.com/bingfenglai/gt/conmon/constants"
 	"github.com/bingfenglai/gt/global"
+	"github.com/bingfenglai/gt/model/cache"
 	"github.com/go-redis/redis/v8"
+	"go.uber.org/zap"
 )
 
-func InitRedisConfig() {
+
+func InitCacheConfig(){
+	b,_ :=json.Marshal(config.Conf.Cache)
+	zap.L().Info("缓存配置"+string(b))
+	if config.Conf.Cache.CacheType == constants.RedisCache {
+		initRedisConfig()
+		cache.InitCache()
+	}else{
+		zap.L().Warn("未配置缓存")
+	}
+}
+
+func initRedisConfig() {
 
 	redisClient := redis.NewClient(&redis.Options{
 		Addr:         config.Conf.Redis.Addr,
@@ -32,8 +48,8 @@ func InitRedisConfig() {
 		if err != nil {
 			count++
 			log.Default().Println(err, config.Conf.Redis)
-			if count > 3 {
-				//panic("redis 初始化失败"+err.Error())
+			if count > 30 {
+				panic("redis 初始化失败"+err.Error())
 			}
 			time.Sleep(1 * 1e9)
 			continue

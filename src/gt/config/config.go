@@ -10,6 +10,7 @@ type Config struct {
 	DataBase DataBaseConfig
 	Swagger  SwaggerConfig
 	Log      LogConfig
+	Cache CacheConfig
 }
 
 func init() {

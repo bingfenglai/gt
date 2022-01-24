@@ -5,7 +5,8 @@ import (
 	"log"
 
 	"github.com/bingfenglai/gt/config"
-	
+
+
 	"github.com/bingfenglai/gt/global"
 	"github.com/bingfenglai/gt/initialization"
 	"github.com/bingfenglai/gt/router"
@@ -14,6 +15,7 @@ import (
 	// 导入mysql驱动
 	"os"
 
+	_ "github.com/bingfenglai/gt/service"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/spf13/viper"
 )
@@ -48,7 +50,8 @@ func init() {
 	}()
 
 	go func() {
-		initialization.InitRedisConfig()
+		initialization.InitCacheConfig()
+		initialization.InitService()
 	}()
 
 	go func() {
