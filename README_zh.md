@@ -1,4 +1,4 @@
-**中文|[English](https://github.com/bingfenglai/gt/blob/main/README_en.md)** 
+**中文|[English](https://github.com/bingfenglai/gt/blob/main/README.md)** 
 
 # gt
 
