@@ -1,8 +1,9 @@
-**中文|[English](https://github.com/bingfenglai/gt/blob/main/README.md)** 
-
 # gt
 
+**中文|[English](https://github.com/bingfenglai/gt/blob/main/README.md)** 
+
 ## 一句话的简介
+
 这是一个基于Golang实现的长短链接转换应用。
 ## 功能规划
 1. 长短链接转换

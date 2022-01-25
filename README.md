@@ -1,8 +1,9 @@
-**English|[中文](https://github.com/bingfenglai/gt/blob/main/README_zh.md)|** 
-
 # gt
 
+**English|[中文](https://github.com/bingfenglai/gt/blob/main/README_zh.md)**
+
 ## One Sentence Introduction
+
 Golang implementation of the short link conversion application
 ## Functional Planning
 1. Long and short link conversion
