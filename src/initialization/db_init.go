@@ -2,9 +2,11 @@ package initialization
 
 import (
 	"encoding/json"
-	"github.com/bingfenglai/gt/config"
 	"log"
 	"time"
+
+	"github.com/bingfenglai/gt/config"
+	"github.com/bingfenglai/gt/model/entity"
 
 	"github.com/bingfenglai/gt/global"
 	_ "github.com/go-sql-driver/mysql"
@@ -45,4 +47,18 @@ func initDbConfig() {
 	dbJson, _ := json.Marshal(sqlDb.Stats())
 	log.Default().Println(string(dbJson))
 
+	initSchema()
+
+}
+
+
+func initSchema(){
+	global.DB.AutoMigrate(&entity.LinkGroup{})
+
+	lg := entity.LinkGroup{
+		GroupName: "default",
+		CreatedBy: 0,
+	}
+
+	global.DB.Begin().Save(lg).Commit()
 }

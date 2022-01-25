@@ -7,9 +7,9 @@ type User struct {
 	Username string
 	Password string
 	Email    string
-	CreateAt time.Time
-	CreateBy int64
-	UpdateAt time.Time
-	UpdateBy int64
+	CreatedAt time.Time
+	CreatedBy int64
+	UpdatedAt time.Time
+	UpdatedBy int64
 	Status   int
 }
