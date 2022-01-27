@@ -20,6 +20,9 @@ func init() {
 		})
 	})
 
+
+	groupV1.Any("/redirection/:code",v1.Redirection)
+
 	// 设置一个get请求的路由，url为/ping, 处理函数（或者叫控制器函数）是一个闭包函数。
 	// groupV1.GET("/ping", func(c *gin.Context) {
 	// 	// 通过请求上下文对象Context, 直接往客户端返回一个json
