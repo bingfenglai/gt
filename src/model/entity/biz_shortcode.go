@@ -1,18 +1,23 @@
 package entity
 
-import "time"
+import "github.com/jinzhu/gorm"
 
-type Link struct {
-	Id           int64
+type ShortCode struct {
+	gorm.Model
+	GroupId int64
 	Md5          string
 	ShortCode    string
-	OriginalLink string
+	Original string
 	// 游客创建的code为临时code 0,注册用户创建的code为永久code 1
 	CodeType int
-	CreatedAt time.Time
+
 	CreatedBy int64
-	UpdatedAt time.Time
+
 	UpdatedBy int64
 	// 0启用 1未启用
-	Status int
+	Status int `gorm:"default:0"`
+}
+
+func (l *ShortCode) TableName() string {
+	return "tb_biz_link"
 }

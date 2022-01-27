@@ -36,6 +36,20 @@ var doc = `{
                     }
                 }
             }
+        },
+        "/v1/redirection/{code}": {
+            "get": {
+                "description": "链接重定向接口",
+                "summary": "链接重定向接口",
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
         }
     }
 }`

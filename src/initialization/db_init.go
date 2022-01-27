@@ -7,7 +7,6 @@ import (
 
 	"github.com/bingfenglai/gt/config"
 	"github.com/bingfenglai/gt/model/entity"
-
 	"github.com/bingfenglai/gt/global"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
@@ -53,9 +52,9 @@ func initDbConfig() {
 
 
 func initSchema(){
-	global.DB.AutoMigrate(&entity.LinkGroup{})
-
-	lg := entity.LinkGroup{
+	global.DB.AutoMigrate(&entity.ShortCodeGroup{},&entity.Role{})
+	
+	lg := entity.ShortCodeGroup{
 		GroupName: "default",
 		CreatedBy: 0,
 	}
