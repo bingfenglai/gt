@@ -6,6 +6,9 @@ import (
 	"math/rand"
 	"strings"
 	"time"
+
+	"github.com/bingfenglai/gt/config"
+	
 )
 
 // 数学函数生成，通过纳秒时间种子
@@ -38,13 +41,13 @@ func (receiver *MathRoundShortCodeGenerator) GenShortCode(link string) ([]string
 
 func (receiver *MathRoundShortCodeGenerator) doGenShortCode() ([]string, error) {
 
-	shortCodes := make([]string, 4)
+	shortCodes := make([]string, config.Conf.ShortCode.Size)
 	// 以当前纳秒数为种子
 	rand.Seed(int64(time.Now().UnixNano()))
 	max := len(chars()) - 1
-	for i := 0; i < 4; i++ {
+	for i := 0; i <  config.Conf.ShortCode.Size; i++ {
 		var shortCode []string
-		for j := 0; j < 6; j++ {
+		for j := 0; j < config.Conf.ShortCode.Length; j++ {
 			index := rand.Intn(max)
 			//log.Default().Println("当前索引：",index)
 			shortCode = append(shortCode, chars()[index])

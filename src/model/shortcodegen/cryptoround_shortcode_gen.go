@@ -6,6 +6,9 @@ import (
 
 	"math/big"
 	"strings"
+
+	"github.com/bingfenglai/gt/config"
+	
 )
 
 // 种子跟 进程数+内存占用长度+时间戳 有关
@@ -36,12 +39,12 @@ func (receiver *CryptRoundShortCodeGenerator) GenShortCode(link string) ([]strin
 }
 
 func (receiver *CryptRoundShortCodeGenerator) doGenShortCode() ([]string, error) {
-	shortCodes := make([]string, 4)
+	shortCodes := make([]string, config.Conf.ShortCode.Size)
 
 	max := len(chars())
-	for i := 0; i < 4; i++ {
+	for i := 0; i < config.Conf.ShortCode.Size; i++ {
 		var shortCode []string
-		for j := 0; j < 6; j++ {
+		for j := 0; j < config.Conf.ShortCode.Length; j++ {
 			index, _ := rand.Int(rand.Reader, big.NewInt(int64(max)))
 			//log.Default().Println("当前索引：",index.Int64())
 

@@ -43,4 +43,9 @@ log:
   maxAge: 15
   maxBackups: 3
 
+shortCode:
+  # 段码长度
+  length: 6
+  # 每批次生成的短码个数,1<=size<=6
+  size: 4
 

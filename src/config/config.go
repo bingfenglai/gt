@@ -1,9 +1,11 @@
 package config
 
 import (
-	"github.com/spf13/viper"
 	"log"
 	"os"
+	"strconv"
+
+	"github.com/spf13/viper"
 )
 
 var Conf Config
@@ -15,12 +17,14 @@ type Config struct {
 	Swagger  SwaggerConfig
 	Log      LogConfig
 	Cache    CacheConfig
+	ShortCode ShortCodeConfig
 }
 
 func init() {
 	log.Default().Println("装载配置文件信息")
 	LoadConfig()
 	//zap.L().Info("装载配置文件信息")
+	configRoleCheck()
 
 }
 
@@ -47,4 +51,12 @@ func LoadConfig() {
 		log.Default().Println("config info:\n", Conf.Redis, "\n", Conf.Server, "\nlog: ", Conf.Log)
 	}
 
+}
+
+// 配置信息规则检查
+func configRoleCheck(){
+	if Conf.ShortCode.Size> maxShortCodeGenSize{
+		panic("每批次生成的短码数不能大于："+strconv.Itoa(maxShortCodeGenSize))
+		
+	}
 }
