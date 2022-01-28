@@ -2,7 +2,7 @@ package shortcodegen
 
 import (
 	"crypto/rand"
-	"errors"
+	
 
 	"math/big"
 	"strings"
