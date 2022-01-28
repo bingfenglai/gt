@@ -30,9 +30,9 @@ func NewCryptRoundShortCodeGenerator() *CryptRoundShortCodeGenerator {
 }
 
 func (receiver *CryptRoundShortCodeGenerator) GenShortCode(link string) ([]string, error) {
-	if link == "" {
-		return nil, errors.New("参数link不能为空串")
-	}
+	// if link == "" {
+	// 	return nil, errors.New("参数link不能为空串")
+	// }
 
 	return receiver.doGenShortCode()
 
