@@ -8,9 +8,11 @@ import (
 //var R = gin.Default()
 var R = gin.New()
 
+var groupV1 = R.Group("v1")
+
 func init() {
 
-	groupV1 := R.Group("v1")
+	
 
 	groupV1.GET("/hello", func(ctx *gin.Context) {
 
@@ -31,4 +33,11 @@ func init() {
 	// 	})
 	// })
 	groupV1.GET("/ping", v1.Ping)
+
+	groupV1.POST("/short_code/gen",v1.GenShortCode)
+}
+
+
+func GetV1()(*gin.RouterGroup){
+	return groupV1
 }

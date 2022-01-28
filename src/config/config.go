@@ -5,6 +5,7 @@ import (
 	"os"
 	"strconv"
 
+	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/viper"
 )
 
@@ -26,6 +27,13 @@ func init() {
 	//zap.L().Info("装载配置文件信息")
 	configRoleCheck()
 
+
+	viper.OnConfigChange(func(in fsnotify.Event) {
+		LoadConfig()
+		//zap.L().Info("装载配置文件信息")
+		configRoleCheck()
+	})
+
 }
 
 // 加载配置文件
@@ -46,10 +54,12 @@ func LoadConfig() {
 	err = viper.Unmarshal(&Conf)
 
 	if err != nil {
-		log.Default().Println("初始化配置信息失败\n", err.Error())
+		log.Default().Println("读取配置信息失败\n", err.Error())
 	} else {
 		log.Default().Println("config info:\n", Conf.Redis, "\n", Conf.Server, "\nlog: ", Conf.Log)
 	}
+
+
 
 }
 
