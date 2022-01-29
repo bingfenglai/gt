@@ -9,6 +9,7 @@ type Role struct {
 	UpdatedBy int64
 	Remark string `grom:"size:64;"`
 	Status int `gorm:"default:0"`
+	TenantId int
 }
 
 

@@ -52,7 +52,7 @@ func initDbConfig() {
 
 
 func initSchema(){
-	global.DB.AutoMigrate(&entity.ShortCodeGroup{},&entity.Role{})
+	global.DB.AutoMigrate(&entity.ShortCodeGroup{},&entity.Role{},&entity.Dict{})
 	
 	lg := entity.ShortCodeGroup{
 		GroupName: "default",

@@ -14,6 +14,7 @@ type ShortCodeGroup struct {
 	CreatedBy  int64 `gorm:"not null"`
 	UpdatedBy  int64
 	Status    int `gorm:"not null;default:0"`
+	TenantId int
 	
 }
 

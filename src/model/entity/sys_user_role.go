@@ -11,6 +11,7 @@ type UserRole struct {
 	Status int `gorm:"default:0"`
 	CreatedBy time.Time
 	UpdatedBy time.Time
+	TenantId int
 
 }
 

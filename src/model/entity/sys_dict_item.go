@@ -1,0 +1,20 @@
+package entity
+
+import "github.com/jinzhu/gorm"
+
+// 字典项
+type DictItem struct {
+	gorm.Model
+	DictId int `gorm:"not null"`
+	Name string `gorm:"not null;size:24"`
+	Code string `gorm:"not null;size:24"`
+	Value string `gorm:"not null;size:24"`
+	Status int `gorm:"default:0"`
+	Remark string `gorm:"not null;size:64"`
+	TenantId int
+}
+
+
+func (d *DictItem)TableName()string{
+	return "tb_sys_dict_item"
+}

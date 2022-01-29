@@ -16,6 +16,8 @@ type ShortCode struct {
 	UpdatedBy int64
 	// 0启用 1未启用
 	Status int `gorm:"default:0"`
+
+	TenantId int
 }
 
 func (l *ShortCode) TableName() string {

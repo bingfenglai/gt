@@ -12,6 +12,7 @@ type User struct {
 
 	UpdatedBy int64
 	Status    int `gorm:"default:0"`
+	TenantId int
 }
 
 func (l *User) TableName() string {
