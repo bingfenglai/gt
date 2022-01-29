@@ -10,6 +10,8 @@ type Api struct {
 	Methods string `grom:"size:36;not null"`
 	Status int `gorm:"default:0"`
 	Remark string `grom:"size:64;"`
+	CreatedBy int64
+	UpdatedBy int64
 	TenantId int
 }
 

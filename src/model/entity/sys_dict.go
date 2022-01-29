@@ -10,6 +10,8 @@ type Dict struct {
 	DictType int `gorm:"not null;default:0;comment:'字典类型0系统1业务'"`
 	Status int `gorm:"default:0"`
 	Remark string `gorm:"not null;size:64"`
+	CreatedBy int64
+	UpdatedBy int64
 	TenantId int
 
 	

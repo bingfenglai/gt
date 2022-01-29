@@ -9,7 +9,6 @@ type User struct {
 	Email    string `gorm:"not null;size=64"`
 
 	CreatedBy int64
-
 	UpdatedBy int64
 	Status    int `gorm:"default:0"`
 	TenantId int
