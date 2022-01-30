@@ -1,6 +1,7 @@
 package v1
 
 import (
+	"github.com/bingfenglai/gt/router"
 	"net/http"
 
 	"github.com/bingfenglai/gt/model/shortcodegen"
@@ -19,5 +20,11 @@ func GenShortCode(ctx *gin.Context){
 	gen,_ := shortcodegen.GetShortCodeGeneratorByMethod(shortcodegen.Md5Gen)
 	codes,_ :=gen.GenShortCode(params.OriginalLink)
 	ctx.JSON(http.StatusOK,result.Ok(codes))
+
+}
+
+
+func init() {
+	router.GetV1().POST("/shortCode/gen/:code",GenShortCode)
 
 }

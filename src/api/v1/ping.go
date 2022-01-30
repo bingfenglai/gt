@@ -1,6 +1,7 @@
 package v1
 
 import (
+	"github.com/bingfenglai/gt/router"
 	"net/http"
 
 	"github.com/bingfenglai/gt/config"
@@ -26,4 +27,10 @@ func Ping(c *gin.Context) {
 		"message": "pong",
 		"server":  p,
 	})
+}
+
+
+func init() {
+	router.GetV1().Any("/ping",Ping)
+
 }

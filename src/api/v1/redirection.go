@@ -1,6 +1,7 @@
 package v1
 
 import (
+	"github.com/bingfenglai/gt/router"
 	"net/http"
 
 	"github.com/bingfenglai/gt/conmon/constants"
@@ -24,5 +25,10 @@ func Redirection(ctx *gin.Context){
 
 	// 301 临时重定向
 	ctx.Redirect(http.StatusFound,"https://google.com")
+
+}
+
+func init() {
+	router.GetV1().Any("/redirection/:code",Redirection)
 
 }

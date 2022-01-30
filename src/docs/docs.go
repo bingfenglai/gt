@@ -23,6 +23,20 @@ var doc = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/v1/captcha": {
+            "get": {
+                "description": "获取验证码",
+                "summary": "获取验证码",
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/v1/ping": {
             "get": {
                 "description": "健康检查接口",

@@ -1,6 +1,15 @@
 info:
   contact: {}
 paths:
+  /v1/captcha:
+    get:
+      description: 获取验证码
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+      summary: 获取验证码
   /v1/ping:
     get:
       description: 健康检查接口
