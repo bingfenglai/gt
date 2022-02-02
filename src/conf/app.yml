@@ -49,3 +49,7 @@ shortCode:
   # 每批次生成的短码个数,1<=size<=6
   size: 4
 
+captcha:
+  prefix: "gt:captcha:"
+  validityPeriod: 1000 * 60 *3
+

@@ -12,13 +12,14 @@ import (
 var Conf Config
 
 type Config struct {
-	Redis    RedisConfig
-	Server   ServerConfig
-	DataBase DataBaseConfig
-	Swagger  SwaggerConfig
-	Log      LogConfig
-	Cache    CacheConfig
+	Redis     RedisConfig
+	Server    ServerConfig
+	DataBase  DataBaseConfig
+	Swagger   SwaggerConfig
+	Log       LogConfig
+	Cache     CacheConfig
 	ShortCode ShortCodeConfig
+	Captcha   CaptchaConfig
 }
 
 func init() {
@@ -26,7 +27,6 @@ func init() {
 	LoadConfig()
 	//zap.L().Info("装载配置文件信息")
 	configRoleCheck()
-
 
 	viper.OnConfigChange(func(in fsnotify.Event) {
 		LoadConfig()
@@ -59,14 +59,12 @@ func LoadConfig() {
 		log.Default().Println("config info:\n", Conf.Redis, "\n", Conf.Server, "\nlog: ", Conf.Log)
 	}
 
-
-
 }
 
 // 配置信息规则检查
-func configRoleCheck(){
-	if Conf.ShortCode.Size> maxShortCodeGenSize{
-		panic("每批次生成的短码数不能大于："+strconv.Itoa(maxShortCodeGenSize))
-		
+func configRoleCheck() {
+	if Conf.ShortCode.Size > maxShortCodeGenSize {
+		panic("每批次生成的短码数不能大于：" + strconv.Itoa(maxShortCodeGenSize))
+
 	}
 }

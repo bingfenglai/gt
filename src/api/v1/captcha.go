@@ -1,16 +1,15 @@
 package v1
 
 import (
-	"bytes"
-	"encoding/base64"
-	"github.com/bingfenglai/gt/conmon/constants"
-	"github.com/bingfenglai/gt/pojo/response"
+	"github.com/bingfenglai/gt/conmon/helper"
+	"github.com/bingfenglai/gt/pojo/params"
 	"github.com/bingfenglai/gt/pojo/result"
 	"github.com/bingfenglai/gt/router"
+	"github.com/bingfenglai/gt/service"
 	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin/binding"
 	"net/http"
 )
-import "github.com/dchest/captcha"
 
 // @Summary 获取验证码
 // @Description 获取验证码
@@ -18,27 +17,40 @@ import "github.com/dchest/captcha"
 // @Router /v1/captcha [get]
 func GetCaptcha(ctx *gin.Context) {
 
-	id :=captcha.New()
+	resp, err := service.CaptchaService.GetImagesBehavioralCaptcha()
 
-	if id=="" {
-		r :=result.Fail("生成验证码失败")
-		ctx.JSON(http.StatusInternalServerError,r)
+	ok, s := helper.CheckErr(err)
+	if ok {
+		ctx.JSON(http.StatusOK, result.Ok(resp))
 		return
 	}
 
-	captchaResponse := response.CaptchaResponse{CaptchaId: id}
-	var imagesBuf bytes.Buffer
-	_ = captcha.WriteImage(&imagesBuf, id, 800, 400)
-	data := base64.StdEncoding.EncodeToString(imagesBuf.Bytes())
-	data = constants.ImageBase64Prefix+data
+	ctx.JSON(http.StatusServiceUnavailable, result.Fail(s))
+}
 
+func Verity(ctx *gin.Context) {
+	p := params.VerityCaptchaParams{}
+	err := ctx.ShouldBindBodyWith(&p, binding.JSON)
 
-	captchaResponse.ImageUrl = data
+	ok, s := helper.CheckErr(err)
 
-	ok := result.Ok(captchaResponse)
-	ctx.JSON(http.StatusOK,ok)
+	if !ok {
+		ctx.JSON(http.StatusBadRequest, result.Fail(s))
+		return
+	}
+
+	ok, err = service.CaptchaService.Verify(p.Dots, p.CaptchaId)
+
+	if err == nil {
+		ctx.JSON(http.StatusOK, result.Ok(ok))
+		return
+	}
+
+	ctx.JSON(http.StatusOK, result.OkWithMsg(ok, err.Error()))
+	return
 }
 
 func init() {
-	router.GetV1().GET("/captcha",GetCaptcha)
+	router.GetV1().GET("/captcha", GetCaptcha)
+	router.GetV1().POST("/captcha/verity", Verity)
 }
