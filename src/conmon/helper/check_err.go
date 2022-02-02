@@ -8,6 +8,6 @@ func CheckErr(err error) (bool, string) {
 		return true, ""
 	}
 
-	zap.L().Error(err.Error())
+	zap.L().Info(err.Error())
 	return false, err.Error()
 }

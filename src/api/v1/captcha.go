@@ -35,7 +35,7 @@ func Verity(ctx *gin.Context) {
 	ok, s := helper.CheckErr(err)
 
 	if !ok {
-		ctx.JSON(http.StatusBadRequest, result.Fail(s))
+		ctx.JSON(http.StatusOK, result.Fail(s))
 		return
 	}
 
@@ -46,7 +46,7 @@ func Verity(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, result.OkWithMsg(ok, err.Error()))
+	ctx.JSON(http.StatusOK, result.Fail(err.Error()))
 	return
 }
 
