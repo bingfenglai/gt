@@ -1,6 +1,9 @@
 package entity
 
-import "github.com/jinzhu/gorm"
+import (
+	"github.com/bingfenglai/gt/global"
+	"github.com/jinzhu/gorm"
+)
 
 type User struct {
 	gorm.Model
@@ -11,9 +14,18 @@ type User struct {
 	CreatedBy int64
 	UpdatedBy int64
 	Status    int `gorm:"default:0"`
-	TenantId int
+	TenantId  int
 }
 
 func (l *User) TableName() string {
 	return "tb_sys_user"
+}
+
+func (u *User) FindByUsername(username string) error {
+
+	if err := global.DB.Where("username = ?", username).Take(u).Error; err != nil {
+		return err
+	}
+
+	return nil
 }

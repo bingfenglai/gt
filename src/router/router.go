@@ -1,7 +1,15 @@
 package router
 
 import (
+	"github.com/bingfenglai/gt/pojo/result"
 	"github.com/gin-gonic/gin"
+	"github.com/go-oauth2/oauth2/v4/errors"
+	"github.com/go-oauth2/oauth2/v4/manage"
+	"github.com/go-oauth2/oauth2/v4/models"
+	"github.com/go-oauth2/oauth2/v4/server"
+	"github.com/go-oauth2/oauth2/v4/store"
+	"log"
+	"net/http"
 )
 
 //var R = gin.Default()
@@ -11,27 +19,40 @@ var groupV1 = R.Group("/v1")
 
 func init() {
 
-	//groupV1.GET("/hello", func(ctx *gin.Context) {
-	//
-	//	name := ctx.Query("name")
-	//	ctx.JSON(200, gin.H{
-	//		"message": "hello " + name,
-	//	})
-	//})
-	//
-	//
-	//groupV1.Any("/redirection/:code",v1.Redirection)
+	manager := manage.NewDefaultManager()
+	// token memory store
+	manager.MustTokenStorage(store.NewMemoryTokenStore())
 
-	// 设置一个get请求的路由，url为/ping, 处理函数（或者叫控制器函数）是一个闭包函数。
-	// groupV1.GET("/ping", func(c *gin.Context) {
-	// 	// 通过请求上下文对象Context, 直接往客户端返回一个json
-	// 	c.JSON(200, gin.H{
-	// 		"message": "pong",
-	// 	})
-	// })
-	//groupV1.GET("/ping", v1.Ping)
-	//
-	//groupV1.POST("/short_code/gen",v1.GenShortCode)
+	// client memory store
+	clientStore := store.NewClientStore()
+	clientStore.Set("000000", &models.Client{
+		ID:     "000000",
+		Secret: "999999",
+		Domain: "http://localhost",
+	})
+	manager.MapClientStorage(clientStore)
+
+	srv := server.NewDefaultServer(manager)
+	srv.SetAllowGetAccessRequest(true)
+	srv.SetClientInfoHandler(server.ClientFormHandler)
+
+	srv.SetInternalErrorHandler(func(err error) (re *errors.Response) {
+		log.Println("Internal Error:", err.Error())
+		return
+	})
+
+	srv.SetResponseErrorHandler(func(re *errors.Response) {
+		log.Println("Response Error:", re.Error.Error())
+	})
+
+	R.Handle(http.MethodPost, "/oauth2/token", func(ctx *gin.Context) {
+		err := srv.HandleTokenRequest(ctx.Writer, ctx.Request)
+
+		if err != nil {
+			ctx.JSON(http.StatusOK, result.Fail(err.Error()))
+		}
+	})
+
 }
 
 func GetV1() *gin.RouterGroup {

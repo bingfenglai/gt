@@ -11,3 +11,12 @@ func ToMd5String(s string) string {
 
 	return hex.EncodeToString(md5)
 }
+
+func ToMd5String32(s string) string {
+
+	hash := md5.New()
+
+	hash.Write([]byte(s))
+
+	return hex.EncodeToString(hash.Sum(nil))
+}
