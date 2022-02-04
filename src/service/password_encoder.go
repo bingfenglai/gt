@@ -5,16 +5,16 @@ import "golang.org/x/crypto/bcrypt"
 type IPasswordEncoder interface {
 
 	// 对密码进行加密
-	encode(src string) (string, error)
+	Encode(src string) (string, error)
 
 	// 检查密码是否正确
-	check(plaintext string, ciphertext string) (bool, error)
+	Check(plaintext string, ciphertext string) (bool, error)
 }
 
 type PasswordEncoder struct {
 }
 
-func (p *PasswordEncoder) encode(src string) (string, error) {
+func (p *PasswordEncoder) Encode(src string) (string, error) {
 	password, err := bcrypt.GenerateFromPassword([]byte(src), bcrypt.MinCost)
 
 	if err != nil {
@@ -24,7 +24,7 @@ func (p *PasswordEncoder) encode(src string) (string, error) {
 	return string(password), nil
 }
 
-func (p *PasswordEncoder) check(plaintext string, ciphertext string) (bool, error) {
+func (p *PasswordEncoder) Check(plaintext string, ciphertext string) (bool, error) {
 
 	err := bcrypt.CompareHashAndPassword([]byte(ciphertext), []byte(plaintext))
 

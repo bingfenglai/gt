@@ -46,7 +46,7 @@ func (authc *usernamePasswordAuthenticationService) Authentication(params params
 		return nil, err
 	}
 
-	check, _ := PasswordEncodeService.check(params.Certificate, userDto.Password)
+	check, _ := PasswordEncodeService.Check(params.Certificate, userDto.Password)
 
 	if !check {
 		return nil, errors.New("用户名或密码错误")

@@ -3,6 +3,7 @@ package initialization
 import (
 	"github.com/bingfenglai/gt/config"
 	"github.com/bingfenglai/gt/oauth"
+	"github.com/bingfenglai/gt/oauth/handler"
 	"github.com/bingfenglai/gt/oauth/store"
 	"github.com/go-oauth2/oauth2/v4/errors"
 	"github.com/go-oauth2/oauth2/v4/manage"
@@ -35,6 +36,8 @@ func initOAuth2Server() {
 	oauth.OAuth2Server = server.NewDefaultServer(oauthManager)
 	oauth.OAuth2Server.SetAllowGetAccessRequest(false)
 	oauth.OAuth2Server.SetClientInfoHandler(server.ClientFormHandler)
+
+	oauth.OAuth2Server.SetPasswordAuthorizationHandler(handler.PasswordAuthorizationHandler)
 
 	oauth.OAuth2Server.SetInternalErrorHandler(func(err error) (re *errors.Response) {
 		log.Println("Internal Error:", err.Error())

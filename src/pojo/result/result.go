@@ -43,6 +43,15 @@ func Fail(data interface{}) Result {
 	}
 }
 
+func FailWithMsg(msg string, data interface{}) Result {
+
+	return Result{
+		Code:    1,
+		Message: msg,
+		Data:    data,
+	}
+}
+
 func FailWithNilData() Result {
 	log.Default().Fatal()
 	return Result{
