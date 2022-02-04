@@ -1,6 +1,7 @@
 package router
 
 import (
+	"github.com/bingfenglai/gt/handler"
 	"github.com/bingfenglai/gt/oauth"
 	"github.com/bingfenglai/gt/pojo/result"
 	"github.com/gin-gonic/gin"
@@ -22,6 +23,9 @@ func init() {
 			ctx.JSON(http.StatusOK, result.Fail(err.Error()))
 		}
 	})
+
+	// 鉴权
+	groupV1.Use(handler.AuthorizationHandler())
 
 }
 
