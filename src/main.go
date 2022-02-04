@@ -28,7 +28,7 @@ func main() {
 	router.R.Run(fmt.Sprintf("%s:%d", config.Conf.Server.Address, config.Conf.Server.Port))
 
 	defer func() {
-		global.DB.Close()
+
 		global.RedisClient.Close()
 	}()
 }

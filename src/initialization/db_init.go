@@ -2,7 +2,11 @@ package initialization
 
 import (
 	"encoding/json"
-	"go.uber.org/zap"
+	"os"
+
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 	"log"
 	"time"
 
@@ -10,16 +14,29 @@ import (
 	"github.com/bingfenglai/gt/global"
 	"github.com/bingfenglai/gt/model/entity"
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/jinzhu/gorm"
 )
 
 func initDbConfig() {
 
 	var count = 0
 
+	newLogger := logger.New(
+		log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer（日志输出的目标，前缀和日志包含的内容——译者注）
+		logger.Config{
+			SlowThreshold:             time.Second,   // 慢 SQL 阈值
+			LogLevel:                  logger.Silent, // 日志级别
+			IgnoreRecordNotFoundError: true,          // 忽略ErrRecordNotFound（记录未找到）错误
+			Colorful:                  false,         // 禁用彩色打印
+		},
+	)
+
 	for {
 
-		db, err := gorm.Open(config.Conf.DataBase.DbType, config.Conf.DataBase.Url)
+		//db, err := gorm.Open(config.Conf.DataBase.DbType, config.Conf.DataBase.Url)
+		db, err := gorm.Open(mysql.Open(config.Conf.DataBase.Url), &gorm.Config{
+			Logger: newLogger},
+		)
+		//db.SetLogger(logger.Default.LogMode(logger.Warn))
 
 		if err != nil {
 			log.Default().Println("db 连接错误 ", err.Error())
@@ -41,7 +58,8 @@ func initDbConfig() {
 
 	global.DB.Select("select 1")
 
-	sqlDb := global.DB.DB()
+	sqlDb, _ := global.DB.DB()
+
 	sqlDb.SetMaxOpenConns(config.Conf.DataBase.MaxOpen)
 	sqlDb.SetMaxIdleConns(config.Conf.DataBase.MaxConn)
 
@@ -55,12 +73,14 @@ func initDbConfig() {
 }
 
 func registerCallback() {
-	global.DB.Callback().Create().Replace("gorm:update_time_stamp", CreatedTimeCallback)
-	global.DB.Callback().Update().Replace("gorm:update_time_stamp", UpdatedTimeCallback)
+	global.DB.Callback().Create().Remove("gorm:update_time_stamp")
+	//_ = global.DB.Callback().Create().Register("gorm:update_time_stamp", CreatedTimeCallback)
+	//_ = global.DB.Callback().Update().Replace("gorm:update_time_stamp", UpdatedTimeCallback)
 }
 
 func initSchema() {
-	global.DB.AutoMigrate(&entity.ShortCodeGroup{}, &entity.Role{}, &entity.Dict{}, &entity.User{})
+	_ = global.DB.AutoMigrate(&entity.ShortCodeGroup{}, &entity.Role{}, &entity.Dict{}, &entity.User{},
+		&entity.Client{})
 
 	lg := entity.ShortCodeGroup{
 		GroupName: "default",
@@ -70,36 +90,27 @@ func initSchema() {
 	global.DB.Begin().Save(&lg).Commit()
 }
 
-func CreatedTimeCallback(scope *gorm.Scope) {
+func CreatedTimeCallback(db *gorm.DB) {
 
-	if scope.HasError() {
-		return
-	}
+	field := db.Statement.Schema.LookUpField("CreatedAt")
 
-	field, ok := scope.FieldByName("createdAt")
-
-	if ok {
+	if field != nil {
 		if !field.HasDefaultValue {
 
-			zap.L().Info("插入创建时间")
-			_ = field.Set(time.Now().Local().Format("2006-01-02 15:04:05"))
+			_ = field.Set(db.Statement.ReflectValue, time.Now().Local().Format("2006-01-02 15:04:05"))
 
 		}
 	}
 }
 
-func UpdatedTimeCallback(scope *gorm.Scope) {
+func UpdatedTimeCallback(db *gorm.DB) {
 
-	if scope.HasError() {
-		return
-	}
+	field := db.Statement.Schema.LookUpField("UpdatedAt")
 
-	field, ok := scope.FieldByName("updatedAt")
-
-	if ok {
+	if field != nil {
 		if !field.HasDefaultValue {
 
-			_ = field.Set(time.Now().Local().Format("2006-01-02 15:04:05"))
+			_ = field.Set(db.Statement.ReflectValue, time.Now().Local().Format("2006-01-02 15:04:05"))
 
 		}
 	}

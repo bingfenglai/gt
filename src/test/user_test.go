@@ -11,8 +11,6 @@ import (
 
 func TestAddUser(t *testing.T) {
 
-	defer global.DB.Close()
-
 	password, _ := bcrypt.GenerateFromPassword([]byte("gt@2022"), bcrypt.MinCost)
 
 	zap.L().Info("密码", zap.String("password", string(password)))

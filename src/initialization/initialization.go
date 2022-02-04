@@ -6,5 +6,6 @@ func InitAll() {
 	initDbConfig()
 	initCacheConfig()
 	initService()
+	initOAuth2Server()
 
 }

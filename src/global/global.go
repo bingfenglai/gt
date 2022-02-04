@@ -2,7 +2,9 @@ package global
 
 import (
 	"github.com/go-redis/redis/v8"
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
+
+	//"github.com/jinzhu/gorm"
 	"go.uber.org/zap"
 )
 
