@@ -59,8 +59,15 @@ func RefreshToken(ctx *gin.Context) {
 
 }
 
+func ThreadCallback(ctx *gin.Context) {
+	code := ctx.Query("code")
+	state := ctx.Query("state")
+	zap.L().Info("收到授权码", zap.String("code", code), zap.String("state", state))
+}
+
 func init() {
 	router.GetV1().POST("/oauth2/token", Token)
 	router.GetV1().Any("/oauth2/refreshToken", RefreshToken)
+	router.GetV1().Any("/thread_callback", ThreadCallback)
 
 }

@@ -53,3 +53,9 @@ captcha:
   prefix: "gt:captcha:"
   validityPeriod: 180000
 
+auth:
+  anonymousUrls:
+    - /v1/thread_callback
+    - /v1/ping
+    - /oauth2/authorize
+

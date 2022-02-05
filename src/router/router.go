@@ -20,7 +20,29 @@ func init() {
 		err := oauth.OAuth2Server.HandleTokenRequest(ctx.Writer, ctx.Request)
 
 		if err != nil {
+			ctx.Abort()
 			ctx.JSON(http.StatusOK, result.Fail(err.Error()))
+			return
+		}
+	})
+
+	// 授权码
+	R.Handle(http.MethodPost, "/oauth2/authorize", func(ctx *gin.Context) {
+		err := oauth.OAuth2Server.HandleAuthorizeRequest(ctx.Writer, ctx.Request)
+		if err != nil {
+			ctx.Abort()
+			ctx.JSON(http.StatusOK, result.Fail(err.Error()))
+			return
+		}
+	})
+
+	// 授权码
+	R.Handle(http.MethodGet, "/oauth2/authorize", func(ctx *gin.Context) {
+		err := oauth.OAuth2Server.HandleAuthorizeRequest(ctx.Writer, ctx.Request)
+		if err != nil {
+			ctx.Abort()
+			ctx.JSON(http.StatusOK, result.Fail(err.Error()))
+			return
 		}
 	})
 
