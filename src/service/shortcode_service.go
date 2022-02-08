@@ -16,7 +16,7 @@ type IShortCodeService interface {
 type ShortCodeService struct {
 }
 
-func (this *ShortCodeService) CreateShortCodeAndSave(url string, isPerpetual, isMultiplex bool) (bool, error) {
+func (s *ShortCodeService) CreateShortCodeAndSave(url string, isPerpetual, isMultiplex bool) (bool, error) {
 
 	if url == "" {
 		return false, errors.New("url不能为空")
