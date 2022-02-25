@@ -17,13 +17,13 @@ type User struct {
 	TenantId  int
 }
 
-func (l *User) TableName() string {
+func (user *User) TableName() string {
 	return "tb_sys_user"
 }
 
-func (u *User) FindByUsername(username string) error {
+func (user *User) FindByUsername(username string) error {
 
-	if err := global.DB.Where("username = ?", username).Take(u).Error; err != nil {
+	if err := global.DB.Where("username = ?", username).Take(user).Error; err != nil {
 		return err
 	}
 
