@@ -12,19 +12,18 @@ import (
 	"go.uber.org/zap"
 )
 
-func GenShortCode(ctx *gin.Context){
-	params :=params.GenShortCodeParams{}
-	ctx.ShouldBindBodyWith(&params,binding.JSON)
-	zap.L().Info("接收到参数",zap.Reflect("params",params))
-	
-	gen,_ := shortcodegen.GetShortCodeGeneratorByMethod(shortcodegen.Md5Gen)
-	codes,_ :=gen.GenShortCode(params.OriginalLink)
-	ctx.JSON(http.StatusOK,result.Ok(codes))
+func GenShortCode(ctx *gin.Context) {
+	genParams := params.GenShortCodeParams{}
+	_ = ctx.ShouldBindBodyWith(&genParams, binding.JSON)
+	zap.L().Info("接收到参数", zap.Reflect("genParams", genParams))
+
+	gen, _ := shortcodegen.GetShortCodeGeneratorByMethod(shortcodegen.Md5Gen)
+	codes, _ := gen.GenShortCode(genParams.OriginalLink)
+	ctx.JSON(http.StatusOK, result.Ok(codes))
 
 }
 
-
 func init() {
-	router.GetV1().POST("/shortCode/gen/:code",GenShortCode)
+	router.GetV1().POST("/shortCode/gen/:code", GenShortCode)
 
 }
