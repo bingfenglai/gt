@@ -1,6 +1,11 @@
 package entity
 
-import "github.com/jinzhu/gorm"
+import (
+	
+
+	"github.com/bingfenglai/gt/conmon/constants"
+	"github.com/jinzhu/gorm"
+)
 
 type ShortCode struct {
 	gorm.Model
@@ -22,4 +27,17 @@ type ShortCode struct {
 
 func (l *ShortCode) TableName() string {
 	return "tb_biz_link"
+}
+
+
+
+func CreateShortCode(original ,md5,shortCode string,codeType int ) (*ShortCode,error){
+
+	return &ShortCode{
+		Md5: md5,
+		Original: original,
+		CodeType: codeType,
+		Status: constants.Normal_Status,
+	},nil
+	
 }
