@@ -2,6 +2,7 @@ server:
   port: 9527
   address: 0.0.0.0
   mode: debug
+  url404: https://volunteer.cdn-go.cn/404/latest/404.html
   
 
 database:
@@ -57,5 +58,6 @@ auth:
   anonymousUrls:
     - /v1/thread_callback
     - /v1/ping
+    - /v1/redirection
     - /oauth2/authorize
 

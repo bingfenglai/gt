@@ -1,11 +1,13 @@
 package router
 
 import (
+	"net/http"
+
+	"github.com/bingfenglai/gt/config"
 	"github.com/bingfenglai/gt/handler"
 	"github.com/bingfenglai/gt/oauth"
 	"github.com/bingfenglai/gt/pojo/result"
 	"github.com/gin-gonic/gin"
-	"net/http"
 )
 
 //var R = gin.Default()
@@ -48,6 +50,11 @@ func init() {
 
 	// 鉴权
 	groupV1.Use(handler.AuthorizationHandler())
+
+	// 处理404
+	R.NoRoute( func(c *gin.Context) {
+		c.Redirect(http.StatusFound,config.Conf.Server.Url404)
+	})
 
 }
 
