@@ -3,6 +3,7 @@ package service
 import (
 	"errors"
 
+	"github.com/bingfenglai/gt/config"
 	"github.com/bingfenglai/gt/conmon/constants"
 	"github.com/bingfenglai/gt/conmon/helper"
 	"github.com/bingfenglai/gt/model/entity"
@@ -55,7 +56,7 @@ func (svc *ShortCodeServiceImpl) CreateShortCode(url string, isPerpetual, isMult
 		
 		
 		shortcode,err = storage.ShortCodeStorage.FindShortcodeByMd5(urlMd5)
-		zap.L().Info("",zap.Any("sc: ",shortcode.ShortCode))
+		zap.L().Info("",zap.Any("sc: ",shortcode))
 		if flag,_ :=helper.CheckErr(err);flag{
 			return shortcode,nil
 		}
@@ -66,8 +67,14 @@ func (svc *ShortCodeServiceImpl) CreateShortCode(url string, isPerpetual, isMult
 
 	if gen, err := shortcodegen.GetShortCodeGeneratorByMethod(shortcodegen.Md5Gen);err==nil{
 
-		codes,_ := gen.GenShortCode(url)
+		codes,errgen := gen.GenShortCode(url)
+
+		if errgen!=nil {
+			zap.L().Error(errgen.Error())
+			return nil,errgen
+		}
 		
+
 		if shortcode, err = entity.CreateShortCode(url,urlMd5,codes[0],constants.Registered_User_Code_Type);err!=nil{
 			return nil,err
 			
@@ -90,8 +97,25 @@ func (svc *ShortCodeServiceImpl) CreateShortCode(url string, isPerpetual, isMult
 
 
 func (svc *ShortCodeServiceImpl) FindLinkByCode(code string) (string, error){
+	
+	
+	if code=="" {
+		return "",errors.New("code不能为空")
+	}
 
-	return "",nil
+	if config.Conf.ShortCode.Length!=len(code) {
+		return "",errors.New("code长度不正确")
+		
+	}
+
+	if sc,err :=storage.ShortCodeStorage.FindOriginalUrlByShortCode(code);err!=nil{
+		
+		return "",err
+	}else{
+		return sc.Original,nil
+	}
+
+	
 }
 
 

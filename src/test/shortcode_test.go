@@ -41,16 +41,24 @@ func TestGen(t *testing.T){
 func TestCreate(t *testing.T){
 	
 	fmt.Println("testing")
-	if sc,err :=service.ShortCodeService.CreateShortCode("https://www.google.com",false,true);err!=nil{
+	if sc,err :=service.ShortCodeService.CreateShortCode("https://www.baidu.com",false,true);err!=nil{
 		t.Log(err.Error())
 	}else{
-		t.Log("shortcode :",sc.ShortCode)
+		
+		
 		zap.L().Info("短码",zap.String("短码",sc.ShortCode))
-
+		
 	}
+	
+
+}
 
 
-
-
+func TestFindLinkByCode(t *testing.T){
+	if url,err:=service.ShortCodeService.FindLinkByCode("D84Tyx");err!=nil{
+		zap.L().Error(err.Error())
+	}else{
+		zap.L().Info("url",zap.Any("",url))
+	}
 
 }
