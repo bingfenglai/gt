@@ -1,10 +1,11 @@
 package v1
 
 import (
-	"github.com/bingfenglai/gt/router"
 	"net/http"
 
-	"github.com/bingfenglai/gt/conmon/constants"
+	"github.com/bingfenglai/gt/config"
+	"github.com/bingfenglai/gt/router"
+	"github.com/bingfenglai/gt/service"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
@@ -17,14 +18,14 @@ func Redirection(ctx *gin.Context) {
 	code := ctx.Params.ByName("code")
 	zap.L().Info("获取短码：" + code)
 
-	if constants.ShortCodeLength != len(code) {
-		ctx.AbortWithStatus(http.StatusNotFound)
-		_, _ = ctx.Writer.WriteString("资源不存在")
-		return
+	if url,err:=service.ShortCodeService.FindLinkByCode(code);err==nil&&url!=""{
+		// 301 临时重定向
+		ctx.Redirect(http.StatusFound, url)
+	}else{
+		
+		ctx.Redirect(http.StatusFound,config.Conf.Server.Url404)
 	}
 
-	// 301 临时重定向
-	ctx.Redirect(http.StatusFound, "https://google.com")
 
 }
 

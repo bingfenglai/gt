@@ -34,7 +34,8 @@ func initDbConfig() {
 
 		//db, err := gorm.Open(config.Conf.DataBase.DbType, config.Conf.DataBase.Url)
 		db, err := gorm.Open(mysql.Open(config.Conf.DataBase.Url), &gorm.Config{
-			Logger: newLogger},
+			Logger: newLogger,
+			},
 		)
 		//db.SetLogger(logger.Default.LogMode(logger.Warn))
 
@@ -80,14 +81,14 @@ func registerCallback() {
 
 func initSchema() {
 	_ = global.DB.AutoMigrate(&entity.ShortCodeGroup{}, &entity.Role{}, &entity.Dict{}, &entity.User{},
-		&entity.Client{})
+		&entity.Client{},&entity.ShortCode{})
 
-	lg := entity.ShortCodeGroup{
-		GroupName: "default",
-		CreatedBy: 0,
-	}
+	// lg := entity.ShortCodeGroup{
+	// 	GroupName: "default",
+	// 	CreatedBy: 0,
+	// }
 
-	global.DB.Begin().Save(&lg).Commit()
+	// global.DB.Begin().Save(&lg).Commit()
 }
 
 func CreatedTimeCallback(db *gorm.DB) {

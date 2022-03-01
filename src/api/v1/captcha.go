@@ -47,7 +47,7 @@ func Verity(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, result.Fail(err.Error()))
-	return
+	
 }
 
 func init() {

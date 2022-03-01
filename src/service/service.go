@@ -1,6 +1,11 @@
 package service
 
-import "github.com/bingfenglai/gt/model/cache"
+import (
+	
+	"log"
+
+	"github.com/bingfenglai/gt/model/cache"
+)
 
 var CacheService cache.Cache
 
@@ -12,7 +17,12 @@ var PasswordEncodeService IPasswordEncoder
 
 var AuthcService IAuthService
 
+
+var ShortCodeService IShortCodeService
+
 func InitService() {
+	
+	log.Default().Println("执行service初始化")
 	CacheService = cache.GetCacheImpl()
 	CaptchaService = &CaptchaServiceImpl{}
 	UserService = &UserServiceImpl{}
@@ -20,4 +30,7 @@ func InitService() {
 	PasswordEncodeService = &PasswordEncoder{}
 
 	AuthcService = &AuthenticationService{}
+
+
+	ShortCodeService = &ShortCodeServiceImpl{}
 }
