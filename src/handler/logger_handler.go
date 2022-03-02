@@ -1,9 +1,6 @@
 package handler
 
 import (
-	"github.com/bingfenglai/gt/global"
-	"github.com/gin-gonic/gin"
-	"go.uber.org/zap"
 	"net"
 	"net/http"
 	"net/http/httputil"
@@ -11,6 +8,11 @@ import (
 	"runtime/debug"
 	"strings"
 	"time"
+
+	"github.com/bingfenglai/gt/global"
+	"github.com/bingfenglai/gt/pojo/result"
+	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 )
 
 // gin默认日志接入zap中间件
@@ -77,7 +79,7 @@ func GinZapRecovery(stack bool) gin.HandlerFunc {
 						zap.String("request", string(httpRequest)),
 					)
 				}
-				ctx.AbortWithStatus(http.StatusInternalServerError)
+				ctx.AbortWithStatusJSON(http.StatusInternalServerError,result.Fail(err))
 			}
 		}()
 		ctx.Next()

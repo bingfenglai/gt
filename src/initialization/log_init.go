@@ -64,7 +64,7 @@ func getLogWriter(filename string, maxSize, maxBackup, maxAge int) zapcore.Write
 
 }
 
-// 将gin日志使用zap输出
+// 将gin日志使用zap输出,处理内部错误
 func adaptGinLogToZap() {
 	router.R.Use(handler.GinZapLogger(), handler.GinZapRecovery(true))
 
