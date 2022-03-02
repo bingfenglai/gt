@@ -7,6 +7,13 @@ import (
 	"github.com/bingfenglai/gt/model/cache"
 )
 
+
+type Service interface {
+	Save(val interface{})(bool,error)
+	DeleteById(id uint64)(bool,error)
+}
+
+
 var CacheService cache.Cache
 
 var CaptchaService ICaptchaService
@@ -19,6 +26,8 @@ var AuthcService IAuthService
 
 
 var ShortCodeService IShortCodeService
+
+var ShortCodeLogService IShortCodeLogService
 
 func InitService() {
 	
@@ -33,4 +42,6 @@ func InitService() {
 
 
 	ShortCodeService = &ShortCodeServiceImpl{}
+
+	ShortCodeLogService = &ShortCodeLogServiceImpl{}
 }

@@ -18,10 +18,12 @@ require (
 	github.com/jinzhu/gorm v1.9.16
 	//github.com/jinzhu/gorm v1.9.16
 	github.com/mailru/easyjson v0.7.7 // indirect
+	github.com/mileusna/useragent v1.0.2 // indirect
 	github.com/natefinch/lumberjack v2.0.0+incompatible
 	github.com/spf13/viper v1.10.1
 	github.com/swaggo/gin-swagger v1.4.0
 	github.com/swaggo/swag v1.8.0
+	github.com/thinkeridea/go-extend v1.3.2
 	github.com/tidwall/buntdb v1.2.9 // indirect
 	github.com/tidwall/gjson v1.14.0 // indirect
 	github.com/wenlng/go-captcha v1.2.5

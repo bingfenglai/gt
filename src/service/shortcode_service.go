@@ -19,7 +19,7 @@ type IShortCodeService interface {
 	CreateShortCode(url string, isPerpetual, isMultiplex bool) (*entity.ShortCode, error)
 
 	// 根据短码查找原链接
-	FindLinkByCode(code string) (string, error)
+	FindLinkByCode(code string) (*entity.ShortCode, error)
 
 	// 创建临时的短码
 	createPerpetual(url string) (*entity.ShortCode, error)
@@ -96,23 +96,24 @@ func (svc *ShortCodeServiceImpl) CreateShortCode(url string, isPerpetual, isMult
 }
 
 
-func (svc *ShortCodeServiceImpl) FindLinkByCode(code string) (string, error){
+func (svc *ShortCodeServiceImpl) FindLinkByCode(code string) (*entity.ShortCode, error){
 	
 	
 	if code=="" {
-		return "",errors.New("code不能为空")
+		return nil,errors.New("code不能为空")
 	}
 
 	if config.Conf.ShortCode.Length!=len(code) {
-		return "",errors.New("code长度不正确")
+		return nil,errors.New("code长度不正确")
 		
 	}
 
 	if sc,err :=storage.ShortCodeStorage.FindOriginalUrlByShortCode(code);err!=nil{
 		
-		return "",err
+		return nil,err
 	}else{
-		return sc.Original,nil
+
+		return sc,nil
 	}
 
 	
@@ -125,3 +126,4 @@ func (svc *ShortCodeServiceImpl) createPerpetual(url string) (*entity.ShortCode,
 
 	return nil,nil
 }
+
