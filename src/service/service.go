@@ -22,7 +22,7 @@ var UserService IUserService
 
 var PasswordEncodeService IPasswordEncoder
 
-var AuthcService IAuthService
+var OAuthClientService IOAuthClientService
 
 
 var ShortCodeService IShortCodeService
@@ -38,10 +38,9 @@ func InitService() {
 
 	PasswordEncodeService = &PasswordEncoder{}
 
-	AuthcService = &AuthenticationService{}
-
-
 	ShortCodeService = &ShortCodeServiceImpl{}
 
 	ShortCodeLogService = &ShortCodeLogServiceImpl{}
+
+	OAuthClientService = &OAuthClientServiceImpl{}
 }

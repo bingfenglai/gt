@@ -9,10 +9,10 @@ import (
 	"strconv"
 )
 
-type ClientStore struct {
+type ClientDbStore struct {
 }
 
-func (cs *ClientStore) GetByID(_ context.Context, id string) (oauth2.ClientInfo, error) {
+func (cs *ClientDbStore) GetByID(_ context.Context, id string) (oauth2.ClientInfo, error) {
 	zap.L().Info("客户端id", zap.String("clientId", id))
 
 	client := entity.Client{}
