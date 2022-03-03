@@ -38,6 +38,9 @@ func (svc *OAuthClientServiceImpl) CheckGrantType(clientId,grantType string)(boo
 		return false,errors.New("当前客户端不允许该认证方式")
 	}
 
+	
+
+
 
 	return true,nil
 }

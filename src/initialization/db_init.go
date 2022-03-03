@@ -80,8 +80,9 @@ func registerCallback() {
 }
 
 func initSchema() {
-	_ = global.DB.AutoMigrate(&entity.ShortCodeGroup{}, &entity.Role{}, &entity.Dict{}, &entity.User{},
-		&entity.Client{},&entity.ShortCode{},&entity.ShortcodeLog{})
+	_ = global.DB.AutoMigrate( &entity.Role{}, &entity.Dict{}, &entity.User{},
+		&entity.Client{},&entity.OAuthGrantType{},&entity.ClientGrantType{},
+		&entity.ShortCodeGroup{},&entity.ShortCode{},&entity.ShortcodeLog{})
 
 	// lg := entity.ShortCodeGroup{
 	// 	GroupName: "default",

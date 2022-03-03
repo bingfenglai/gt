@@ -8,6 +8,8 @@ var ShortCodeLogStorage IShortcodeLogStorage
 
 var OAuthClientStorage IOAuthClientStorage
 
+var ClientGrantTypeStorage IClientGrantTypeStorage
+
 func Initstorage() {
 	log.Default().Println("初始化 storage")
 	ShortCodeStorage = &ShortCodeDbStorage{}
@@ -15,5 +17,7 @@ func Initstorage() {
 	ShortCodeLogStorage = &ShortCodeLogDbStorage{}
 
 	OAuthClientStorage = &OAuthClientStorageImpl{}
+
+	ClientGrantTypeStorage = &ClientGrantTypeStorageImpl{}
 
 }
