@@ -2,6 +2,7 @@ package initialization
 
 import (
 	"encoding/json"
+	"github.com/bingfenglai/gt/conmon/constants"
 	"os"
 
 	"gorm.io/driver/mysql"
@@ -84,36 +85,36 @@ func initSchema() {
 		&entity.Client{},&entity.OAuthGrantType{},&entity.ClientGrantType{},
 		&entity.ShortCodeGroup{},&entity.ShortCode{},&entity.ShortcodeLog{})
 
-	// lg := entity.ShortCodeGroup{
-	// 	GroupName: "default",
-	// 	CreatedBy: 0,
-	// }
-
-	// global.DB.Begin().Save(&lg).Commit()
+	initData()
 }
 
-func CreatedTimeCallback(db *gorm.DB) {
+func initData() {
 
-	field := db.Statement.Schema.LookUpField("CreatedAt")
+	// 插入授权模式
+	initGrantTypeData()
+}
 
-	if field != nil {
-		if !field.HasDefaultValue {
+func initGrantTypeData() {
+	password := entity.OAuthGrantType{Status: constants.Normal_Status,Name: "password",Remark: ""}
+	password.ID = 1
+	authorizationCode := entity.OAuthGrantType{Status: constants.Normal_Status,Name: "authorization_code",Remark: ""}
+	authorizationCode.ID = 2
+	clientCredentials := entity.OAuthGrantType{Status: constants.Normal_Status,Name: "client_credentials",Remark: ""}
+	clientCredentials.ID = 3
+	refreshing := entity.OAuthGrantType{Status: constants.Normal_Status,Name: "refresh_token",Remark: ""}
+	refreshing.ID = 4
+	implicit := entity.OAuthGrantType{Status: constants.Normal_Status,Name: "__implicit",Remark: ""}
+	implicit.ID = 5
 
-			_ = field.Set(db.Statement.ReflectValue, time.Now().Local().Format("2006-01-02 15:04:05"))
-
+	grantTypes := make([]*entity.OAuthGrantType,0)
+	grantTypes = append(grantTypes, &password,&authorizationCode,&clientCredentials,&refreshing,&implicit)
+	global.DB.Begin()
+	for _, grantType := range grantTypes {
+		if err :=global.DB.Save(grantType).Error;err!=nil{
+			//global.DB.Rollback()
 		}
 	}
+	global.DB.Commit()
 }
 
-func UpdatedTimeCallback(db *gorm.DB) {
 
-	field := db.Statement.Schema.LookUpField("UpdatedAt")
-
-	if field != nil {
-		if !field.HasDefaultValue {
-
-			_ = field.Set(db.Statement.ReflectValue, time.Now().Local().Format("2006-01-02 15:04:05"))
-
-		}
-	}
-}

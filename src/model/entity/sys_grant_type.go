@@ -6,7 +6,7 @@ import "github.com/jinzhu/gorm"
 type OAuthGrantType struct {
 	
 	gorm.Model
-	Name string `gorm:"not null;size:12"`
+	Name string `gorm:"not null;size:24"`
 	Remark string `gorm:"not null;size:12"`
 	Status int
 
