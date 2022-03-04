@@ -1,20 +1,27 @@
 package handler
 
 import (
-	"github.com/bingfenglai/gt/config"
-	"github.com/bingfenglai/gt/conmon/helper"
-	"github.com/bingfenglai/gt/oauth"
-	"github.com/bingfenglai/gt/pojo/result"
-	"github.com/gin-gonic/gin"
-	"go.uber.org/zap"
+	"log"
 	"net/http"
 	"strings"
+
+	"github.com/bingfenglai/gt/config"
+	"github.com/bingfenglai/gt/conmon/helper"
+
+	"github.com/bingfenglai/gt/oauth"
+	"github.com/bingfenglai/gt/pojo/result"
+
+	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 )
 
 func AuthorizationHandler() gin.HandlerFunc {
 	return func(context *gin.Context) {
 
+		// TODO uri由于路径参数不好匹配，选用HandlerName作为权限标识符
 		uri := context.Request.RequestURI
+		
+		log.Default().Println(context.HandlerName())
 
 		ok := checkAnonymousUrls(uri)
 
@@ -23,7 +30,9 @@ func AuthorizationHandler() gin.HandlerFunc {
 			return
 		}
 
-		_, err := oauth.OAuth2Server.ValidationBearerToken(context.Request)
+		ti, err := oauth.OAuth2Server.ValidationBearerToken(context.Request)
+		
+		zap.L().Info("token info",zap.Any("current user",ti.GetUserID()))
 
 		if err != nil {
 
@@ -32,6 +41,8 @@ func AuthorizationHandler() gin.HandlerFunc {
 			context.JSON(http.StatusUnauthorized, result.FailWithMsg(err.Error(), "令牌已过期，请重新登录 "))
 			return
 		}
+
+		// context.Next()
 	}
 }
 

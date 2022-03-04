@@ -2,9 +2,11 @@ package service
 
 import (
 	"errors"
-	"github.com/bingfenglai/gt/model/entity"
+
 	"github.com/bingfenglai/gt/pojo/dto"
+	"github.com/bingfenglai/gt/storage"
 	"github.com/jinzhu/gorm"
+	"go.uber.org/zap"
 )
 
 type IUserService interface {
@@ -19,17 +21,24 @@ func (u *UserServiceImpl) FindUserByUsername(username string) (*dto.UserDTO, err
 	if username == "" {
 		return nil, errors.New("用户名不能为空")
 	}
-	user := entity.User{}
-	err := user.FindByUsername(username)
+	
+	user,err := storage.UserStorage.SelectOneByUsername(username)
+	
+	
 
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		return nil, errors.New("用户名或密码错误")
 	}
 
+	if err!=nil{
+		zap.L().Error("err",zap.Any("err:",err.Error()))
+
+	}
+	
 	userDto := dto.UserDTO{
 		Username: user.Username,
 		Password: user.Password,
 	}
 
-	return &userDto, nil
+	return &userDto, err
 }

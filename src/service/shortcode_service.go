@@ -109,7 +109,7 @@ func (svc *ShortCodeServiceImpl) FindLinkByCode(code string) (*entity.ShortCode,
 	}
 
 	if sc,err :=storage.ShortCodeStorage.FindOriginalUrlByShortCode(code);err!=nil{
-		
+		zap.L().Error(err.Error())
 		return nil,err
 	}else{
 

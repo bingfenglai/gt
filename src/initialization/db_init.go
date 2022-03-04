@@ -108,13 +108,13 @@ func initGrantTypeData() {
 
 	grantTypes := make([]*entity.OAuthGrantType,0)
 	grantTypes = append(grantTypes, &password,&authorizationCode,&clientCredentials,&refreshing,&implicit)
-	global.DB.Begin()
+	
 	for _, grantType := range grantTypes {
 		if err :=global.DB.Save(grantType).Error;err!=nil{
 			//global.DB.Rollback()
 		}
 	}
-	global.DB.Commit()
+	
 }
 
 

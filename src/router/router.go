@@ -5,6 +5,7 @@ import (
 
 	"github.com/bingfenglai/gt/config"
 	"github.com/bingfenglai/gt/handler"
+
 	"github.com/bingfenglai/gt/oauth"
 	"github.com/bingfenglai/gt/pojo/result"
 	"github.com/gin-gonic/gin"
@@ -39,14 +40,14 @@ func init() {
 	})
 
 	// 授权码
-	R.Handle(http.MethodGet, "/oauth2/authorize", func(ctx *gin.Context) {
-		err := oauth.OAuth2Server.HandleAuthorizeRequest(ctx.Writer, ctx.Request)
-		if err != nil {
-			ctx.Abort()
-			ctx.JSON(http.StatusOK, result.Fail(err.Error()))
-			return
-		}
-	})
+	// R.Handle(http.MethodGet, "/oauth2/authorize", func(ctx *gin.Context) {
+	// 	err := oauth.OAuth2Server.HandleAuthorizeRequest(ctx.Writer, ctx.Request)
+	// 	if err != nil {
+	// 		ctx.Abort()
+	// 		ctx.JSON(http.StatusOK, result.Fail(err.Error()))
+	// 		return
+	// 	}
+	// })
 
 	// 鉴权
 	groupV1.Use(handler.AuthorizationHandler())

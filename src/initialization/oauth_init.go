@@ -1,12 +1,16 @@
 package initialization
 
 import (
+	
 	"log"
+	"net/http"
 
 	"github.com/bingfenglai/gt/config"
+	"github.com/bingfenglai/gt/conmon/constants"
 	"github.com/bingfenglai/gt/oauth"
 	"github.com/bingfenglai/gt/oauth/handler"
 	"github.com/bingfenglai/gt/oauth/store"
+	"github.com/go-oauth2/oauth2/v4"
 	"github.com/go-oauth2/oauth2/v4/errors"
 	"github.com/go-oauth2/oauth2/v4/manage"
 	"github.com/go-oauth2/oauth2/v4/server"
@@ -45,14 +49,22 @@ func initOAuth2Server() {
 	// 配置错误处理
 	oauth.OAuth2Server.SetInternalErrorHandler(func(err error) (re *errors.Response) {
 		log.Println("Internal Error:", err.Error())
+		re = errors.NewResponse(errors.ErrInvalidRequest,http.StatusOK)
+		re.Description = err.Error()
+		re.ErrorCode = 1
 		return
 	})
 
 	oauth.OAuth2Server.SetResponseErrorHandler(func(re *errors.Response) {
-		log.Println("Response Error:", re.Error.Error())
+		log.Println("Response Error:", re.Error.Error(),re.ErrorCode,re.StatusCode,re.Description)
 	})
 
-
+	// 设置认证成功后响应的扩展字段
+	oauth.OAuth2Server.SetExtensionFieldsHandler( func(ti oauth2.TokenInfo) (fieldsValue map[string]interface{}) {
+		fieldsValue = make(map[string]interface{})
+		fieldsValue["error_code"] = constants.Normal_Status
+		return
+	})
 
 	
 

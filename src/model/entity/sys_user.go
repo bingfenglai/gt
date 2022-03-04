@@ -1,7 +1,6 @@
 package entity
 
 import (
-	"github.com/bingfenglai/gt/global"
 	"github.com/jinzhu/gorm"
 )
 
@@ -19,13 +18,4 @@ type User struct {
 
 func (user *User) TableName() string {
 	return "tb_sys_user"
-}
-
-func (user *User) FindByUsername(username string) error {
-
-	if err := global.DB.Where("username = ?", username).Take(user).Error; err != nil {
-		return err
-	}
-
-	return nil
 }
