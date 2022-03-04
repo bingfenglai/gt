@@ -45,7 +45,7 @@ func initOAuth2Server() {
 	// SetClientAuthorizedHandler check the client allows to use this authorization grant type
 	oauth.OAuth2Server.SetClientAuthorizedHandler(handler.ClientAuthorizedHandler)
 
-
+	
 	// 配置错误处理
 	oauth.OAuth2Server.SetInternalErrorHandler(func(err error) (re *errors.Response) {
 		log.Println("Internal Error:", err.Error())

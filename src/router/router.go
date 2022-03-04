@@ -18,7 +18,7 @@ var groupV1 = R.Group("/v1")
 
 func init() {
 
-	// 获取令牌
+	// 认证
 	R.Handle(http.MethodPost, "/oauth2/token", func(ctx *gin.Context) {
 		err := oauth.OAuth2Server.HandleTokenRequest(ctx.Writer, ctx.Request)
 
@@ -29,7 +29,7 @@ func init() {
 		}
 	})
 
-	// 授权码
+	// 授权
 	R.Handle(http.MethodPost, "/oauth2/authorize", func(ctx *gin.Context) {
 		err := oauth.OAuth2Server.HandleAuthorizeRequest(ctx.Writer, ctx.Request)
 		if err != nil {

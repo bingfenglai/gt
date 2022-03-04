@@ -11,7 +11,9 @@ import (
 func Test(ctx *gin.Context){
 
 	name := ctx.Params.ByName("name")
-	age := ctx.Params.ByName("age")
+	// age := ctx.Params.ByName("age")
+
+	age := ctx.Request.FormValue("age")
 
 	ctx.JSON(http.StatusOK,result.Ok(name+age))
 
@@ -20,5 +22,5 @@ func Test(ctx *gin.Context){
 
 
 func init(){
-	router.GetV1().GET("/test/:name/:age/print",Test)
+	router.GetV1().GET("/test/:name/print",Test)
 }
