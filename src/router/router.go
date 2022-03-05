@@ -30,6 +30,7 @@ func init() {
 	})
 
 	// 授权
+	// TODO 先检查当前会话中用户是否完成认证，未完成则先认证，认证后再次重定向到当前接口，再完成授权码获取
 	R.Handle(http.MethodPost, "/oauth2/authorize", func(ctx *gin.Context) {
 		err := oauth.OAuth2Server.HandleAuthorizeRequest(ctx.Writer, ctx.Request)
 		if err != nil {

@@ -10,6 +10,8 @@ import (
 
 func Test(ctx *gin.Context){
 
+	
+
 	name := ctx.Params.ByName("name")
 	// age := ctx.Params.ByName("age")
 
