@@ -75,13 +75,13 @@ func initDbConfig() {
 }
 
 func registerCallback() {
-	global.DB.Callback().Create().Remove("gorm:update_time_stamp")
+	// global.DB.Callback().Create().Remove("gorm:update_time_stamp")
 	//_ = global.DB.Callback().Create().Register("gorm:update_time_stamp", CreatedTimeCallback)
 	//_ = global.DB.Callback().Update().Replace("gorm:update_time_stamp", UpdatedTimeCallback)
 }
 
 func initSchema() {
-	_ = global.DB.AutoMigrate( &entity.Role{}, &entity.Dict{}, &entity.User{},
+	_ = global.DB.AutoMigrate( &entity.Role{}, &entity.Dict{},&entity.DictItem{}, &entity.User{},
 		&entity.Client{},&entity.OAuthGrantType{},&entity.ClientGrantType{},
 		&entity.ShortCodeGroup{},&entity.ShortCode{},&entity.ShortcodeLog{})
 
