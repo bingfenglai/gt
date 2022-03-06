@@ -32,7 +32,7 @@
                 }
             }
         },
-        "/v1/redirection/{code}": {
+        "/v1/redirection/:code": {
             "get": {
                 "description": "链接重定向接口",
                 "summary": "链接重定向接口",

@@ -14,16 +14,14 @@ import (
 // @Summary 链接重定向接口
 // @Description 链接重定向接口
 // @Success 200 {string} string  "ok"
-// @Router /v1/redirection/{code} [get]
+// @Router /v1/redirection/:code [get]
 func Redirection(ctx *gin.Context) {
 	code := ctx.Params.ByName("code")
 	zap.L().Info("获取短码：" + code)
 
 	if sc,err:=service.ShortCodeService.FindLinkByCode(code);err==nil&&sc!=nil{
 		// 301 临时重定向
-
 		ctx.Redirect(http.StatusFound, sc.Original)
-		
 		go service.ShortCodeLogService.Create(uint64(sc.ID),ctx.Request.UserAgent(),helper.ClientIP(ctx.Request))
 
 	}else{

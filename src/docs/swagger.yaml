@@ -19,7 +19,7 @@ paths:
           schema:
             type: string
       summary: 健康检查接口
-  /v1/redirection/{code}:
+  /v1/redirection/:code:
     get:
       description: 链接重定向接口
       responses:
