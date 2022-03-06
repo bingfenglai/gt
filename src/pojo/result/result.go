@@ -43,6 +43,15 @@ func Fail(data interface{}) Result {
 	}
 }
 
+func FailWithErr(err error) Result {
+
+	return Result{
+		Code:    1,
+		Message: "fail",
+		Data:    err.Error(),
+	}
+}
+
 func FailWithMsg(msg string, data interface{}) Result {
 
 	return Result{
