@@ -23,14 +23,14 @@ func (c *CaptchaServiceImpl) GetImagesBehavioralCaptcha() (response.CaptchaRespo
 	zap.L().Info("验证值：")
 	fmt.Println(dots)
 	cacheKey := config.Conf.Captcha.Prefix + key
-	CacheService.Set(cacheKey, dots, config.Conf.Captcha.ValidityPeriod)
+	CacheService.SetWithJson(cacheKey, dots, config.Conf.Captcha.ValidityPeriod)
 
 	return response.CaptchaResponse{CaptchaId: key, ImageBase64: b64, ThumbBase64: th64}, err
 }
 
 func (c *CaptchaServiceImpl) Verify(src, captchaId string) (bool, error) {
 	captchaId = config.Conf.Captcha.Prefix + captchaId
-	ok, s := CacheService.Get(captchaId)
+	ok, s := CacheService.GetWithJson(captchaId)
 	if !ok {
 		return false, errors.New("验证码已过期")
 	}

@@ -1,9 +1,15 @@
 package handler
 
-import "net/http"
+import (
+	"github.com/bingfenglai/gt/oauth/utils"
+	"net/http"
+)
 
 func UserAuthorizationHandler(w http.ResponseWriter, r *http.Request) (userID string, err error) {
+	username, err := utils.GetCurrentUsername(r)
 
-
-	return "admin",nil
+	if err!=nil {
+		
+	}
+	return username,nil
 }

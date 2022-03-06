@@ -8,7 +8,7 @@ import (
 
 func TestSet(t *testing.T) {
 
-	ok, s := service.CacheService.SetWithDefaultExpiration("11", 13)
+	ok, s := service.CacheService.SetWithJsonAndDefaultExpiration("11", 13)
 
 	if !ok {
 		t.Log(s)
@@ -17,7 +17,7 @@ func TestSet(t *testing.T) {
 }
 
 func TestGet(t *testing.T) {
-	ok, s := service.CacheService.Get("11")
+	ok, s := service.CacheService.GetWithJson("11")
 
 	if ok {
 		zap.L().Info(s)
