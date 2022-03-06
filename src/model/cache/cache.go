@@ -13,10 +13,13 @@ import (
 var cacheImpl Cache
 
 type Cache interface {
-	Set(key string, value interface{}, expiration time.Duration) (bool, string)
-	SetWithDefaultExpiration(key string, value interface{}) (bool, string)
+	Set(key string, value interface{}, expiration time.Duration)error
+	SetWithDefaultExpiration(key string, value interface{}) error
+	Get(key string,value interface{})error
+	SetWithJson(key string, value interface{}, expiration time.Duration) (bool, string)
+	SetWithJsonAndDefaultExpiration(key string, value interface{}) (bool, string)
 
-	Get(key string) (bool, string)
+	GetWithJson(key string) (bool, string)
 	Keys(keyPrefix string) (bool, []string)
 
 	Delete(key ...string) (bool, int64)

@@ -3,6 +3,7 @@ package cache
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"github.com/bingfenglai/gt/conmon/helper"
 	"time"
 
@@ -25,7 +26,47 @@ func newRedisCache(redisClient *redis.Client, defaultExpiration time.Duration) *
 	}
 }
 
-func (receiver *redisCache) Set(key string, value interface{}, expiration time.Duration) (bool, string) {
+func (receiver *redisCache) Set(key string, value interface{}, expiration time.Duration)error  {
+	if &expiration == nil {
+		return receiver.SetWithDefaultExpiration(key,value)
+	}
+
+	if key=="" {
+		return errors.New("缓存key不能为空字符串")
+	}
+	err := receiver.redisClient.Set(receiver.ctx, key, value, expiration).Err()
+
+	if err!=nil {
+		zap.L().Error("redis缓存设值错误",zap.Error(err))
+	}
+
+	return  err
+
+}
+
+func (receiver *redisCache) SetWithDefaultExpiration(key string, value interface{}) error  {
+
+	return receiver.Set(key,value,receiver.defaultExpiration)
+}
+
+func (receiver *redisCache) Get(key string,value interface{})error{
+	err := receiver.redisClient.Get(receiver.ctx, key).Scan(value)
+
+	if err!=nil {
+		zap.L().Error("获取缓存值失败",zap.Error(err))
+	}
+
+	return err
+}
+
+
+
+
+func (receiver *redisCache) SetWithJson(key string, value interface{}, expiration time.Duration) (bool, string) {
+
+	if &expiration==nil {
+		return receiver.SetWithJsonAndDefaultExpiration(key,value)
+	}
 
 	value, _ = json.Marshal(value)
 
@@ -40,13 +81,15 @@ func (receiver *redisCache) Set(key string, value interface{}, expiration time.D
 	return true, ""
 }
 
-func (receiver *redisCache) SetWithDefaultExpiration(key string, value interface{}) (bool, string) {
-	return receiver.Set(key, value, receiver.defaultExpiration)
+func (receiver *redisCache) SetWithJsonAndDefaultExpiration(key string, value interface{}) (bool, string) {
+	return receiver.SetWithJson(key, value, receiver.defaultExpiration)
 }
 
-func (receiver *redisCache) Get(key string) (bool, string) {
+func (receiver *redisCache) GetWithJson(key string) (bool, string) {
 
 	result, err := receiver.redisClient.Get(receiver.ctx, key).Result()
+
+	//receiver.redisClient.GetWithJson(receiver.ctx,"").Scan()
 
 	ok, _ := helper.CheckErr(err)
 
