@@ -18,6 +18,7 @@ func ResponseTokenHandler(w http.ResponseWriter, data map[string]interface{}, he
 		msg :=data["error_description"]
 		m := msg.(string)
 		r = result.FailWithMsg(m,nil)
+		data["error_code"] = 0
 		errFlag = false
 	}
 

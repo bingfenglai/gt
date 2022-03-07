@@ -52,12 +52,14 @@ func initOAuth2Server() {
 		log.Println("Internal Error:", err.Error())
 		re = errors.NewResponse(errors.ErrInvalidRequest,http.StatusOK)
 		re.Description = err.Error()
-		// re.ErrorCode = 1
+		re.ErrorCode = 1
+		// re.Header.Add("Content-Type","application/json; charset=utf-8")
 		return
 	})
 
 	oauth.OAuth2Server.SetResponseErrorHandler(func(re *errors.Response) {
 		log.Println("Response Error:", re.Error.Error(),re.ErrorCode,re.StatusCode,re.Description)
+
 	})
 
 	// 设置认证成功后响应的扩展字段

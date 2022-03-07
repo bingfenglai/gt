@@ -6,16 +6,20 @@ import (
 	"github.com/bingfenglai/gt/pojo/result"
 	"github.com/bingfenglai/gt/router"
 	"github.com/gin-gonic/gin"
-	"go.uber.org/zap"
+	
 )
 
 func ThreadCallback(ctx *gin.Context){
 
-	code := ctx.Request.FormValue("code")
-	zap.L().Info("code",zap.Any("code ",code))
-	dataMap := make(map[string]interface{})
-	dataMap["code"] = code
-	ctx.JSON(http.StatusOK,result.Ok(dataMap))
+	// code := ctx.Request.FormValue("code")
+	// zap.L().Info("code",zap.Any("code ",code))
+	// dataMap := make(map[string]interface{})
+	// ctx.ShouldBindQuery(&dataMap)
+	// ctx.ShouldBindJSON(&dataMap)
+	// dataMap["code"] = code
+	ctx.JSON(http.StatusOK,result.Ok(ctx.Request.URL.Query()))
+
+	// zap.L().Info("ctx",zap.Any("",))
 
 
 }
