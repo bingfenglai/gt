@@ -18,7 +18,7 @@ func PasswordAuthorizationHandler(_ context.Context, username, password string) 
 	if err != nil {
 		return "", err
 	}
-	zap.L().Info(user.Password)
+	
 	ok, err := service.PasswordEncodeService.Check(password, user.Password)
 
 	if ok {

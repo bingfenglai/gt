@@ -4,8 +4,9 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"github.com/bingfenglai/gt/conmon/helper"
 	"time"
+
+	"github.com/bingfenglai/gt/common/helper"
 
 	"github.com/go-redis/redis/v8"
 	"go.uber.org/zap"
@@ -26,46 +27,43 @@ func newRedisCache(redisClient *redis.Client, defaultExpiration time.Duration) *
 	}
 }
 
-func (receiver *redisCache) Set(key string, value interface{}, expiration time.Duration)error  {
+func (receiver *redisCache) Set(key string, value interface{}, expiration time.Duration) error {
 	if &expiration == nil {
-		return receiver.SetWithDefaultExpiration(key,value)
+		return receiver.SetWithDefaultExpiration(key, value)
 	}
 
-	if key=="" {
+	if key == "" {
 		return errors.New("缓存key不能为空字符串")
 	}
 	err := receiver.redisClient.Set(receiver.ctx, key, value, expiration).Err()
 
-	if err!=nil {
-		zap.L().Error("redis缓存设值错误",zap.Error(err))
+	if err != nil {
+		zap.L().Error("redis缓存设值错误", zap.Error(err))
 	}
 
-	return  err
+	return err
 
 }
 
-func (receiver *redisCache) SetWithDefaultExpiration(key string, value interface{}) error  {
+func (receiver *redisCache) SetWithDefaultExpiration(key string, value interface{}) error {
 
-	return receiver.Set(key,value,receiver.defaultExpiration)
+	return receiver.Set(key, value, receiver.defaultExpiration)
 }
 
-func (receiver *redisCache) Get(key string,value interface{})error{
+func (receiver *redisCache) Get(key string, value interface{}) error {
 	err := receiver.redisClient.Get(receiver.ctx, key).Scan(value)
 
-	if err!=nil {
-		zap.L().Error("获取缓存值失败",zap.Error(err))
+	if err != nil {
+		zap.L().Error("获取缓存值失败", zap.Error(err))
 	}
 
 	return err
 }
 
-
-
-
 func (receiver *redisCache) SetWithJson(key string, value interface{}, expiration time.Duration) (bool, string) {
 
-	if &expiration==nil {
-		return receiver.SetWithJsonAndDefaultExpiration(key,value)
+	if &expiration == nil {
+		return receiver.SetWithJsonAndDefaultExpiration(key, value)
 	}
 
 	value, _ = json.Marshal(value)

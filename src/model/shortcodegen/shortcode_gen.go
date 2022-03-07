@@ -2,7 +2,8 @@ package shortcodegen
 
 import (
 	"errors"
-	"github.com/bingfenglai/gt/conmon/constants"
+
+	"github.com/bingfenglai/gt/common/constants"
 )
 
 var genMap map[string]ShortCodeGenerator

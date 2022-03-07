@@ -2,14 +2,16 @@ package initialization
 
 import (
 	"encoding/json"
-	"github.com/bingfenglai/gt/conmon/constants"
 	"os"
+
+	"github.com/bingfenglai/gt/common/constants"
+
+	"log"
+	"time"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
-	"log"
-	"time"
 
 	"github.com/bingfenglai/gt/config"
 	"github.com/bingfenglai/gt/global"
@@ -36,7 +38,7 @@ func initDbConfig() {
 		//db, err := gorm.Open(config.Conf.DataBase.DbType, config.Conf.DataBase.Url)
 		db, err := gorm.Open(mysql.Open(config.Conf.DataBase.Url), &gorm.Config{
 			Logger: newLogger,
-			},
+		},
 		)
 		//db.SetLogger(logger.Default.LogMode(logger.Warn))
 
@@ -81,9 +83,9 @@ func registerCallback() {
 }
 
 func initSchema() {
-	_ = global.DB.AutoMigrate( &entity.Role{}, &entity.Dict{},&entity.DictItem{}, &entity.User{},
-		&entity.Client{},&entity.OAuthGrantType{},&entity.ClientGrantType{},
-		&entity.ShortCodeGroup{},&entity.ShortCode{},&entity.ShortcodeLog{})
+	_ = global.DB.AutoMigrate(&entity.Role{}, &entity.Dict{}, &entity.DictItem{}, &entity.User{},
+		&entity.Client{}, &entity.OAuthGrantType{}, &entity.ClientGrantType{},
+		&entity.ShortCodeGroup{}, &entity.ShortCode{}, &entity.ShortcodeLog{})
 
 	initData()
 }
@@ -95,26 +97,24 @@ func initData() {
 }
 
 func initGrantTypeData() {
-	password := entity.OAuthGrantType{Status: constants.Normal_Status,Name: "password",Remark: ""}
+	password := entity.OAuthGrantType{Status: constants.Normal_Status, Name: "password", Remark: ""}
 	password.ID = 1
-	authorizationCode := entity.OAuthGrantType{Status: constants.Normal_Status,Name: "authorization_code",Remark: ""}
+	authorizationCode := entity.OAuthGrantType{Status: constants.Normal_Status, Name: "authorization_code", Remark: ""}
 	authorizationCode.ID = 2
-	clientCredentials := entity.OAuthGrantType{Status: constants.Normal_Status,Name: "client_credentials",Remark: ""}
+	clientCredentials := entity.OAuthGrantType{Status: constants.Normal_Status, Name: "client_credentials", Remark: ""}
 	clientCredentials.ID = 3
-	refreshing := entity.OAuthGrantType{Status: constants.Normal_Status,Name: "refresh_token",Remark: ""}
+	refreshing := entity.OAuthGrantType{Status: constants.Normal_Status, Name: "refresh_token", Remark: ""}
 	refreshing.ID = 4
-	implicit := entity.OAuthGrantType{Status: constants.Normal_Status,Name: "__implicit",Remark: ""}
+	implicit := entity.OAuthGrantType{Status: constants.Normal_Status, Name: "__implicit", Remark: ""}
 	implicit.ID = 5
 
-	grantTypes := make([]*entity.OAuthGrantType,0)
-	grantTypes = append(grantTypes, &password,&authorizationCode,&clientCredentials,&refreshing,&implicit)
-	
+	grantTypes := make([]*entity.OAuthGrantType, 0)
+	grantTypes = append(grantTypes, &password, &authorizationCode, &clientCredentials, &refreshing, &implicit)
+
 	for _, grantType := range grantTypes {
-		if err :=global.DB.Save(grantType).Error;err!=nil{
+		if err := global.DB.Save(grantType).Error; err != nil {
 			//global.DB.Rollback()
 		}
 	}
-	
+
 }
-
-

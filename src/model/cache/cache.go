@@ -3,8 +3,8 @@ package cache
 import (
 	"time"
 
+	"github.com/bingfenglai/gt/common/constants"
 	"github.com/bingfenglai/gt/config"
-	"github.com/bingfenglai/gt/conmon/constants"
 	"go.uber.org/zap"
 
 	"github.com/bingfenglai/gt/global"
@@ -13,9 +13,9 @@ import (
 var cacheImpl Cache
 
 type Cache interface {
-	Set(key string, value interface{}, expiration time.Duration)error
+	Set(key string, value interface{}, expiration time.Duration) error
 	SetWithDefaultExpiration(key string, value interface{}) error
-	Get(key string,value interface{})error
+	Get(key string, value interface{}) error
 	SetWithJson(key string, value interface{}, expiration time.Duration) (bool, string)
 	SetWithJsonAndDefaultExpiration(key string, value interface{}) (bool, string)
 

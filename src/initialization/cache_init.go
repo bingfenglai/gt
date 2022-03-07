@@ -5,8 +5,8 @@ import (
 	"log"
 	"time"
 
+	"github.com/bingfenglai/gt/common/constants"
 	"github.com/bingfenglai/gt/config"
-	"github.com/bingfenglai/gt/conmon/constants"
 	"github.com/bingfenglai/gt/global"
 	"github.com/bingfenglai/gt/model/cache"
 	"github.com/go-redis/redis/v8"

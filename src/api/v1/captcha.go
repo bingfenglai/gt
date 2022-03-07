@@ -1,14 +1,15 @@
 package v1
 
 import (
-	"github.com/bingfenglai/gt/conmon/helper"
+	"net/http"
+
+	"github.com/bingfenglai/gt/common/helper"
 	"github.com/bingfenglai/gt/pojo/params"
 	"github.com/bingfenglai/gt/pojo/result"
 	"github.com/bingfenglai/gt/router"
 	"github.com/bingfenglai/gt/service"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
-	"net/http"
 )
 
 // @Summary 获取验证码

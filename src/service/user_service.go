@@ -2,11 +2,11 @@ package service
 
 import (
 	"errors"
+	"time"
+
 	"github.com/bingfenglai/gt/pojo/dto"
 	"github.com/bingfenglai/gt/storage"
-	"github.com/jinzhu/gorm"
 	"go.uber.org/zap"
-	"time"
 )
 
 type IUserService interface {
@@ -27,11 +27,6 @@ func (u *UserServiceImpl) FindUserByUsername(username string) (*dto.UserDTO, err
 	
 	user,err := storage.UserStorage.SelectOneByUsername(username)
 	
-	
-
-	if errors.Is(err, gorm.ErrRecordNotFound) {
-		return nil, errors.New("用户名或密码错误")
-	}
 
 	if err!=nil{
 		zap.L().Error("err",zap.Any("err:",err.Error()))
