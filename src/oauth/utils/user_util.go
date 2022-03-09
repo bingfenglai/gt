@@ -24,11 +24,11 @@ func GetCurrentUser(req *http.Request) (*dto.UserDTO,error)  {
 func GetCurrentUsername(req *http.Request) (string,error) {
 	var token string
 	var flag bool
-	if token,flag =oauth.OAuth2Server.BearerAuth(req);!flag{
+	if token,flag =oauth.OAuth2Server.Server.BearerAuth(req);!flag{
 		return "",errors.ErrInvalidAccessToken
 	}
 
-	tokenInfo, err := oauth.OAuth2Server.Manager.LoadAccessToken(req.Context(), token)
+	tokenInfo, err := oauth.OAuth2Server.CustomOAuthManager.LoadAccessToken(req.Context(), token)
 
 	if err != nil {
 		return "",err

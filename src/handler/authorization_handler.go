@@ -30,7 +30,7 @@ func AuthorizationHandler() gin.HandlerFunc {
 			return
 		}
 
-		ti, err := oauth.OAuth2Server.ValidationBearerToken(context.Request)
+		ti, err := oauth.OAuth2Server.Server.ValidationBearerToken(context.Request)
 
 		zap.L().Info("token info", zap.Any("current user", ti.GetUserID()))
 
@@ -38,7 +38,7 @@ func AuthorizationHandler() gin.HandlerFunc {
 
 			// 校验不通过，不再调用后续函数
 			context.Abort()
-			context.JSON(http.StatusUnauthorized, result.FailWithMsg(err.Error(), "令牌已过期，请重新登录 "))
+			context.JSON(http.StatusUnauthorized, result.FailWithMsg(err.Error(), "令牌已过期，请重新登录"))
 			return
 		}
 

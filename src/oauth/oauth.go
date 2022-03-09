@@ -1,11 +1,12 @@
 package oauth
 
 import (
-	"github.com/go-oauth2/oauth2/v4/server"
+	"github.com/bingfenglai/gt/oauth/server"
 	"go.uber.org/zap"
 )
 
-var OAuth2Server *server.Server
+var OAuth2Server *server.CustomOAuthServer
+
 
 func init() {
 	if OAuth2Server == nil {

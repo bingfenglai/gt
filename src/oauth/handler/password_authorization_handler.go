@@ -18,6 +18,8 @@ func PasswordAuthorizationHandler(_ context.Context, username, password string) 
 	if err != nil {
 		return "", err
 	}
+
+	
 	
 	ok, err := service.PasswordEncodeService.Check(password, user.Password)
 
