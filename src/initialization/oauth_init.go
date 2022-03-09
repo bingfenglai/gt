@@ -34,7 +34,8 @@ func initOAuth2Server() {
 	oauth.OAuth2Server.SetAllowGetAccessRequest(false)
 
 	// 设置获取client属性
-	oauth.OAuth2Server.SetClientInfoHandler(server.ClientFormHandler)
+	// oauth.OAuth2Server.SetClientInfoHandler(server.ClientFormHandler)
+	oauth.OAuth2Server.SetClientInfoHandler(handler.ClientInfoHandler)
 
 	// 设置password模式认证处理器
 	oauth.OAuth2Server.SetPasswordAuthorizationHandler(handler.PasswordAuthorizationHandler)

@@ -38,6 +38,7 @@ func init() {
 
 		if token=="" || !strings.HasPrefix(token,"Bearer") {
 			// 模拟跳转登录页面
+			
 			http.Redirect(ctx.Writer,ctx.Request,"/v1/ping",http.StatusFound)
 			return
 		}
@@ -61,7 +62,7 @@ func init() {
 	// })
 
 	// 鉴权
-	groupV1.Use(handler.AuthorizationHandler())
+	R.Use(handler.AuthorizationHandler())
 
 	// 处理404
 	R.NoRoute( func(c *gin.Context) {

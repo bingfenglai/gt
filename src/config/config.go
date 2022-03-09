@@ -21,6 +21,7 @@ type Config struct {
 	ShortCode ShortCodeConfig
 	Captcha   CaptchaConfig
 	Auth      OAuth2Config
+	Encrypt EncryptConfig
 }
 
 func init() {

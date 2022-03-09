@@ -7,4 +7,6 @@ var (
 	ErrUserNotFound = errors.New("用户不存在")
 
 	ErrAccountPasswordMismatch = errors.New("账号密码不匹配")
+
+	ErrClientUnauthorized = errors.New("客户端未授权")
 )

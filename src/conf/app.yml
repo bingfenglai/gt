@@ -54,10 +54,14 @@ captcha:
   prefix: "gt:captcha:"
   validityPeriod: 180000
 
+
+encrypt:
+  aesKey: ABCDEFGHIJKLMNO1
+
 auth:
   anonymousUrls:
     - /v1/thread_callback
     - /v1/ping
     - /v1/redirection
-    - /oauth2/authorize
+    - /oauth2/token
 
