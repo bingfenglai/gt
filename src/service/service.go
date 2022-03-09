@@ -29,6 +29,8 @@ var ShortCodeService IShortCodeService
 
 var ShortCodeLogService IShortCodeLogService
 
+var EmailService IEmailService
+
 func InitService() {
 	
 	log.Default().Println("执行service初始化")
@@ -43,4 +45,6 @@ func InitService() {
 	ShortCodeLogService = &ShortCodeLogServiceImpl{}
 
 	OAuthClientService = &OAuthClientServiceImpl{}
+
+	EmailService = &EmailServiceImpl{}
 }

@@ -58,6 +58,12 @@ captcha:
 encrypt:
   aesKey: ABCDEFGHIJKLMNO1
 
+email:
+  senderEmail:
+  smtpServerHost:
+  auth:
+  address:
+
 auth:
   anonymousUrls:
     - /v1/thread_callback

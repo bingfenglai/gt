@@ -22,6 +22,7 @@ type Config struct {
 	Captcha   CaptchaConfig
 	Auth      OAuth2Config
 	Encrypt EncryptConfig
+	Email EmailConfig
 }
 
 func init() {

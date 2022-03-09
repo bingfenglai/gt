@@ -8,5 +8,6 @@ func InitAll() {
 	initStorage()
 	initService()
 	initOAuth2Server()
+	initEmailPool()
 
 }
