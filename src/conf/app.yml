@@ -52,8 +52,8 @@ shortCode:
 
 captcha:
   prefix: "gt:captcha:"
-  # 单位 秒
-  validityPeriod: 180
+  # 单位 分钟
+  validityPeriod: 3
   numberCodeLength: 6
 
 

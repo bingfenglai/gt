@@ -30,7 +30,7 @@ func (c *CaptchaServiceImpl) GetImagesBehavioralCaptcha() (response.CaptchaRespo
 	zap.L().Info("验证值：")
 	fmt.Println(dots)
 	cacheKey := config.Conf.Captcha.Prefix + key
-	CacheService.SetWithJson(cacheKey, dots, config.Conf.Captcha.ValidityPeriod*time.Second)
+	CacheService.SetWithJson(cacheKey, dots, config.Conf.Captcha.ValidityPeriod*time.Minute)
 
 	return response.CaptchaResponse{CaptchaId: key, ImageBase64: b64, ThumbBase64: th64}, err
 }
@@ -91,6 +91,10 @@ func (c *CaptchaServiceImpl) GetNumberCode(receiver string, channel int8) (captc
 	if receiver == "" {
 		return "", errors.New("接收验证码账号不能为空")
 	}
+	kp := config.Conf.Captcha.Prefix+receiver+"*"
+	if flag,_ := CacheService.Keys(kp);flag{
+		return "",errors.New("验证码发送太过频繁")
+	}
 
 	var code string
 
@@ -103,19 +107,26 @@ func (c *CaptchaServiceImpl) GetNumberCode(receiver string, channel int8) (captc
 
 		code, captchaId = c.genNumberCode(receiver)
 
-		sec := config.Conf.Captcha.ValidityPeriod
+		sec := config.Conf.Captcha.ValidityPeriod * time.Minute
 
-		sec = sec / 60
+		
+
+		enText :="Verification code: " + code + " Valid within " + sec.String() + ".\n"
+
+		zhText := "验证码："+code +" "+ sec.String() + "内有效"
 
 		sendEmailParams := &params.EmailSimpleSendParams{
 			Receivers: []string{receiver},
 			Subject:   "[GT]Please verify your device",
-			Text:      []byte("Verification code: " + code + " Valid within " + sec.String() + " minutes."),
+			Text:      []byte(enText+zhText),
 		}
-		if err = EmailService.SendSimpleEmail(sendEmailParams); err != nil {
-			return "", err
+		// 异步发送验证码
+		if config.Conf.Server.Mode== constants.SERVER_MODE_TEST{
+			EmailService.SendSimpleEmail(sendEmailParams)
+		}else{
+			go EmailService.SendSimpleEmail(sendEmailParams)
 		}
-
+		
 		return
 
 	}
@@ -140,6 +151,8 @@ func (c *CaptchaServiceImpl) NumberCodeVerify(code string, captchaId string, rec
 
 		if code != c {
 			return errors.New("验证码已过期")
+		}else{
+			go CacheService.Delete(captchaId)
 		}
 	}
 
@@ -155,7 +168,7 @@ func (c *CaptchaServiceImpl) genNumberCode(receiver string) (code, captchaId str
 	}
 	captchaId = uuid.NewString()
 
-	CacheService.SetWithJson(config.Conf.Captcha.Prefix+receiver+":"+captchaId, code, config.Conf.Captcha.ValidityPeriod*time.Second)
+	CacheService.SetWithJson(config.Conf.Captcha.Prefix+receiver+":"+captchaId, code, config.Conf.Captcha.ValidityPeriod*time.Minute)
 	return
 
 }

@@ -1,7 +1,7 @@
 server:
   port: 9527
   address: 0.0.0.0
-  mode: debug
+  mode: test
   url404: https://volunteer.cdn-go.cn/404/latest/404.html
   
 
@@ -52,8 +52,8 @@ shortCode:
 
 captcha:
   prefix: "gt:captcha:"
-  # 单位 秒
-  validityPeriod: 1800
+  # 单位 分钟
+  validityPeriod: 30
   numberCodeLength: 6
 
 

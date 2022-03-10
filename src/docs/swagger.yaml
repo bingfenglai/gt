@@ -19,6 +19,15 @@ paths:
           schema:
             type: string
       summary: 校验图片人机验证码
+  /v1/captcha/email:
+    get:
+      description: 获取邮件验证码
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+      summary: 获取邮件验证码
   /v1/ping:
     get:
       description: 健康检查接口

@@ -15,4 +15,6 @@ var (
 	ErrEmailContentIsNull = errors.New("邮件内容不能为空")
 
 	ErrEmailFormat = errors.New("电子邮箱格式错误")
+
+	ErrEmailCodeInvalid = errors.New("邮箱验证码不合法")
 )

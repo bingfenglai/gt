@@ -3,19 +3,31 @@ package handler
 import (
 	"net/http"
 
+	"github.com/bingfenglai/gt/common/helper"
+	"github.com/bingfenglai/gt/errors"
+	"github.com/bingfenglai/gt/service"
 	"go.uber.org/zap"
-	"gopkg.in/oauth2.v3/errors"
 )
 
 func EmailVerificationCodeHandler(req *http.Request) (userID string, err error) {
 
 	email := req.FormValue("email")
 	code := req.FormValue("code")
+	captchaId := req.FormValue("captcha_id")
 
-	if email == "" || code == "" {
-		return "", errors.ErrInvalidRequest
+	if err = helper.VerifyEmailFormat(email);err!=nil{
+		return "",err
 	}
-	zap.L().Info("====模拟校验 邮箱验证码=====")
+
+	if email == "" || code == "" || captchaId==""{
+		return "", errors.ErrEmailCodeInvalid
+	}
+
+	zap.L().Info("====校验 邮箱验证码=====")
+
+	if err = service.CaptchaService.NumberCodeVerify(code,captchaId,email);err!=nil{
+		return "",err
+	}
 
 	return "969391", nil
 

@@ -97,11 +97,11 @@ func (receiver *redisCache) GetWithJson(key string) (bool, string) {
 
 func (receiver *redisCache) Keys(keyPrefix string) (bool, []string) {
 
-	result, err := receiver.redisClient.Keys(receiver.ctx, keyPrefix).Result()
+	result, _ := receiver.redisClient.Keys(receiver.ctx, keyPrefix).Result()
 
-	ok, _ := helper.CheckErr(err)
+	// ok, _ := helper.CheckErr(err)
 
-	return ok, result
+	return len(result) > 0, result
 
 }
 

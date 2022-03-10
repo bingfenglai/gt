@@ -1,34 +1,34 @@
 package service
 
 import (
+	"time"
+
 	"github.com/bingfenglai/gt/config"
 	"github.com/bingfenglai/gt/errors"
 	"github.com/bingfenglai/gt/global"
 	"github.com/bingfenglai/gt/pojo/params"
 	"github.com/jordan-wright/email"
-	"time"
 )
 
 // 邮件服务接口
 type IEmailService interface {
 
 	// 简要邮件发送方法，一般用于发送验证码等
-	SendSimpleEmail(params *params.EmailSimpleSendParams)error
+	SendSimpleEmail(params *params.EmailSimpleSendParams) error
 }
 
 type EmailServiceImpl struct {
-
 }
 
-func (e EmailServiceImpl) SendSimpleEmail(params *params.EmailSimpleSendParams)error{
-	if params==nil {
+func (e EmailServiceImpl) SendSimpleEmail(params *params.EmailSimpleSendParams) error {
+	if params == nil {
 		return errors.ErrParamsNotNull
 	}
 
-	if err := params.Check();err!=nil{
+	if err := params.Check(); err != nil {
 		return err
 	}
-	
+
 	email := &email.Email{
 		ReplyTo:     nil,
 		From:        config.Conf.Email.SenderEmail,
@@ -44,5 +44,13 @@ func (e EmailServiceImpl) SendSimpleEmail(params *params.EmailSimpleSendParams)e
 		ReadReceipt: nil,
 	}
 
-	return global.EmailPool.Send(email, time.Second * 5)
+	err := global.EmailPool.Send(email, time.Second*5)
+
+	if err != nil && err.Error()=="timed out" {
+		if err =  global.EmailPool.Send(email, time.Second*10);err != nil && err.Error()=="timed out"{
+			global.EmailPool.Send(email, time.Second*15)
+		}
+	}
+
+	return err
 }

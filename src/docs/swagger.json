@@ -32,6 +32,20 @@
                 }
             }
         },
+        "/v1/captcha/email": {
+            "get": {
+                "description": "获取邮件验证码",
+                "summary": "获取邮件验证码",
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/v1/ping": {
             "get": {
                 "description": "健康检查接口",
