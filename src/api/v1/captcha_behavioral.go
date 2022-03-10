@@ -12,11 +12,11 @@ import (
 	"github.com/gin-gonic/gin/binding"
 )
 
-// @Summary 获取验证码
-// @Description 获取验证码
+// @Summary 获取图片人机验证码
+// @Description 获取图片人机验证码
 // @Success 200 {string} string  "ok"
-// @Router /v1/captcha [get]
-func GetCaptcha(ctx *gin.Context) {
+// @Router /v1/captcha/behavioral/images [get]
+func GetImagesBehavioralCaptcha(ctx *gin.Context) {
 
 	resp, err := service.CaptchaService.GetImagesBehavioralCaptcha()
 
@@ -29,6 +29,10 @@ func GetCaptcha(ctx *gin.Context) {
 	ctx.JSON(http.StatusServiceUnavailable, result.Fail(s))
 }
 
+// @Summary 校验图片人机验证码
+// @Description 校验图片人机验证码
+// @Success 200 {string} string  "ok"
+// @Router /v1/captcha/behavioral/images/verity [post]
 func Verity(ctx *gin.Context) {
 	p := params.VerityCaptchaParams{}
 	err := ctx.ShouldBindBodyWith(&p, binding.JSON)
@@ -40,7 +44,7 @@ func Verity(ctx *gin.Context) {
 		return
 	}
 
-	ok, err = service.CaptchaService.Verify(p.Dots, p.CaptchaId)
+	ok, err = service.CaptchaService.ImagesBehavioralVerify(p.Dots, p.CaptchaId)
 
 	if err == nil {
 		ctx.JSON(http.StatusOK, result.Ok(ok))
@@ -52,6 +56,6 @@ func Verity(ctx *gin.Context) {
 }
 
 func init() {
-	router.GetV1().GET("/captcha", GetCaptcha)
-	router.GetV1().POST("/captcha/verity", Verity)
+	router.GetV1().GET("/captcha/behavioral/images", GetImagesBehavioralCaptcha)
+	router.GetV1().POST("/captcha/behavioral/images/verity", Verity)
 }

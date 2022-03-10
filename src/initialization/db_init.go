@@ -112,9 +112,9 @@ func initGrantTypeData() {
 	grantTypes = append(grantTypes, &password, &authorizationCode, &clientCredentials, &refreshing, &implicit)
 
 	for _, grantType := range grantTypes {
-		if err := global.DB.Save(grantType).Error; err != nil {
-			//global.DB.Rollback()
-		}
+		 global.DB.Save(grantType)
+		
+		
 	}
 
 }

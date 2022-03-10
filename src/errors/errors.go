@@ -13,4 +13,6 @@ var (
 	ErrParamsNotNull = errors.New("参数不能为空")
 
 	ErrEmailContentIsNull = errors.New("邮件内容不能为空")
+
+	ErrEmailFormat = errors.New("电子邮箱格式错误")
 )

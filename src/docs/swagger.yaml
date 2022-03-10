@@ -1,15 +1,24 @@
 info:
   contact: {}
 paths:
-  /v1/captcha:
+  /v1/captcha/behavioral/images:
     get:
-      description: 获取验证码
+      description: 获取图片人机验证码
       responses:
         "200":
           description: ok
           schema:
             type: string
-      summary: 获取验证码
+      summary: 获取图片人机验证码
+  /v1/captcha/behavioral/images/verity:
+    post:
+      description: 校验图片人机验证码
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+      summary: 校验图片人机验证码
   /v1/ping:
     get:
       description: 健康检查接口

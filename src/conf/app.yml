@@ -52,22 +52,28 @@ shortCode:
 
 captcha:
   prefix: "gt:captcha:"
-  validityPeriod: 180000
+  # 单位 秒
+  validityPeriod: 180
+  numberCodeLength: 6
 
 
 encrypt:
   aesKey: ABCDEFGHIJKLMNO1
 
 email:
-  senderEmail:
-  smtpServerHost:
-  auth:
-  address:
+  senderEmail: gotoadmin@163.com
+  smtpServerHost: smtp.163.com
+  auth: 
+  Address: smtp.163.com:25
+  enable: true
 
 auth:
   anonymousUrls:
+    - /favicon.ico
     - /v1/thread_callback
     - /v1/ping
     - /v1/redirection
     - /oauth2/token
+    - /swagger
+    - /v1/captcha
 

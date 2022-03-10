@@ -7,5 +7,11 @@ type ICaptchaService interface {
 	GetImagesBehavioralCaptcha() (response.CaptchaResponse, error)
 
 	// 验证
-	Verify(dots, captchaId string) (bool, error)
+	ImagesBehavioralVerify(dots, captchaId string) (bool, error)
+
+	// 获取数字验证码
+	GetNumberCode(receiver string, channel int8) (captchaId string, err error)
+
+	// 校验数字验证码
+	NumberCodeVerify(code string, captchaId string, receiver string) error
 }

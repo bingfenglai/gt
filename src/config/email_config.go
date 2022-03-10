@@ -7,8 +7,10 @@ type EmailConfig struct {
 	// 邮件服务器地址
 	SmtpServerHost string
 	// 密钥
-	Auth string
+	Auth string `yaml:"auth"`
 
 	Address string
+
+	Enable bool
 
 }

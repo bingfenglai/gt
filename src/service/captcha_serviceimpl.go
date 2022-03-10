@@ -4,12 +4,19 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/bingfenglai/gt/config"
-	"github.com/bingfenglai/gt/pojo/response"
-	"github.com/wenlng/go-captcha/captcha"
-	"go.uber.org/zap"
+	"math/rand"
 	"strconv"
 	"strings"
+	"time"
+
+	"github.com/bingfenglai/gt/common/constants"
+	"github.com/bingfenglai/gt/common/helper"
+	"github.com/bingfenglai/gt/config"
+	"github.com/bingfenglai/gt/pojo/params"
+	"github.com/bingfenglai/gt/pojo/response"
+	"github.com/google/uuid"
+	"github.com/wenlng/go-captcha/captcha"
+	"go.uber.org/zap"
 )
 
 type CaptchaServiceImpl struct {
@@ -23,12 +30,12 @@ func (c *CaptchaServiceImpl) GetImagesBehavioralCaptcha() (response.CaptchaRespo
 	zap.L().Info("验证值：")
 	fmt.Println(dots)
 	cacheKey := config.Conf.Captcha.Prefix + key
-	CacheService.SetWithJson(cacheKey, dots, config.Conf.Captcha.ValidityPeriod)
+	CacheService.SetWithJson(cacheKey, dots, config.Conf.Captcha.ValidityPeriod*time.Second)
 
 	return response.CaptchaResponse{CaptchaId: key, ImageBase64: b64, ThumbBase64: th64}, err
 }
 
-func (c *CaptchaServiceImpl) Verify(src, captchaId string) (bool, error) {
+func (c *CaptchaServiceImpl) ImagesBehavioralVerify(src, captchaId string) (bool, error) {
 	captchaId = config.Conf.Captcha.Prefix + captchaId
 	ok, s := CacheService.GetWithJson(captchaId)
 	if !ok {
@@ -76,5 +83,79 @@ func (c *CaptchaServiceImpl) Verify(src, captchaId string) (bool, error) {
 	} else {
 		return false, errors.New("验证码错误")
 	}
+
+}
+
+func (c *CaptchaServiceImpl) GetNumberCode(receiver string, channel int8) (captchaId string, err error) {
+
+	if receiver == "" {
+		return "", errors.New("接收验证码账号不能为空")
+	}
+
+	var code string
+
+	switch channel {
+	case constants.SEND_CODE_EMIAL:
+
+		if err = helper.VerifyEmailFormat(receiver); err != nil {
+			return
+		}
+
+		code, captchaId = c.genNumberCode(receiver)
+
+		sec := config.Conf.Captcha.ValidityPeriod
+
+		sec = sec / 60
+
+		sendEmailParams := &params.EmailSimpleSendParams{
+			Receivers: []string{receiver},
+			Subject:   "[GT]Please verify your device",
+			Text:      []byte("Verification code: " + code + " Valid within " + sec.String() + " minutes."),
+		}
+		if err = EmailService.SendSimpleEmail(sendEmailParams); err != nil {
+			return "", err
+		}
+
+		return
+
+	}
+
+	return "", errors.New("不支持该接收验证码渠道")
+}
+
+func (c *CaptchaServiceImpl) NumberCodeVerify(code string, captchaId string, receiver string) error {
+
+	if config.Conf.Captcha.NumberCodeLength != len(code) {
+		return errors.New("验证码不合法")
+	}
+
+	captchaId = config.Conf.Captcha.Prefix + receiver + ":" + captchaId
+
+	if flag, jsonStr := CacheService.GetWithJson(captchaId); !flag || jsonStr == "" {
+
+		return errors.New("验证码已过期")
+	} else {
+		c := ""
+		json.Unmarshal([]byte(jsonStr), &c)
+
+		if code != c {
+			return errors.New("验证码已过期")
+		}
+	}
+
+	return nil
+}
+
+func (c *CaptchaServiceImpl) genNumberCode(receiver string) (code, captchaId string) {
+	l := config.Conf.Captcha.NumberCodeLength
+	r := rand.New(rand.NewSource(time.Now().Unix()))
+	for i := l; i > 0; i-- {
+
+		code = code + strconv.Itoa(r.Intn(9))
+	}
+	captchaId = uuid.NewString()
+
+	CacheService.SetWithJson(config.Conf.Captcha.Prefix+receiver+":"+captchaId, code, config.Conf.Captcha.ValidityPeriod*time.Second)
+	return
 
 }

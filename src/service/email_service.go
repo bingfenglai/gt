@@ -44,5 +44,5 @@ func (e EmailServiceImpl) SendSimpleEmail(params *params.EmailSimpleSendParams)e
 		ReadReceipt: nil,
 	}
 
-	return global.EmailPool.Send(email, time.Second)
+	return global.EmailPool.Send(email, time.Second * 5)
 }
