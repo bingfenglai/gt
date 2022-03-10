@@ -66,7 +66,7 @@ func (s *CustomOAuthServer) ValidationTokenRequest(r *http.Request) (oauth2.Gran
 	
 	// gt := getGrantTypeByName(gtStr)
 
-	zap.L().Info("当前认证模式为", zap.Any("gt: ", gt))
+	
 
 	if !s.CheckGrantType(gt) {
 		return s.Server.ValidationTokenRequest(r)
@@ -82,10 +82,11 @@ func (s *CustomOAuthServer) ValidationTokenRequest(r *http.Request) (oauth2.Gran
 		ClientSecret: clientSecret,
 		Request:      r,
 	}
-	zap.L().Info("当前认证模式为", zap.Any("gt: ", gt))
+	
 
 	switch gt {
 	case EmailCode:
+		zap.L().Info("当前认证模式为email_code")
 
 		if s.emailVerificationCodeHandler == nil {
 			return "", nil, errors.ErrUnsupportedGrantType
