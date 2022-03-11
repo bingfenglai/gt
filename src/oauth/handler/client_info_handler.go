@@ -9,17 +9,11 @@ import (
 	"github.com/bingfenglai/gt/errors"
 	"go.uber.org/zap"
 )
+const clientParamsName = "client"
 
-
-const authorizationPrefix = "Basic "
-const basicName = "Authorization"
-
-// 获取当前请求当中的client信息，即user要登录的应用
+// 获取当前认证请求当中的client信息，即user要登录的应用
 // 此函数获取请求头当中的Authorization字段 解密后得到client的相关信息
-// Authorization 前缀 Basic
-
-
-
+// 
 func ClientInfoHandler(r *http.Request) (clientID, clientSecret string, err error){
 	
 	s, err :=getAuthorizationStr(r)
@@ -41,26 +35,13 @@ func ClientInfoHandler(r *http.Request) (clientID, clientSecret string, err erro
 
 
 func getAuthorizationStr(r *http.Request) (string,error){
-	auth :=  r.Header.Get(basicName)
-	if flag :=checkIsBasic(auth);flag{
-		token := auth[len(authorizationPrefix):]
-		
-		return token,nil
+	clientInfo :=  r.FormValue(clientParamsName)
+
+	if clientInfo!=""{
+		return clientInfo,nil
 	}
 
 	return "",errors.ErrClientUnauthorized
-}
-
-
-func checkIsBasic(s string)bool{
-
-	if s == "" {
-		return false
-	}
-
-	return strings.HasPrefix(s,authorizationPrefix)
-	
-	
 }
 
 func getClientInfo(s string) ( clientID, clientSecret string,err error){

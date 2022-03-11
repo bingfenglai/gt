@@ -24,7 +24,7 @@ func GetCurrentUser(req *http.Request) (*dto.UserDTO,error)  {
 func GetCurrentUsername(req *http.Request) (string,error) {
 	var token string
 	var flag bool
-	if token,flag =oauth.OAuth2Server.Server.BearerAuth(req);!flag{
+	if token,flag =oauth.OAuth2Server.BearerAuth(req);!flag{
 		return "",errors.ErrInvalidAccessToken
 	}
 

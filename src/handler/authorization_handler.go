@@ -30,7 +30,7 @@ func AuthorizationHandler() gin.HandlerFunc {
 			return
 		}
 
-		ti, err := oauth.OAuth2Server.Server.ValidationBearerToken(context.Request)
+		ti, err := oauth.OAuth2Server.ValidationBearerToken(context.Request)
 
 		
 
