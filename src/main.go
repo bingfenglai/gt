@@ -14,6 +14,7 @@ import (
 	_ "github.com/bingfenglai/gt/service"
 	// 初始化api
 	_ "github.com/bingfenglai/gt/api/v1"
+	_ "github.com/bingfenglai/gt/api"
 	_ "github.com/go-sql-driver/mysql"
 )
 

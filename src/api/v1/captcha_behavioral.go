@@ -11,7 +11,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 )
-
+// @Tags 验证码API
 // @Summary 获取图片人机验证码
 // @Description 获取图片人机验证码
 // @Success 200 {string} string  "ok"
@@ -29,6 +29,7 @@ func GetImagesBehavioralCaptcha(ctx *gin.Context) {
 	ctx.JSON(http.StatusServiceUnavailable, result.Fail(s))
 }
 
+// @Tags 验证码API
 // @Summary 校验图片人机验证码
 // @Description 校验图片人机验证码
 // @Success 200 {string} string  "ok"

@@ -10,6 +10,8 @@ paths:
           schema:
             type: string
       summary: 获取图片人机验证码
+      tags:
+      - 验证码API
   /v1/captcha/behavioral/images/verity:
     post:
       description: 校验图片人机验证码
@@ -19,6 +21,8 @@ paths:
           schema:
             type: string
       summary: 校验图片人机验证码
+      tags:
+      - 验证码API
   /v1/captcha/email:
     get:
       description: 获取邮件验证码
@@ -28,6 +32,8 @@ paths:
           schema:
             type: string
       summary: 获取邮件验证码
+      tags:
+      - 验证码API
   /v1/ping:
     get:
       description: 健康检查接口
@@ -37,7 +43,9 @@ paths:
           schema:
             type: string
       summary: 健康检查接口
-  /v1/redirection/:code:
+      tags:
+      - 健康检查接口
+  /v1/redirection:
     get:
       description: 链接重定向接口
       responses:
@@ -46,4 +54,17 @@ paths:
           schema:
             type: string
       summary: 链接重定向接口
+      tags:
+      - 短链接API
+  /v1/shortCode:
+    post:
+      description: 生成短链接
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+      summary: 生成短链接
+      tags:
+      - 短链接API
 swagger: "2.0"

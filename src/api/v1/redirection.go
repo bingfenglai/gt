@@ -10,11 +10,11 @@ import (
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
-
+// @Tags 短链接API
 // @Summary 链接重定向接口
 // @Description 链接重定向接口
 // @Success 200 {string} string  "ok"
-// @Router /v1/redirection/:code [get]
+// @Router /v1/redirection [get]
 func Redirection(ctx *gin.Context) {
 	code := ctx.Params.ByName("code")
 	zap.L().Info("获取短码：" + code)

@@ -5,8 +5,6 @@ import (
 
 	"github.com/bingfenglai/gt/config"
 	"github.com/bingfenglai/gt/global"
-	"github.com/bingfenglai/gt/handler"
-	"github.com/bingfenglai/gt/router"
 	"github.com/gin-gonic/gin"
 	"github.com/natefinch/lumberjack"
 	"go.uber.org/zap"
@@ -28,7 +26,7 @@ func initLogConfig() {
 
 	zap.ReplaceGlobals(global.Log) // 替换zap包中全局的logger实例，后续在其他包中只需使用zap.L()调用即可
 
-	adaptGinLogToZap()
+	//adaptGinLogToZap()
 }
 
 func getEncoder() zapcore.Encoder {
@@ -65,7 +63,8 @@ func getLogWriter(filename string, maxSize, maxBackup, maxAge int) zapcore.Write
 }
 
 // 将gin日志使用zap输出,处理内部错误
-func adaptGinLogToZap() {
-	router.R.Use(handler.GinZapLogger(), handler.GinZapRecovery(true))
+// func adaptGinLogToZap() {
 
-}
+// 	// router.GetV1().Use(handler.GinZapLogger(), handler.GinZapRecovery(true))
+
+// }

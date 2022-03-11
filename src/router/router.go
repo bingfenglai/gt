@@ -36,10 +36,10 @@ func init() {
 
 		token := ctx.GetHeader("Authorization")
 
-		if token=="" || !strings.HasPrefix(token,"Bearer") {
+		if token == "" || !strings.HasPrefix(token, "Bearer") {
 			// 模拟跳转登录页面
-			
-			http.Redirect(ctx.Writer,ctx.Request,"/v1/ping",http.StatusFound)
+
+			http.Redirect(ctx.Writer, ctx.Request, "/v1/ping", http.StatusFound)
 			return
 		}
 
@@ -62,12 +62,14 @@ func init() {
 	// })
 
 	// 鉴权
-	R.Use(handler.AuthorizationHandler())
 
+	R.Use(handler.GinZapLogger(), handler.AuthorizationHandler(), handler.GinZapRecovery(true))
 	// 处理404
-	R.NoRoute( func(c *gin.Context) {
-		c.Redirect(http.StatusFound,config.Conf.Server.Url404)
+	R.NoRoute(func(c *gin.Context) {
+		c.Redirect(http.StatusFound, config.Conf.Server.Url404)
 	})
+
+	groupV1.Use(handler.GinZapLogger(), handler.AuthorizationHandler(), handler.GinZapRecovery(true))
 
 }
 

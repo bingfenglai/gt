@@ -69,6 +69,7 @@ email:
 
 auth:
   anonymousUrls:
+    - /api/print
     - /favicon.ico
     - /v1/thread_callback
     - /v1/ping
@@ -76,4 +77,5 @@ auth:
     - /oauth2/token
     - /swagger
     - /v1/captcha
+    - /v1/test/:name/print
 

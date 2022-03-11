@@ -3,7 +3,6 @@ package handler
 import (
 	"log"
 	"net/http"
-	"strings"
 
 	"github.com/bingfenglai/gt/common/helper"
 	"github.com/bingfenglai/gt/config"
@@ -18,21 +17,27 @@ import (
 func AuthorizationHandler() gin.HandlerFunc {
 	return func(context *gin.Context) {
 
-		// TODO uri由于路径参数不好匹配，选用HandlerName作为权限标识符
-		uri := context.Request.RequestURI
+		req := context.Request
 
-		log.Default().Println(context.HandlerName())
+		
+
+		// TODO uri由于路径参数不好匹配，选用HandlerName作为权限标识符
+		uri := context.Request.URL.Path
+
+		log.Default().Println("当前：","\n方法",context.Request.Method,
+		"\n请求路径:",req.URL.Path,
+		"\n处理器名称：",context.HandlerName())
+
+		// log.Default().Println("当前请求路径：", context.Request.URL.Path, context.Request.URL.RawPath)
 
 		ok := checkAnonymousUrls(uri)
 
 		if ok {
-			context.Next()
+			// context.Next()
 			return
 		}
 
 		ti, err := oauth.OAuth2Server.ValidationBearerToken(context.Request)
-
-		
 
 		if err != nil {
 
@@ -48,12 +53,6 @@ func AuthorizationHandler() gin.HandlerFunc {
 }
 
 func checkAnonymousUrls(uri string) bool {
-
-	split := strings.Split(uri, "?")
-
-	if len(split) >= 1 {
-		uri = split[0]
-	}
 
 	zap.L().Info("当前uri", zap.String("uri", uri))
 	_, ok := helper.Find(config.Conf.Auth.AnonymousUrls, uri)

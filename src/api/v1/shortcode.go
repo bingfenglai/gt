@@ -1,8 +1,9 @@
 package v1
 
 import (
-	"github.com/bingfenglai/gt/router"
 	"net/http"
+
+	"github.com/bingfenglai/gt/router"
 
 	"github.com/bingfenglai/gt/model/shortcodegen"
 	"github.com/bingfenglai/gt/pojo/params"
@@ -12,6 +13,11 @@ import (
 	"go.uber.org/zap"
 )
 
+// @Tags 短链接API
+// @Summary 生成短链接
+// @Description 生成短链接
+// @Success 200 {string} string  "ok"
+// @Router /v1/shortCode [post]
 func GenShortCode(ctx *gin.Context) {
 	genParams := params.GenShortCodeParams{}
 	_ = ctx.ShouldBindBodyWith(&genParams, binding.JSON)
@@ -24,6 +30,6 @@ func GenShortCode(ctx *gin.Context) {
 }
 
 func init() {
-	router.GetV1().POST("/shortCode/gen/:code", GenShortCode)
+	router.GetV1().POST("/shortCode", GenShortCode)
 
 }

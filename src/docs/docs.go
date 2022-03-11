@@ -19,6 +19,9 @@ const docTemplate = `{
         "/v1/captcha/behavioral/images": {
             "get": {
                 "description": "获取图片人机验证码",
+                "tags": [
+                    "验证码API"
+                ],
                 "summary": "获取图片人机验证码",
                 "responses": {
                     "200": {
@@ -33,6 +36,9 @@ const docTemplate = `{
         "/v1/captcha/behavioral/images/verity": {
             "post": {
                 "description": "校验图片人机验证码",
+                "tags": [
+                    "验证码API"
+                ],
                 "summary": "校验图片人机验证码",
                 "responses": {
                     "200": {
@@ -47,6 +53,9 @@ const docTemplate = `{
         "/v1/captcha/email": {
             "get": {
                 "description": "获取邮件验证码",
+                "tags": [
+                    "验证码API"
+                ],
                 "summary": "获取邮件验证码",
                 "responses": {
                     "200": {
@@ -61,6 +70,9 @@ const docTemplate = `{
         "/v1/ping": {
             "get": {
                 "description": "健康检查接口",
+                "tags": [
+                    "健康检查接口"
+                ],
                 "summary": "健康检查接口",
                 "responses": {
                     "200": {
@@ -72,10 +84,30 @@ const docTemplate = `{
                 }
             }
         },
-        "/v1/redirection/:code": {
+        "/v1/redirection": {
             "get": {
                 "description": "链接重定向接口",
+                "tags": [
+                    "短链接API"
+                ],
                 "summary": "链接重定向接口",
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/shortCode": {
+            "post": {
+                "description": "生成短链接",
+                "tags": [
+                    "短链接API"
+                ],
+                "summary": "生成短链接",
                 "responses": {
                     "200": {
                         "description": "ok",

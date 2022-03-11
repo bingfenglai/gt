@@ -11,7 +11,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 )
-
+// @Tags 健康检查接口
 // @Summary 健康检查接口
 // @Description 健康检查接口
 // @Success 200 {string} string  "ok"
