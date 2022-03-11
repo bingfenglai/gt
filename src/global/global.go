@@ -17,3 +17,5 @@ var RedisClient *redis.Client
 var Log *zap.Logger
 
 var EmailPool *email.Pool
+
+

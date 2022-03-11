@@ -24,11 +24,13 @@ func PrintApiAndHandlers(ctx *gin.Context) {
 
 	}
 
-	
+	//initHandlerPathMap()
 
 	ctx.JSON(http.StatusOK, result.Ok(nil))
 }
 
+
 func init() {
+	//initHandlerPathMap()
 	router.R.GET("/api/print", PrintApiAndHandlers)
 }

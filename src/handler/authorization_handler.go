@@ -1,28 +1,40 @@
 package handler
 
 import (
-	"log"
-	"net/http"
-
 	"github.com/bingfenglai/gt/common/helper"
 	"github.com/bingfenglai/gt/config"
-
 	"github.com/bingfenglai/gt/oauth"
 	"github.com/bingfenglai/gt/pojo/result"
+	"log"
+	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
+var handlerPathMap = make(map[string]string)
 
-func AuthorizationHandler() gin.HandlerFunc {
+
+func AuthorizationHandler(engine *gin.Engine) gin.HandlerFunc {
+
 	return func(context *gin.Context) {
+
+		routes := engine.Routes()
+		for i := 0; i < len(routes); i++ {
+			info := routes[i]
+			zap.L().Info(strconv.Itoa(i), zap.Any("method", info.Method), zap.Any("path", info.Path), zap.Any("handler", info.Handler))
+			handlerPathMap[info.Handler] = info.Path
+		}
 
 		req := context.Request
 
-		
+		//uri := req.URL.Path
 
-		// TODO uri由于路径参数不好匹配，选用HandlerName作为权限标识符
-		uri := context.Request.URL.Path
+		uri :=handlerPathMap[context.HandlerName()]
+
+		if uri=="" {
+			uri = req.URL.Path
+		}
 
 		log.Default().Println("当前：","\n方法",context.Request.Method,
 		"\n请求路径:",req.URL.Path,

@@ -7,14 +7,16 @@ import (
 	"github.com/bingfenglai/gt/config"
 
 	"github.com/bingfenglai/gt/global"
+
 	"github.com/bingfenglai/gt/initialization"
 	"github.com/bingfenglai/gt/router"
+
 	"github.com/gin-gonic/gin"
 
 	_ "github.com/bingfenglai/gt/service"
+	_ "github.com/bingfenglai/gt/api"
 	// 初始化api
 	_ "github.com/bingfenglai/gt/api/v1"
-	_ "github.com/bingfenglai/gt/api"
 	_ "github.com/go-sql-driver/mysql"
 )
 

@@ -63,16 +63,19 @@ func init() {
 
 	// 鉴权
 
-	R.Use(handler.GinZapLogger(), handler.AuthorizationHandler(), handler.GinZapRecovery(true))
+	R.Use(handler.GinZapLogger(), handler.AuthorizationHandler(R), handler.GinZapRecovery(true))
 	// 处理404
 	R.NoRoute(func(c *gin.Context) {
 		c.Redirect(http.StatusFound, config.Conf.Server.Url404)
 	})
 
-	groupV1.Use(handler.GinZapLogger(), handler.AuthorizationHandler(), handler.GinZapRecovery(true))
+	groupV1.Use(handler.GinZapLogger(), handler.AuthorizationHandler(R), handler.GinZapRecovery(true))
+
 
 }
 
 func GetV1() *gin.RouterGroup {
 	return groupV1
 }
+
+

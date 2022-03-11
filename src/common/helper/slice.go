@@ -14,7 +14,7 @@ func Find(slice []string, val string) (int, bool) {
 			}
 		}
 
-		if strings.HasPrefix(val, item) {
+		if strings.HasPrefix(val, item)&&item[len(item)+1:]=="*" {
 			return i, true
 		}
 
