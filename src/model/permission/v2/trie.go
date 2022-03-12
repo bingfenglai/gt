@@ -89,15 +89,17 @@ func (node *TrieNode)Search(paths []string) bool {
 
 	for i, path := range paths {
 		log.Default().Println("当前path",path)
+		// *号全匹配
+		if node.children["*"]!=nil {
+			return true
+		}
+
 		// 没有该子节点，
 		if node.children[path]==nil {
 			// 且当前节点中没有统配符子节点
 			if node.wildChild == false {
 				return false
 			}else {
-				if node.children["*"]!=nil {
-					return true
-				}
 				log.Default().Println("当前节点下的子节点中有通配符节点")
 
 				// 如果i==len(paths)-1,即当前节点为叶子节点且为通配符 则返回true
