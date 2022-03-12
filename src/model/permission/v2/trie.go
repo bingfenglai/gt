@@ -87,7 +87,7 @@ func (node *TrieNode) InsertChild(paths []string)  {
 // TODO 当前该搜索，还不适用于通配符的情况
 func (node *TrieNode)Search(paths []string) bool {
 
-	for i, path := range paths {
+	for _, path := range paths {
 		log.Default().Println("当前path",path)
 		// *号全匹配
 		if node.children["*"]!=nil {
@@ -97,25 +97,27 @@ func (node *TrieNode)Search(paths []string) bool {
 		// 没有该子节点，
 		if node.children[path]==nil {
 			// 且当前节点中没有统配符子节点
-			if node.wildChild == false {
-				return false
-			}else {
-				log.Default().Println("当前节点下的子节点中有通配符节点")
+			//if node.wildChild == false {
+			//	return false
+			//}else {
+			//	log.Default().Println("当前节点下的子节点中有通配符节点")
+			//
+			//	// 如果i==len(paths)-1,即当前节点为叶子节点且为通配符 则返回true
+			//	if i==len(paths)-1 {
+			//		return true
+			//	}else if i<len(paths)-1 {
+			//		// TODO 如果当前i!=len(paths)-1将指针指向路径中下一个不是通配符的节点然后继续匹配
+			//		flag :=false
+			//
+			//		if flag {
+			//			continue
+			//		}
+			//	}
+			//
+			//	return false
+			//}
 
-				// 如果i==len(paths)-1,即当前节点为叶子节点且为通配符 则返回true
-				if i==len(paths)-1 {
-					return true
-				}else if i<len(paths)-1 {
-					// TODO 如果当前i!=len(paths)-1将指针指向路径中下一个不是通配符的节点然后继续匹配
-					flag :=false
-
-					if flag {
-						continue
-					}
-				}
-
-				return false
-			}
+			return false
 		}
 
 		node = node.children[path]

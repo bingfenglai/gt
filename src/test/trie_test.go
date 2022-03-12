@@ -20,7 +20,7 @@ func TestTrie(t *testing.T) {
 	tn.InsertChild(paths)
 
 	paths1 := strings.Split("gt/model/permission/:v2","/")
-	paths3 := strings.Split("gt/model/permissios/:v2/wee","/")
+	paths3 := strings.Split("gt/model/permission/:v2/wee","/")
 
 	//flag := tn.Search(paths)
 	flag1 := tn.Search(paths1)
