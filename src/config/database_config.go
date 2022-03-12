@@ -5,4 +5,6 @@ type DataBaseConfig struct {
 	Url     string
 	MaxConn int
 	MaxOpen int
+	InitData bool
+	InitSchema bool
 }

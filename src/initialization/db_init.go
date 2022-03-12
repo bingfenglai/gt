@@ -72,7 +72,10 @@ func initDbConfig() {
 
 	registerCallback()
 
-	initSchema()
+	if config.Conf.DataBase.InitSchema {
+		initSchema()
+
+	}
 
 }
 
@@ -86,8 +89,9 @@ func initSchema() {
 	_ = global.DB.AutoMigrate(&entity.Role{}, &entity.Dict{}, &entity.DictItem{}, &entity.User{},
 		&entity.Client{}, &entity.OAuthGrantType{}, &entity.ClientGrantType{},
 		&entity.ShortCodeGroup{}, &entity.ShortCode{}, &entity.ShortcodeLog{})
-
-	initData()
+	if config.Conf.DataBase.InitData {
+		initData()
+	}
 }
 
 func initData() {
@@ -112,9 +116,8 @@ func initGrantTypeData() {
 	grantTypes = append(grantTypes, &password, &authorizationCode, &clientCredentials, &refreshing, &implicit)
 
 	for _, grantType := range grantTypes {
-		 global.DB.Save(grantType)
-		
-		
+		global.DB.Save(grantType)
+
 	}
 
 }

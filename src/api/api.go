@@ -16,6 +16,8 @@ func PrintApiAndHandlers(ctx *gin.Context) {
 	// 	zap.L().Info(strconv.Itoa(i),zap.Any("handler",v))
 	// }
 
+	
+
 	routesInfo := router.R.Routes()
 
 	for i := 0; i < len(routesInfo); i++ {

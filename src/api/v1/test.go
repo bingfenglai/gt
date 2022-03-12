@@ -24,5 +24,5 @@ func Test(ctx *gin.Context){
 
 
 func init(){
-	router.GetV1().GET("/test/:name/print",Test)
+	router.GetV1().GET("/test/:name/:age/print",Test)
 }
