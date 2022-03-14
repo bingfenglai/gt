@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/bingfenglai/gt/common/constants"
+	"github.com/bingfenglai/gt/domain/entity"
 
 	"log"
 	"time"
@@ -15,7 +16,7 @@ import (
 
 	"github.com/bingfenglai/gt/config"
 	"github.com/bingfenglai/gt/global"
-	"github.com/bingfenglai/gt/model/entity"
+
 	_ "github.com/go-sql-driver/mysql"
 )
 
@@ -86,7 +87,7 @@ func registerCallback() {
 }
 
 func initSchema() {
-	_ = global.DB.AutoMigrate(&entity.Role{}, &entity.Dict{}, &entity.DictItem{}, &entity.User{},
+	_ = global.DB.AutoMigrate(&entity.Role{}, &entity.Dict{}, &entity.DictItem{}, &entity.User{}, &entity.UserRole{},
 		&entity.Client{}, &entity.OAuthGrantType{}, &entity.ClientGrantType{},
 		&entity.ShortCodeGroup{}, &entity.ShortCode{}, &entity.ShortcodeLog{})
 	if config.Conf.DataBase.InitData {

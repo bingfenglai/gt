@@ -4,8 +4,8 @@ import (
 	"errors"
 
 	"github.com/bingfenglai/gt/common/constants"
+	"github.com/bingfenglai/gt/domain/entity"
 	"github.com/bingfenglai/gt/global"
-	"github.com/bingfenglai/gt/model/entity"
 )
 
 type IShortcodeStorage interface {

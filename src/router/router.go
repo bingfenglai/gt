@@ -5,10 +5,11 @@ import (
 	"strings"
 
 	"github.com/bingfenglai/gt/config"
+	"github.com/bingfenglai/gt/domain/result"
 	"github.com/bingfenglai/gt/handler"
 
 	"github.com/bingfenglai/gt/oauth"
-	"github.com/bingfenglai/gt/pojo/result"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -63,19 +64,16 @@ func init() {
 
 	// 鉴权
 
-	R.Use(handler.GinZapRecovery(true),handler.GinZapLogger(), handler.AuthorizationHandler(R) )
+	R.Use(handler.GinZapRecovery(true), handler.GinZapLogger(), handler.AuthorizationHandler(R))
 	// 处理404
 	R.NoRoute(func(c *gin.Context) {
 		c.Redirect(http.StatusFound, config.Conf.Server.Url404)
 	})
 
-	groupV1.Use(handler.GinZapRecovery(true),handler.GinZapLogger(), handler.AuthorizationHandler(R))
-
+	groupV1.Use(handler.GinZapRecovery(true), handler.GinZapLogger(), handler.AuthorizationHandler(R))
 
 }
 
 func GetV1() *gin.RouterGroup {
 	return groupV1
 }
-
-

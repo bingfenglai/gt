@@ -12,17 +12,18 @@ import (
 	"github.com/bingfenglai/gt/common/constants"
 	"github.com/bingfenglai/gt/common/helper"
 	"github.com/bingfenglai/gt/config"
-	"github.com/bingfenglai/gt/pojo/params"
-	"github.com/bingfenglai/gt/pojo/response"
+	"github.com/bingfenglai/gt/domain/response"
+	"github.com/bingfenglai/gt/domain/params"
+
 	"github.com/google/uuid"
 	"github.com/wenlng/go-captcha/captcha"
 	"go.uber.org/zap"
 )
 
-type CaptchaServiceImpl struct {
+type captchaServiceImpl struct {
 }
 
-func (c *CaptchaServiceImpl) GetImagesBehavioralCaptcha() (response.CaptchaResponse, error) {
+func (c *captchaServiceImpl) GetImagesBehavioralCaptcha() (response.CaptchaResponse, error) {
 	capt := captcha.GetCaptcha()
 
 	dots, b64, th64, key, err := capt.Generate()
@@ -35,7 +36,7 @@ func (c *CaptchaServiceImpl) GetImagesBehavioralCaptcha() (response.CaptchaRespo
 	return response.CaptchaResponse{CaptchaId: key, ImageBase64: b64, ThumbBase64: th64}, err
 }
 
-func (c *CaptchaServiceImpl) ImagesBehavioralVerify(src, captchaId string) (bool, error) {
+func (c *captchaServiceImpl) ImagesBehavioralVerify(src, captchaId string) (bool, error) {
 	captchaId = config.Conf.Captcha.Prefix + captchaId
 	ok, s := CacheService.GetWithJson(captchaId)
 	if !ok {
@@ -86,14 +87,14 @@ func (c *CaptchaServiceImpl) ImagesBehavioralVerify(src, captchaId string) (bool
 
 }
 
-func (c *CaptchaServiceImpl) GetNumberCode(receiver string, channel int8) (captchaId string, err error) {
+func (c *captchaServiceImpl) GetNumberCode(receiver string, channel int8) (captchaId string, err error) {
 
 	if receiver == "" {
 		return "", errors.New("接收验证码账号不能为空")
 	}
-	kp := config.Conf.Captcha.Prefix+receiver+"*"
-	if flag,_ := CacheService.Keys(kp);flag{
-		return "",errors.New("验证码发送太过频繁")
+	kp := config.Conf.Captcha.Prefix + receiver + "*"
+	if flag, _ := CacheService.Keys(kp); flag {
+		return "", errors.New("验证码发送太过频繁")
 	}
 
 	var code string
@@ -109,24 +110,22 @@ func (c *CaptchaServiceImpl) GetNumberCode(receiver string, channel int8) (captc
 
 		sec := config.Conf.Captcha.ValidityPeriod * time.Minute
 
-		
+		enText := "Verification code: " + code + " Valid within " + sec.String() + ".\n"
 
-		enText :="Verification code: " + code + " Valid within " + sec.String() + ".\n"
-
-		zhText := "验证码："+code +" "+ sec.String() + "内有效"
+		zhText := "验证码：" + code + " " + sec.String() + "内有效"
 
 		sendEmailParams := &params.EmailSimpleSendParams{
 			Receivers: []string{receiver},
 			Subject:   "[GT]Please verify your device",
-			Text:      []byte(enText+zhText),
+			Text:      []byte(enText + zhText),
 		}
 		// 异步发送验证码
-		if config.Conf.Server.Mode== constants.SERVER_MODE_TEST{
+		if config.Conf.Server.Mode == constants.SERVER_MODE_TEST {
 			EmailService.SendSimpleEmail(sendEmailParams)
-		}else{
+		} else {
 			go EmailService.SendSimpleEmail(sendEmailParams)
 		}
-		
+
 		return
 
 	}
@@ -134,7 +133,7 @@ func (c *CaptchaServiceImpl) GetNumberCode(receiver string, channel int8) (captc
 	return "", errors.New("不支持该接收验证码渠道")
 }
 
-func (c *CaptchaServiceImpl) NumberCodeVerify(code string, captchaId string, receiver string) error {
+func (c *captchaServiceImpl) NumberCodeVerify(code string, captchaId string, receiver string) error {
 
 	if config.Conf.Captcha.NumberCodeLength != len(code) {
 		return errors.New("验证码不合法")
@@ -151,7 +150,7 @@ func (c *CaptchaServiceImpl) NumberCodeVerify(code string, captchaId string, rec
 
 		if code != c {
 			return errors.New("验证码已过期")
-		}else{
+		} else {
 			go CacheService.Delete(captchaId)
 		}
 	}
@@ -159,7 +158,7 @@ func (c *CaptchaServiceImpl) NumberCodeVerify(code string, captchaId string, rec
 	return nil
 }
 
-func (c *CaptchaServiceImpl) genNumberCode(receiver string) (code, captchaId string) {
+func (c *captchaServiceImpl) genNumberCode(receiver string) (code, captchaId string) {
 	l := config.Conf.Captcha.NumberCodeLength
 	r := rand.New(rand.NewSource(time.Now().Unix()))
 	for i := l; i > 0; i-- {

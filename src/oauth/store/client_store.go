@@ -2,7 +2,7 @@ package store
 
 import (
 	"context"
-	"github.com/bingfenglai/gt/model/entity"
+	"github.com/bingfenglai/gt/domain/entity"
 	"github.com/go-oauth2/oauth2/v4"
 	"github.com/go-oauth2/oauth2/v4/models"
 	"go.uber.org/zap"

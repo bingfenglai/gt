@@ -3,7 +3,7 @@ package helper
 import (
 	"regexp"
 
-	"github.com/bingfenglai/gt/errors"
+	"github.com/bingfenglai/gt/common/errors"
 )
 
 // 校验邮箱格式

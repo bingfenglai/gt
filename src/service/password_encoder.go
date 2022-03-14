@@ -11,10 +11,10 @@ type IPasswordEncoder interface {
 	Check(plaintext string, ciphertext string) (bool, error)
 }
 
-type PasswordEncoder struct {
+type passwordEncoder struct {
 }
 
-func (p *PasswordEncoder) Encode(src string) (string, error) {
+func (p *passwordEncoder) Encode(src string) (string, error) {
 	password, err := bcrypt.GenerateFromPassword([]byte(src), bcrypt.MinCost)
 
 	if err != nil {
@@ -24,7 +24,7 @@ func (p *PasswordEncoder) Encode(src string) (string, error) {
 	return string(password), nil
 }
 
-func (p *PasswordEncoder) Check(plaintext string, ciphertext string) (bool, error) {
+func (p *passwordEncoder) Check(plaintext string, ciphertext string) (bool, error) {
 
 	err := bcrypt.CompareHashAndPassword([]byte(ciphertext), []byte(plaintext))
 

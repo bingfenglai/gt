@@ -3,10 +3,10 @@ package service
 import (
 	"time"
 
+	"github.com/bingfenglai/gt/common/errors"
 	"github.com/bingfenglai/gt/config"
-	"github.com/bingfenglai/gt/errors"
+	"github.com/bingfenglai/gt/domain/params"
 	"github.com/bingfenglai/gt/global"
-	"github.com/bingfenglai/gt/pojo/params"
 	"github.com/jordan-wright/email"
 )
 
@@ -17,10 +17,10 @@ type IEmailService interface {
 	SendSimpleEmail(params *params.EmailSimpleSendParams) error
 }
 
-type EmailServiceImpl struct {
+type emailServiceImpl struct {
 }
 
-func (e EmailServiceImpl) SendSimpleEmail(params *params.EmailSimpleSendParams) error {
+func (e emailServiceImpl) SendSimpleEmail(params *params.EmailSimpleSendParams) error {
 	if params == nil {
 		return errors.ErrParamsNotNull
 	}
@@ -46,8 +46,8 @@ func (e EmailServiceImpl) SendSimpleEmail(params *params.EmailSimpleSendParams) 
 
 	err := global.EmailPool.Send(email, time.Second*5)
 
-	if err != nil && err.Error()=="timed out" {
-		if err =  global.EmailPool.Send(email, time.Second*10);err != nil && err.Error()=="timed out"{
+	if err != nil && err.Error() == "timed out" {
+		if err = global.EmailPool.Send(email, time.Second*10); err != nil && err.Error() == "timed out" {
 			global.EmailPool.Send(email, time.Second*15)
 		}
 	}

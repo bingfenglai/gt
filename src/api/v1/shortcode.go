@@ -3,11 +3,10 @@ package v1
 import (
 	"net/http"
 
+	"github.com/bingfenglai/gt/common/model/shortcodegen"
+	"github.com/bingfenglai/gt/domain/params"
+	"github.com/bingfenglai/gt/domain/result"
 	"github.com/bingfenglai/gt/router"
-
-	"github.com/bingfenglai/gt/model/shortcodegen"
-	"github.com/bingfenglai/gt/pojo/params"
-	"github.com/bingfenglai/gt/pojo/result"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"go.uber.org/zap"

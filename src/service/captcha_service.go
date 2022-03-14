@@ -1,6 +1,6 @@
 package service
 
-import "github.com/bingfenglai/gt/pojo/response"
+import "github.com/bingfenglai/gt/domain/response"
 
 type ICaptchaService interface {
 	// 获取行为式图片验证码

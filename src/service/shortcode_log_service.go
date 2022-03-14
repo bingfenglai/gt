@@ -5,7 +5,8 @@ import (
 	"time"
 
 	"github.com/bingfenglai/gt/common/helper"
-	"github.com/bingfenglai/gt/model/entity"
+	"github.com/bingfenglai/gt/domain/entity"
+
 	"github.com/bingfenglai/gt/storage"
 )
 
@@ -16,10 +17,10 @@ type IShortCodeLogService interface {
 	Create(shorCodeId uint64, userAgent string, ip string) (bool, error)
 }
 
-type ShortCodeLogServiceImpl struct {
+type shortCodeLogServiceImpl struct {
 }
 
-func (svc *ShortCodeLogServiceImpl) Save(shortcodeLog *entity.ShortcodeLog) (bool, error) {
+func (svc *shortCodeLogServiceImpl) Save(shortcodeLog *entity.ShortcodeLog) (bool, error) {
 
 	if shortcodeLog == nil {
 		return false, errors.New("参数不能为空")
@@ -29,7 +30,7 @@ func (svc *ShortCodeLogServiceImpl) Save(shortcodeLog *entity.ShortcodeLog) (boo
 
 }
 
-func (svc *ShortCodeLogServiceImpl) Create(shorCodeId uint64, userAgent string, ip string) (bool, error) {
+func (svc *shortCodeLogServiceImpl) Create(shorCodeId uint64, userAgent string, ip string) (bool, error) {
 	us := helper.ParseUserAgent(userAgent)
 	return svc.Save(&entity.ShortcodeLog{
 		ShortcodeId:     shorCodeId,

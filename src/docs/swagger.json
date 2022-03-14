@@ -1,8 +1,21 @@
 {
     "swagger": "2.0",
     "info": {
-        "contact": {}
+        "description": "GT 后端接口文档",
+        "title": "GT API",
+        "termsOfService": "https://github.com/bingfenglai",
+        "contact": {
+            "name": "Ferryman",
+            "url": "https://github.com/bingfenglai",
+            "email": "bingfenglai.dev@gmail.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0"
     },
+    "host": "api.gt.com",
     "paths": {
         "/v1/captcha/behavioral/images": {
             "get": {

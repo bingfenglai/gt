@@ -1,6 +1,6 @@
 package params
 
-import "github.com/bingfenglai/gt/errors"
+import "github.com/bingfenglai/gt/common/errors"
 
 // 发送邮件参数
 type EmailSimpleSendParams struct {

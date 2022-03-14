@@ -8,8 +8,9 @@ import (
 	"runtime/debug"
 	"strings"
 
+	"github.com/bingfenglai/gt/domain/result"
 	"github.com/bingfenglai/gt/global"
-	"github.com/bingfenglai/gt/pojo/result"
+
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )

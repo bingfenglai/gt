@@ -6,7 +6,11 @@ import "errors"
 var (
 	ErrUserNotFound = errors.New("用户不存在")
 
+	ErrUserIDCannotBeEmpty = errors.New("用户id不能为空")
+
 	ErrAccountPasswordMismatch = errors.New("账号密码不匹配")
+
+	ErrAccessTokenCannotBeEmpty = errors.New("token参数不能为空")
 
 	ErrClientUnauthorized = errors.New("客户端未授权")
 

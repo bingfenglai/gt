@@ -11,6 +11,7 @@ database:
   maxConn: 20
   maxOpen: 20
   InitData: false
+  # InitSchema: true
   InitSchema: false
 
 Cache:
@@ -33,7 +34,7 @@ swagger:
   version: 1.0
   basePath: /
   Schemes:
-    -
+    - http(s)
   title: gt api doc
   description: gt api doc
   url: http://localhost:9527/swagger/doc.json
@@ -77,7 +78,7 @@ auth:
     - /v1/ping
     - /v1/redirection
     - /oauth2/token
-    - /swagger
+    - /swagger/*
     - /v1/captcha/*
     - /v1/test/:name/print
 

@@ -6,9 +6,9 @@ import (
 	"time"
 
 	"github.com/bingfenglai/gt/common/constants"
+	"github.com/bingfenglai/gt/common/model/cache"
 	"github.com/bingfenglai/gt/config"
 	"github.com/bingfenglai/gt/global"
-	"github.com/bingfenglai/gt/model/cache"
 	"github.com/go-redis/redis/v8"
 	"go.uber.org/zap"
 )

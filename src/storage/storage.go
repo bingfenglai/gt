@@ -12,6 +12,8 @@ var ClientGrantTypeStorage IClientGrantTypeStorage
 
 var UserStorage IUserStorage
 
+var RoleStorage IRoleStorage
+
 func Initstorage() {
 	log.Default().Println("初始化 storage")
 	ShortCodeStorage = &ShortCodeDbStorage{}
@@ -23,5 +25,7 @@ func Initstorage() {
 	ClientGrantTypeStorage = &ClientGrantTypeStorageImpl{}
 
 	UserStorage = &UserStorageImpl{}
+
+	RoleStorage = &roleStorage{}
 
 }

@@ -7,8 +7,8 @@ import (
 
 	"github.com/bingfenglai/gt/common/helper"
 	"github.com/bingfenglai/gt/config"
+	"github.com/bingfenglai/gt/domain/result"
 	"github.com/bingfenglai/gt/oauth"
-	"github.com/bingfenglai/gt/pojo/result"
 
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
@@ -16,7 +16,7 @@ import (
 
 var handlerPathMap = make(map[string]string)
 
-var lock  sync.RWMutex
+var lock sync.RWMutex
 
 func AuthorizationHandler(engine *gin.Engine) gin.HandlerFunc {
 
@@ -60,7 +60,7 @@ func AuthorizationHandler(engine *gin.Engine) gin.HandlerFunc {
 
 		// 校验当前用户是否有权限访问当前接口
 		// TODO 基于字典树优化匹配查询
-		
+
 	}
 }
 
@@ -85,6 +85,5 @@ func initHandlerNamePathMap(engine *gin.Engine) {
 	}
 
 	lock.Unlock()
-
 
 }

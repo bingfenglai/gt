@@ -1,5 +1,16 @@
+host: api.gt.com
 info:
-  contact: {}
+  contact:
+    email: bingfenglai.dev@gmail.com
+    name: Ferryman
+    url: https://github.com/bingfenglai
+  description: GT 后端接口文档
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://github.com/bingfenglai
+  title: GT API
+  version: "1.0"
 paths:
   /v1/captcha/behavioral/images:
     get:

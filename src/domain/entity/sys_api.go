@@ -5,8 +5,6 @@ import "github.com/jinzhu/gorm"
 type Api struct {
 	gorm.Model
 	Name string `gorm:"size:24;not null"`
-	// HandlerName string `gorm:"size:128;not null"`
-	// HandlerMd5 string `gorm:"size:36;nut null"`
 	Uri string 	`grom:"size:36;not null"`
 	Methods string `grom:"size:36;not null"`
 	Status int `gorm:"default:0"`

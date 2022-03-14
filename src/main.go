@@ -13,15 +13,28 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	_ "github.com/bingfenglai/gt/service"
 	_ "github.com/bingfenglai/gt/api"
+	_ "github.com/bingfenglai/gt/service"
+
 	// 初始化api
 	_ "github.com/bingfenglai/gt/api/v1"
 	_ "github.com/go-sql-driver/mysql"
 )
 
-// 初始化一个http服务对象
+// @title GT API
+// @version 1.0
+// @description GT 后端接口文档
+// @termsOfService https://github.com/bingfenglai
 
+// @contact.name Ferryman
+// @contact.url https://github.com/bingfenglai
+// @contact.email bingfenglai.dev@gmail.com
+
+// @license.name Apache 2.0
+// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
+
+// @host api.gt.com
+// @BasePath 
 func main() {
 
 	//router.R.Run(fmt.Sprintf("%s:%d", viper.GetString("server.address"), viper.GetInt("server.port")))

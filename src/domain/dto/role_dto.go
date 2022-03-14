@@ -1,6 +1,6 @@
 package dto
 
 type RoleSessionDTO struct {
-	roleId int	
-	code string
+	RoleId int	
+	Code string
 }

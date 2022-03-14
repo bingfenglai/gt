@@ -4,8 +4,8 @@ import (
 	"net/http"
 
 	"github.com/bingfenglai/gt/common/helper"
-	"github.com/bingfenglai/gt/pojo/params"
-	"github.com/bingfenglai/gt/pojo/result"
+	"github.com/bingfenglai/gt/domain/params"
+	"github.com/bingfenglai/gt/domain/result"
 	"github.com/bingfenglai/gt/router"
 	"github.com/bingfenglai/gt/service"
 	"github.com/gin-gonic/gin"

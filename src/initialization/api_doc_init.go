@@ -2,15 +2,15 @@ package initialization
 
 import (
 	"bytes"
-	"github.com/bingfenglai/gt/config"
-	"github.com/bingfenglai/gt/docs"
-	"github.com/bingfenglai/gt/router"
-	"github.com/spf13/viper"
-	"github.com/swaggo/gin-swagger"
-	"github.com/swaggo/gin-swagger/swaggerFiles"
 	"log"
 	"os"
 	"os/exec"
+
+	_ "github.com/bingfenglai/gt/docs"
+	"github.com/bingfenglai/gt/router"
+	"github.com/spf13/viper"
+	ginSwagger "github.com/swaggo/gin-swagger"
+	"github.com/swaggo/gin-swagger/swaggerFiles"
 )
 
 func InitApiConfig() {
@@ -33,18 +33,4 @@ func RunSwagCmd() {
 	}
 	log.Default().Println(out.String())
 
-	initSwagConfig()
-
-}
-
-func initSwagConfig() {
-
-	docs.SwaggerInfo.Version = config.Conf.Swagger.Version
-	docs.SwaggerInfo.Host = config.Conf.Swagger.Host
-	docs.SwaggerInfo.BasePath = config.Conf.Swagger.BasePath
-	docs.SwaggerInfo.Schemes = config.Conf.Swagger.Schemes
-	docs.SwaggerInfo.Title = config.Conf.Swagger.Title
-	docs.SwaggerInfo.Description = config.Conf.Swagger.Description
-
-	log.Default().Println("api 文档初始化成功")
 }

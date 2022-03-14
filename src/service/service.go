@@ -1,18 +1,15 @@
 package service
 
 import (
-	
 	"log"
-
-	"github.com/bingfenglai/gt/model/cache"
+	
+	"github.com/bingfenglai/gt/common/model/cache"
 )
 
-
 type Service interface {
-	Save(val interface{})(bool,error)
-	DeleteById(id uint64)(bool,error)
+	Save(val interface{}) (bool, error)
+	DeleteById(id uint64) (bool, error)
 }
-
 
 var CacheService cache.Cache
 
@@ -20,10 +17,13 @@ var CaptchaService ICaptchaService
 
 var UserService IUserService
 
+var UserSessionService IUserSessionService
+
+var RoleService IRoleService
+
 var PasswordEncodeService IPasswordEncoder
 
 var OAuthClientService IOAuthClientService
-
 
 var ShortCodeService IShortCodeService
 
@@ -32,19 +32,23 @@ var ShortCodeLogService IShortCodeLogService
 var EmailService IEmailService
 
 func InitService() {
-	
+
 	log.Default().Println("执行service初始化")
 	CacheService = cache.GetCacheImpl()
-	CaptchaService = &CaptchaServiceImpl{}
-	UserService = &UserServiceImpl{}
+	CaptchaService = &captchaServiceImpl{}
+	UserService = &userServiceImpl{}
 
-	PasswordEncodeService = &PasswordEncoder{}
+	PasswordEncodeService = &passwordEncoder{}
 
-	ShortCodeService = &ShortCodeServiceImpl{}
+	ShortCodeService = &shortCodeServiceImpl{}
 
-	ShortCodeLogService = &ShortCodeLogServiceImpl{}
+	ShortCodeLogService = &shortCodeLogServiceImpl{}
 
-	OAuthClientService = &OAuthClientServiceImpl{}
+	OAuthClientService = &oAuthClientServiceImpl{}
 
-	EmailService = &EmailServiceImpl{}
+	EmailService = &emailServiceImpl{}
+
+	UserSessionService = &userSessionServiceImpl{}
+
+	RoleService = &roleServiceImpl{}
 }

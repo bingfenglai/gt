@@ -5,9 +5,10 @@ import (
 
 	"github.com/bingfenglai/gt/common/constants"
 	"github.com/bingfenglai/gt/common/helper"
+	"github.com/bingfenglai/gt/common/model/shortcodegen"
 	"github.com/bingfenglai/gt/config"
-	"github.com/bingfenglai/gt/model/entity"
-	"github.com/bingfenglai/gt/model/shortcodegen"
+	"github.com/bingfenglai/gt/domain/entity"
+
 	"go.uber.org/zap"
 
 	"github.com/bingfenglai/gt/storage"
@@ -25,10 +26,10 @@ type IShortCodeService interface {
 	createPerpetual(url string) (*entity.ShortCode, error)
 }
 
-type ShortCodeServiceImpl struct {
+type shortCodeServiceImpl struct {
 }
 
-func (svc *ShortCodeServiceImpl) CreateShortCode(url string, isPerpetual, isMultiplex bool) (*entity.ShortCode, error) {
+func (svc *shortCodeServiceImpl) CreateShortCode(url string, isPerpetual, isMultiplex bool) (*entity.ShortCode, error) {
 	zap.L().Info("收到入参", zap.Any("url", url))
 	var shortcode *entity.ShortCode
 	var err error
@@ -87,7 +88,7 @@ func (svc *ShortCodeServiceImpl) CreateShortCode(url string, isPerpetual, isMult
 
 }
 
-func (svc *ShortCodeServiceImpl) FindLinkByCode(code string) (*entity.ShortCode, error) {
+func (svc *shortCodeServiceImpl) FindLinkByCode(code string) (*entity.ShortCode, error) {
 
 	if code == "" {
 		return nil, errors.New("code不能为空")
@@ -108,7 +109,7 @@ func (svc *ShortCodeServiceImpl) FindLinkByCode(code string) (*entity.ShortCode,
 
 }
 
-func (svc *ShortCodeServiceImpl) createPerpetual(url string) (*entity.ShortCode, error) {
+func (svc *shortCodeServiceImpl) createPerpetual(url string) (*entity.ShortCode, error) {
 
 	return nil, nil
 }

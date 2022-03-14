@@ -3,13 +3,12 @@ package v1
 import (
 	"net/http"
 
-	"github.com/bingfenglai/gt/pojo/result"
+	"github.com/bingfenglai/gt/domain/result"
 	"github.com/bingfenglai/gt/router"
 	"github.com/gin-gonic/gin"
-	
 )
 
-func ThreadCallback(ctx *gin.Context){
+func ThreadCallback(ctx *gin.Context) {
 
 	// code := ctx.Request.FormValue("code")
 	// zap.L().Info("code",zap.Any("code ",code))
@@ -17,14 +16,13 @@ func ThreadCallback(ctx *gin.Context){
 	// ctx.ShouldBindQuery(&dataMap)
 	// ctx.ShouldBindJSON(&dataMap)
 	// dataMap["code"] = code
-	ctx.JSON(http.StatusOK,result.Ok(ctx.Request.URL.Query()))
+	ctx.JSON(http.StatusOK, result.Ok(ctx.Request.URL.Query()))
 
 	// zap.L().Info("ctx",zap.Any("",))
 
-
 }
 
-func init(){
+func init() {
 
-	router.GetV1().Any("thread_callback",ThreadCallback)
+	router.GetV1().Any("thread_callback", ThreadCallback)
 }
