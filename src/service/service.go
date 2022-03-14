@@ -21,6 +21,8 @@ var UserSessionService IUserSessionService
 
 var RoleService IRoleService
 
+var ApiSesvice IApiService
+
 var PasswordEncodeService IPasswordEncoder
 
 var OAuthClientService IOAuthClientService
@@ -51,4 +53,6 @@ func InitService() {
 	UserSessionService = &userSessionServiceImpl{}
 
 	RoleService = &roleServiceImpl{}
+
+	ApiSesvice = &apiServiceImpl{}
 }

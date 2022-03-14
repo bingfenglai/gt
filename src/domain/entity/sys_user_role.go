@@ -3,8 +3,8 @@ package entity
 import "time"
 
 type UserRole struct {
-	UserId    int64 `gorm:"not null"`
-	RoleId    int64 `gorm:"not null"`
+	UserId    int64 `gorm:"primaryKey;not null"`
+	RoleId    int64 `gorm:"primaryKey;not null"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
 	DeletedAt time.Time

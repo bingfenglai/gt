@@ -33,6 +33,8 @@ func (u *userServiceImpl) FindUserByUsername(username string) (*dto.UserDTO, err
 	}
 
 	userDto := dto.UserDTO{
+		Uid: int(user.ID),
+		TenantId: user.TenantId,
 		Username: user.Username,
 		Password: user.Password,
 	}

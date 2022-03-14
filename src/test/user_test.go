@@ -2,14 +2,17 @@ package test
 
 import (
 	"fmt"
+
+	"github.com/bingfenglai/gt/domain/entity"
 	"github.com/bingfenglai/gt/global"
-	"github.com/bingfenglai/gt/model/entity"
-	"github.com/bingfenglai/gt/service"
-	"go.uber.org/zap"
-	"golang.org/x/crypto/bcrypt"
+
 	"log"
 	"testing"
 	"time"
+
+	"github.com/bingfenglai/gt/service"
+	"go.uber.org/zap"
+	"golang.org/x/crypto/bcrypt"
 )
 
 func TestAddUser(t *testing.T) {
@@ -32,8 +35,6 @@ func TestAddUser(t *testing.T) {
 		return
 	}
 
-	
-
 }
 
 func TestAddUser1(t *testing.T) {
@@ -49,23 +50,18 @@ func TestCache(t *testing.T) {
 	service.UserService.FindUserByUsername("969391")
 	end := time.Now().Nanosecond()
 
-	log.Default().Println("不使用缓存",end-start)
+	log.Default().Println("不使用缓存", end-start)
 
 	start1 := time.Now().Nanosecond()
 	service.UserService.FindUserByUsernameWithCache("969391")
 	end1 := time.Now().Nanosecond()
 
-	log.Default().Println("使用缓存1",end1-start1)
+	log.Default().Println("使用缓存1", end1-start1)
 
 	start2 := time.Now().Nanosecond()
 	service.UserService.FindUserByUsernameWithCache("969391")
 	end2 := time.Now().Nanosecond()
 
-	log.Default().Println("使用缓存2",end2-start2)
-
-
-
-
-
+	log.Default().Println("使用缓存2", end2-start2)
 
 }

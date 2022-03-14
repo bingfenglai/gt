@@ -89,7 +89,7 @@ func registerCallback() {
 func initSchema() {
 	_ = global.DB.AutoMigrate(&entity.Role{}, &entity.Dict{}, &entity.DictItem{}, &entity.User{}, &entity.UserRole{},
 		&entity.Client{}, &entity.OAuthGrantType{}, &entity.ClientGrantType{},
-		&entity.ShortCodeGroup{}, &entity.ShortCode{}, &entity.ShortcodeLog{})
+		&entity.ShortCodeGroup{}, &entity.ShortCode{}, &entity.ShortcodeLog{},entity.RoleApi{},&entity.Api{})
 	if config.Conf.DataBase.InitData {
 		initData()
 	}

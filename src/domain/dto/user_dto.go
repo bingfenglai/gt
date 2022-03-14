@@ -5,6 +5,8 @@ import (
 )
 
 type UserDTO struct {
+	Uid int
+	TenantId int
 	Username string
 	Password string
 }

@@ -3,8 +3,8 @@ package entity
 import "time"
 
 type RoleApi struct {
-	Role_id   int64
-	Api_id    int64
+	Role_id   int64 `gorm:"primaryKey"`
+	Api_id    int64 `gorm:"primaryKey"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
 	DeletedAt time.Time

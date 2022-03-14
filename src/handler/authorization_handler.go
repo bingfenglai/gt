@@ -9,6 +9,7 @@ import (
 	"github.com/bingfenglai/gt/config"
 	"github.com/bingfenglai/gt/domain/result"
 	"github.com/bingfenglai/gt/oauth"
+	"github.com/bingfenglai/gt/service"
 
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
@@ -57,6 +58,30 @@ func AuthorizationHandler(engine *gin.Engine) gin.HandlerFunc {
 			return
 		}
 		zap.L().Info("token info", zap.Any("current user", ti.GetUserID()))
+
+		us, err := service.UserSessionService.GetSession(ti.GetUserID())
+
+		if err != nil {
+
+			// 校验不通过，不再调用后续函数
+			context.Abort()
+			context.JSON(http.StatusUnauthorized, result.FailWithMsg(err.Error(), "令牌已过期，请重新登录"))
+			return
+		}
+		flag := false
+		for _, api := range us.Apis {
+			if api.Method == req.Method && api.Uri == uri {
+				flag = true
+				break
+			}
+		}
+
+		if !flag {
+			context.Abort()
+			dataMap := make(map[string]string)
+			dataMap["uri"] = req.RequestURI
+			context.JSON(http.StatusForbidden, result.FailWithMsg("当前账号没有权限访问此接口", dataMap))
+		}
 
 		// 校验当前用户是否有权限访问当前接口
 		// TODO 基于字典树优化匹配查询

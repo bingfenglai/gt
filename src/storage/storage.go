@@ -14,6 +14,8 @@ var UserStorage IUserStorage
 
 var RoleStorage IRoleStorage
 
+var ApiStorage IApiStorage
+
 func Initstorage() {
 	log.Default().Println("初始化 storage")
 	ShortCodeStorage = &ShortCodeDbStorage{}
@@ -27,5 +29,7 @@ func Initstorage() {
 	UserStorage = &UserStorageImpl{}
 
 	RoleStorage = &roleStorage{}
+
+	ApiStorage = &apiStorage{}
 
 }

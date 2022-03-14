@@ -3,6 +3,7 @@ package handler
 import (
 	"context"
 	"errors"
+	"strconv"
 
 	"github.com/bingfenglai/gt/service"
 
@@ -24,7 +25,7 @@ func PasswordAuthorizationHandler(_ context.Context, username, password string) 
 	ok, err := service.PasswordEncodeService.Check(password, user.Password)
 
 	if ok {
-		return user.Username, nil
+		return strconv.Itoa(user.Uid), nil
 	}
 
 	zap.L().Warn(err.Error())

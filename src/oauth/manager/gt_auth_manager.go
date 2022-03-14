@@ -5,6 +5,7 @@ import (
 
 	"github.com/bingfenglai/gt/config"
 	"github.com/bingfenglai/gt/oauth/store"
+	"github.com/bingfenglai/gt/service"
 	"github.com/go-oauth2/oauth2/v4"
 	"github.com/go-oauth2/oauth2/v4/manage"
 	oredis "github.com/go-oauth2/redis/v4"
@@ -45,7 +46,11 @@ func (m *CustomOAuthManager) GenerateAccessToken(ctx context.Context, gt oauth2.
 
 	// 按照 密码认证模式的配置生成token
 	gt = oauth2.PasswordCredentials
-	return m.originalManager.GenerateAccessToken(ctx, gt, tgr)
+	accessToken,err = m.originalManager.GenerateAccessToken(ctx, gt, tgr)
+	if err==nil {
+		err = service.UserSessionService.CreateWithAccessToken(accessToken.GetUserID(),"-",accessToken.GetAccess())
+	}
+	return 
 
 }
 

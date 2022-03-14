@@ -18,14 +18,14 @@ func Role2RoleSessionDTO(role *entity.Role)(*dto.RoleSessionDTO,error){
 func Role2RoleSessionDTOList(roles []*entity.Role)[]*dto.RoleSessionDTO{
 	roledtos := make([]*dto.RoleSessionDTO,len(roles))
 
-	for _, role := range roles {
+	for i, role := range roles {
 		
 		dto :=dto.RoleSessionDTO{
 			RoleId: int(role.ID),
 			Code: role.Code,
 		}
 
-		roledtos = append(roledtos, &dto)
+		roledtos[i] = &dto
 	}
 
 	return roledtos

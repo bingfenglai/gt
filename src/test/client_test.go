@@ -1,9 +1,10 @@
 package test
 
 import (
-	"github.com/bingfenglai/gt/model/entity"
-	"go.uber.org/zap"
 	"testing"
+
+	"github.com/bingfenglai/gt/domain/entity"
+	"go.uber.org/zap"
 )
 
 func TestAddClient(t *testing.T) {

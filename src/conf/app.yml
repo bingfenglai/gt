@@ -11,8 +11,8 @@ database:
   maxConn: 20
   maxOpen: 20
   InitData: false
-  # InitSchema: true
-  InitSchema: false
+  InitSchema: true
+  # InitSchema: false
 
 Cache:
   cacheType: redis
@@ -72,7 +72,7 @@ email:
 
 auth:
   anonymousUrls:
-    - /api/print
+    # - /api/print
     - /favicon.ico
     - /v1/thread_callback
     - /v1/ping
@@ -81,4 +81,5 @@ auth:
     - /swagger/*
     - /v1/captcha/*
     - /v1/test/:name/print
+    - /403.html
 

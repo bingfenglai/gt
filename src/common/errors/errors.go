@@ -23,4 +23,6 @@ var (
 	ErrEmailCodeInvalid = errors.New("邮箱验证码不合法")
 
 	ErrInvalidHttpMethod = errors.New("当前方法不被允许")
+
+	ErrTenantIdCannotBeEmpty = errors.New("租户标识不能为空")
 )

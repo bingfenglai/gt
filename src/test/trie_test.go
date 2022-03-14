@@ -6,8 +6,8 @@ import (
 	"strings"
 	"testing"
 
+	v2 "github.com/bingfenglai/gt/common/model/permission/v2"
 	"github.com/bingfenglai/gt/config"
-	v2 "github.com/bingfenglai/gt/model/permission/v2"
 )
 
 func TestTrie(t *testing.T) {
