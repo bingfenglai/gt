@@ -2,6 +2,7 @@ package v2
 
 import (
 	"log"
+	"strings"
 )
 
 // 每个http方法对应一颗树
@@ -53,6 +54,15 @@ func (trie *Trie) Root() *TrieNode {
 	return trie.root
 }
 
+
+type TrieNode struct {
+	value     string
+	children  map[string]*TrieNode
+	nt        nodeType
+	wildChild bool // 是否是匹配的孩子节点
+	
+}
+
 func (node *TrieNode) InsertChild(paths []string)  {
 
 	for _, path := range paths {
@@ -60,35 +70,60 @@ func (node *TrieNode) InsertChild(paths []string)  {
 		if node.children[path]==nil{
 			n := new(TrieNode)
 			n.value = path
-			n.wildChild = false
-			//if path[:1] == ":" || path[:1] == "*" {
-			if path == "*" {
+			if paths[len(paths)-1]==path {
+				n.wildChild = true
+			}else{
+				n.wildChild = false
+			}
+			
+			if path[:1] == ":" || path[:1] == "*" {
+			// if path == "*" {
 				n.nt = param
 				log.Default().Println("当前节点为通配符节点")
-				node.wildChild = true
-				node.wildChildCount++
+				
+				
 			}else{
-				log.Default().Println("当前节点",path,"为全匹配节点")
+				log.Default().Println("当前节点",path,"为全匹配节点",n.wildChild)
 				n.nt = catchAll
 			}
 			n.children = make(map[string]*TrieNode)
 
 			node.children[path] = n
 
+		}else{
+			nd := node.children[path]
+			log.Default().Println("已存在节点",nd.value)
+			log.Default().Println(paths[len(paths)-1],path)
+			if paths[len(paths)-1]==path {
+				nd.wildChild = true
+			}
 		}
 
 		node = node.children[path]
+		
 	}
 
-	node.wildChild = false
+}
 
+
+// 批量插入子节点
+func(node *TrieNode)InsertChildBatch(children []string){
+	for _, child := range children {
+		if child[:1]=="/" {
+			child = child[1:]
+		}
+
+		paths :=strings.Split(child,"/")
+		node.InsertChild(paths)
+		
+	}
 }
 
 // TODO 当前该搜索，还不适用于通配符的情况
 func (node *TrieNode)Search(paths []string) bool {
 
 	for _, path := range paths {
-		log.Default().Println("当前path",path)
+		log.Default().Println("当前path=",path)
 		// *号全匹配
 		if node.children["*"]!=nil {
 			return true
@@ -123,18 +158,18 @@ func (node *TrieNode)Search(paths []string) bool {
 		node = node.children[path]
 	}
 
-	// 如果最后的节点没有子节点，则为可达
-	return len(node.children)==0
-
+	return node.wildChild
 }
 
-type TrieNode struct {
-	value     string
-	children  map[string]*TrieNode
-	nt        nodeType
-	wildChild bool // 是否有通配符子节点
-	wildChildCount int
+
+func(node *TrieNode) SearchWithPath(path string) bool{
+	if path[:1]=="/" {
+		path = path[1:]
+	}
+
+	return node.Search(strings.Split(path,"/"))
 }
+
 
 func (tn *TrieNode) getWildChild()[]*TrieNode  {
 	tns := make([]*TrieNode,0)
