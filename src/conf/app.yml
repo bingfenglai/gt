@@ -11,8 +11,8 @@ database:
   maxConn: 20
   maxOpen: 20
   InitData: false
-  InitSchema: true
-  # InitSchema: false
+  # InitSchema: true
+  InitSchema: false
 
 Cache:
   cacheType: redis

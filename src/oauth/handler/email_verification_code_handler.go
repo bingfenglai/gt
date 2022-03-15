@@ -2,6 +2,7 @@ package handler
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/bingfenglai/gt/common/errors"
 	"github.com/bingfenglai/gt/common/helper"
@@ -30,6 +31,7 @@ func EmailVerificationCodeHandler(req *http.Request) (userID string, err error) 
 		return "", err
 	}
 
-	return "969391", nil
+	user,err:=service.UserService.FindUserByEmailWithRegister(email)
+	return strconv.Itoa(user.Uid), err
 
 }

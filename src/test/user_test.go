@@ -65,3 +65,16 @@ func TestCache(t *testing.T) {
 	log.Default().Println("使用缓存2", end2-start2)
 
 }
+
+
+func TestFindUser(t *testing.T){
+	user,err :=service.UserService.FindUserByEmail("bingfenglai.dev@gmail.com")
+
+	if err!=nil {
+		t.Error(err)
+	}else{
+		log.Default().Println(user.Username)
+	}
+
+
+}

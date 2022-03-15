@@ -26,7 +26,7 @@ func Initstorage() {
 
 	ClientGrantTypeStorage = &ClientGrantTypeStorageImpl{}
 
-	UserStorage = &UserStorageImpl{}
+	UserStorage = &userDbStorageImpl{}
 
 	RoleStorage = &roleStorage{}
 

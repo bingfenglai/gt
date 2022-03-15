@@ -70,6 +70,10 @@ func AuthorizationHandler(engine *gin.Engine) gin.HandlerFunc {
 		}
 		flag := false
 		for _, api := range us.Apis {
+			if api.Method == "*" && api.Uri == "*" {
+				flag = true
+				break
+			}
 			if api.Method == req.Method && api.Uri == uri {
 				flag = true
 				break

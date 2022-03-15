@@ -8,7 +8,6 @@ import (
 )
 
 // 自定义token 响应格式
-// 并加载用户会话信息到redis
 func ResponseTokenHandler(w http.ResponseWriter, data map[string]interface{}, header http.Header, statusCode ...int) error {
 
 	var r result.Result
