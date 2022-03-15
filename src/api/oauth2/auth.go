@@ -1,4 +1,4 @@
-package v1
+package oauth2
 
 import (
 	"net/http"
@@ -8,6 +8,11 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func Logout(ctx *gin.Context) {
+
+}
+
+// TODO 此方法用于社交账号登录
 func ThreadCallback(ctx *gin.Context) {
 
 	// code := ctx.Request.FormValue("code")
@@ -24,5 +29,6 @@ func ThreadCallback(ctx *gin.Context) {
 
 func init() {
 
-	router.GetV1().Any("thread_callback", ThreadCallback)
+	router.R.Any("/oauth2/thread_callback", ThreadCallback)
+	router.R.POST("/oauth2/logout", Logout)
 }
