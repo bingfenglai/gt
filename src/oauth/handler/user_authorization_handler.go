@@ -7,7 +7,7 @@ import (
 )
 
 func UserAuthorizationHandler(w http.ResponseWriter, r *http.Request) (userID string, err error) {
-	username, err := utils.GetCurrentUsername(r)
+	username, err := utils.GetCurrentUId(r)
 
 	// 内置代码中已有相关操作
 	// if err!=nil {

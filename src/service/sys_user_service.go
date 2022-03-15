@@ -2,6 +2,7 @@ package service
 
 import (
 	"errors"
+	"strconv"
 	"strings"
 	"time"
 
@@ -15,8 +16,10 @@ import (
 type IUserService interface {
 	FindUserByUsername(username string) (*dto.UserDTO, error)
 
+	FindUserByUId(uid int) (*dto.UserDTO, error)
+
 	// 先从缓存当中查找，找不到再走数据库并回写缓存
-	FindUserByUsernameWithCache(username string) (*dto.UserDTO, error)
+	FindUserByUIdWithCache(uid int) (*dto.UserDTO, error)
 
 	FindUserByEmail(email string) (*dto.UserDTO, error)
 
@@ -27,13 +30,43 @@ type IUserService interface {
 type userServiceImpl struct {
 }
 
-func (u *userServiceImpl) FindUserByUsername(username string) (*dto.UserDTO, error) {
 
-	if username == "" {
-		return nil, errors.New("用户名不能为空")
+func (svc *userServiceImpl)FindUserByUsername(username string) (*dto.UserDTO, error){
+	if username=="" {
+		return nil,errors.New("用户名不能为空")
+	}
+	var user *entity.User
+	var err error
+	if helper.VerifyEmailFormat(username)==nil {
+		user,err = storage.UserStorage.SelectOneByEmail(username)
+	}else{
+		user,err =storage.UserStorage.SelectOneByUsername(username)
 	}
 
-	user, err := storage.UserStorage.SelectOneByUsername(username)
+
+	if err != nil {
+		zap.L().Error("err", zap.Any("err:", err.Error()))
+		return nil, err
+	}
+
+	userDto := dto.UserDTO{
+		Uid:      int(user.ID),
+		TenantId: user.TenantId,
+		Username: user.Username,
+		Password: user.Password,
+	}
+
+	return &userDto, err
+
+}
+
+func (u *userServiceImpl) FindUserByUId(uid int) (*dto.UserDTO, error) {
+
+	if uid == 0 {
+		return nil, errors.New("用户ID不能为空")
+	}
+
+	user, err := storage.UserStorage.SelectOneByUId(uid)
 
 	if err != nil {
 		zap.L().Error("err", zap.Any("err:", err.Error()))
@@ -50,10 +83,10 @@ func (u *userServiceImpl) FindUserByUsername(username string) (*dto.UserDTO, err
 	return &userDto, err
 }
 
-func (svc *userServiceImpl) FindUserByUsernameWithCache(username string) (*dto.UserDTO, error) {
+func (svc *userServiceImpl) FindUserByUIdWithCache(uid int) (*dto.UserDTO, error) {
 	user := dto.UserDTO{}
 	if CacheService != nil {
-		err := CacheService.Get(username, &user)
+		err := CacheService.Get(strconv.Itoa(uid), &user)
 		if err == nil {
 			zap.L().Info("user_dto", zap.Any("user", user))
 			return &user, nil
@@ -61,10 +94,10 @@ func (svc *userServiceImpl) FindUserByUsernameWithCache(username string) (*dto.U
 		}
 
 	}
-	dbUser, err := svc.FindUserByUsername(username)
+	dbUser, err := svc.FindUserByUId(1)
 
 	if CacheService != nil && dbUser != nil {
-		go CacheService.Set(username, dbUser, time.Minute*30)
+		go CacheService.Set(strconv.Itoa(uid), dbUser, time.Minute*30)
 	}
 	return dbUser, err
 
@@ -104,30 +137,28 @@ func (svc *userServiceImpl) FindUserByEmailWithRegister(email string) (*dto.User
 		return svc.createByEmail(email)
 	}
 
-	return udto,err
+	return udto, err
 }
 
+func (svc *userServiceImpl) createByEmail(email string) (*dto.UserDTO, error) {
 
-func(svc *userServiceImpl) createByEmail(email string)(*dto.UserDTO,error){
-
-	user :=entity.User{
-		Email: email,
-		Username: strings.Split(email,"@")[0],
+	user := entity.User{
+		Email:    email,
+		Username: strings.Split(email, "@")[0],
 		Password: "",
-
 	}
 
 	user.CreatedAt = time.Now()
 
-	uid,err:= storage.UserStorage.Insert(&user)
-	if err!=nil {
-		return nil,err
+	uid, err := storage.UserStorage.Insert(&user)
+	if err != nil {
+		return nil, err
 	}
 
 	return &dto.UserDTO{
-		Uid: int(uid),
+		Uid:      int(uid),
 		Username: user.Username,
 		Password: user.Password,
 		TenantId: user.TenantId,
-	},nil
+	}, nil
 }

@@ -1,7 +1,7 @@
 package utils
 
 import (
-	"github.com/bingfenglai/gt/domain/dto"
+	"github.com/bingfenglai/gt/common/model/session"
 	"github.com/bingfenglai/gt/oauth"
 
 	"github.com/bingfenglai/gt/service"
@@ -11,17 +11,17 @@ import (
 )
 
 // 获取当前会话当中的user信息
-func GetCurrentUser(req *http.Request) (*dto.UserDTO, error) {
-	username, err := GetCurrentUsername(req)
+func GetCurrentUser(req *http.Request) (*session.UserSessionInfo, error) {
+	uid, err := GetCurrentUId(req)
 	if err != nil {
 		return nil, err
 	}
 
-	return service.UserService.FindUserByUsernameWithCache(username)
+	return service.UserSessionService.GetSession(uid)
 
 }
 
-func GetCurrentUsername(req *http.Request) (string, error) {
+func GetCurrentUId(req *http.Request) (string, error) {
 	var token string
 	var flag bool
 	if token, flag = oauth.OAuth2Server.BearerAuth(req); !flag {
