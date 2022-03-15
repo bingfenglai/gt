@@ -27,6 +27,11 @@ func init() {
 	// groupV1.Use(handler.GinZapRecovery(true), handler.GinZapLogger(), handler.AuthorizationHandler(R))
 
 	R.StaticFile("/403.html", "./statics/403.html")
+
+	R.Handle(http.MethodGet,"/favicon.ico",func(c *gin.Context) {
+
+		c.Redirect(http.StatusFound,config.Conf.Server.Urlfavicon)
+	})
 }
 
 func GetV1() *gin.RouterGroup {
