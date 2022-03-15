@@ -2,7 +2,6 @@ package test
 
 import (
 	"fmt"
-
 	"github.com/bingfenglai/gt/domain/entity"
 	"github.com/bingfenglai/gt/global"
 
@@ -20,11 +19,11 @@ func TestAddUser(t *testing.T) {
 	password, _ := bcrypt.GenerateFromPassword([]byte("gt@2022"), bcrypt.MinCost)
 
 	zap.L().Info("密码", zap.String("password", string(password)))
-
+	//context.WithValue(nil,"t","tttttttttttttt")
 	u := entity.User{
-		Username:  "969391",
+		Username:  "aliyun_969392",
 		Password:  string(password),
-		Email:     "bingfenglai.dev@gmail.com",
+		Email:     "bingfengdev1@aliyun.com",
 		CreatedBy: 0,
 		UpdatedBy: 0,
 		Status:    0,

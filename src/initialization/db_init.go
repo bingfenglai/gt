@@ -2,6 +2,7 @@ package initialization
 
 import (
 	"encoding/json"
+	"github.com/bingfenglai/gt/gorm/callback"
 	"os"
 
 	"github.com/bingfenglai/gt/common/constants"
@@ -81,6 +82,10 @@ func initDbConfig() {
 }
 
 func registerCallback() {
+	err := global.DB.Callback().Create().Register("TenantCallback", callback.CreatedCallback)
+	if err!=nil {
+		panic(err)
+	}
 	// global.DB.Callback().Create().Remove("gorm:update_time_stamp")
 	//_ = global.DB.Callback().Create().Register("gorm:update_time_stamp", CreatedTimeCallback)
 	//_ = global.DB.Callback().Update().Replace("gorm:update_time_stamp", UpdatedTimeCallback)
