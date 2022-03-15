@@ -9,7 +9,7 @@ import (
 	"github.com/bingfenglai/gt/config"
 	"github.com/bingfenglai/gt/domain/result"
 	"github.com/bingfenglai/gt/oauth"
-	"github.com/bingfenglai/gt/service"
+	"github.com/bingfenglai/gt/oauth/utils"
 
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
@@ -48,7 +48,7 @@ func AuthorizationHandler(engine *gin.Engine) gin.HandlerFunc {
 			return
 		}
 
-		ti, err := oauth.OAuth2Server.ValidationBearerToken(context.Request)
+		us, err := utils.GetCurrentUser(req)
 
 		if err != nil {
 
@@ -57,17 +57,13 @@ func AuthorizationHandler(engine *gin.Engine) gin.HandlerFunc {
 			context.JSON(http.StatusUnauthorized, result.FailWithMsg(err.Error(), "令牌已过期，请重新登录"))
 			return
 		}
-		zap.L().Info("token info", zap.Any("current user", ti.GetUserID()))
-
-		us, err := service.UserSessionService.GetSession(ti.GetUserID())
-
-		if err != nil {
-
-			// 校验不通过，不再调用后续函数
+		currentAccessToken, _ := oauth.OAuth2Server.BearerAuth(req)
+		if us.AccessToken != currentAccessToken {
 			context.Abort()
-			context.JSON(http.StatusUnauthorized, result.FailWithMsg(err.Error(), "令牌已过期，请重新登录"))
+			context.JSON(http.StatusUnauthorized, result.FailWithMsg(err.Error(), "您的账号在别处登录，如是密码泄露请修改密码"))
 			return
 		}
+
 		flag := false
 		for _, api := range us.Apis {
 			if api.Method == "*" && api.Uri == "*" {

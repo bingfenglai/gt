@@ -14,7 +14,7 @@ import (
 func PasswordAuthorizationHandler(_ context.Context, username, password string) (userID string, err error) {
 
 	zap.L().Info("当前登录用户", zap.String("username", username))
-	user, err := service.UserService.FindUserByUId(username)
+	user, err := service.UserService.FindUserByUsername(username)
 
 	if err != nil {
 		return "", err

@@ -8,7 +8,7 @@ import (
 )
 
 // 用户会话缓存前缀
-const USER_SESSION_PREFIX = "session:%s"
+const USER_SESSION_PREFIX = "session:"
 
 // 用户会话信息
 type UserSessionInfo struct {

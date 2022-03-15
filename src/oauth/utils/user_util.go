@@ -5,7 +5,6 @@ import (
 	"github.com/bingfenglai/gt/oauth"
 
 	"github.com/bingfenglai/gt/service"
-	"github.com/go-oauth2/oauth2/v4/errors"
 
 	"net/http"
 )
@@ -22,13 +21,8 @@ func GetCurrentUser(req *http.Request) (*session.UserSessionInfo, error) {
 }
 
 func GetCurrentUId(req *http.Request) (string, error) {
-	var token string
-	var flag bool
-	if token, flag = oauth.OAuth2Server.BearerAuth(req); !flag {
-		return "", errors.ErrInvalidAccessToken
-	}
 
-	tokenInfo, err := oauth.OAuth2Server.CustomOAuthManager.LoadAccessToken(req.Context(), token)
+	tokenInfo, err := oauth.OAuth2Server.ValidationBearerToken(req)
 
 	if err != nil {
 		return "", err

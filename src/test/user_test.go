@@ -53,13 +53,13 @@ func TestCache(t *testing.T) {
 	log.Default().Println("不使用缓存", end-start)
 
 	start1 := time.Now().Nanosecond()
-	service.UserService.FindUserByUIdWithCache("969391")
+	service.UserService.FindUserByUIdWithCache(1)
 	end1 := time.Now().Nanosecond()
 
 	log.Default().Println("使用缓存1", end1-start1)
 
 	start2 := time.Now().Nanosecond()
-	service.UserService.FindUserByUIdWithCache("969391")
+	service.UserService.FindUserByUIdWithCache(1)
 	end2 := time.Now().Nanosecond()
 
 	log.Default().Println("使用缓存2", end2-start2)
