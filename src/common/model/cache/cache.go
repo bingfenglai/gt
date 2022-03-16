@@ -10,6 +10,13 @@ import (
 	"github.com/bingfenglai/gt/global"
 )
 
+var redisCacheImpl Cache
+
+var localCacheImpl Cache
+
+// 二级缓存策略 本地加远程redis
+var l2CacheImpl Cache
+
 var cacheImpl Cache
 
 type Cache interface {
@@ -29,15 +36,23 @@ func InitCache() {
 
 	zap.L().Info("初始化cache package")
 	if constants.RedisCache == config.Conf.Cache.CacheType {
-		cacheImpl = newRedisCache(global.RedisClient, time.Second*time.Duration(config.Conf.Cache.DefaultCacheTime))
-	} else {
-		zap.L().Warn("未配置缓存")
-
+		redisCacheImpl = newRedisCache(global.RedisClient, time.Minute*time.Duration(config.Conf.Cache.DefaultCacheTime))
+		cacheImpl = redisCacheImpl
+	} else if constants.LocalCache ==config.Conf.Cache.CacheType {
+		localCacheImpl = newLocalCache(time.Duration(config.Conf.Cache.DefaultCacheTime)*time.Minute, 1*time.Minute)
+		cacheImpl = localCacheImpl
+	}else if constants.L2Cache==config.Conf.Cache.CacheType {
+		redisCacheImpl = newRedisCache(global.RedisClient, time.Minute*time.Duration(config.Conf.Cache.DefaultCacheTime))
+		localCacheImpl = newLocalCache(time.Duration(config.Conf.Cache.DefaultCacheTime)*time.Minute, 1*time.Minute)
+		cacheImpl = newL2Cache(localCacheImpl,redisCacheImpl)
+	}else{
+		panic("缓存配置不正确：可选值：“local、redis与l2”")
 	}
+
+	
 
 }
 
 func GetCacheImpl() Cache {
-
 	return cacheImpl
 }

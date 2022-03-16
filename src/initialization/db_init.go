@@ -2,7 +2,6 @@ package initialization
 
 import (
 	"encoding/json"
-	"github.com/bingfenglai/gt/gorm/callback"
 	"os"
 
 	"github.com/bingfenglai/gt/common/constants"
@@ -82,10 +81,10 @@ func initDbConfig() {
 }
 
 func registerCallback() {
-	err := global.DB.Callback().Create().Register("TenantCallback", callback.CreatedCallback)
-	if err!=nil {
-		panic(err)
-	}
+	// err := global.DB.Callback().Create().Register("TenantCallback", callback.CreatedCallback)
+	// if err!=nil {
+	// 	panic(err)
+	// }
 	// global.DB.Callback().Create().Remove("gorm:update_time_stamp")
 	//_ = global.DB.Callback().Create().Register("gorm:update_time_stamp", CreatedTimeCallback)
 	//_ = global.DB.Callback().Update().Replace("gorm:update_time_stamp", UpdatedTimeCallback)
@@ -94,7 +93,7 @@ func registerCallback() {
 func initSchema() {
 	_ = global.DB.AutoMigrate(&entity.Role{}, &entity.Dict{}, &entity.DictItem{}, &entity.User{}, &entity.UserRole{},
 		&entity.Client{}, &entity.OAuthGrantType{}, &entity.ClientGrantType{},
-		&entity.ShortCodeGroup{}, &entity.ShortCode{}, &entity.ShortcodeLog{},entity.RoleApi{},&entity.Api{},&entity.Tenant{})
+		&entity.ShortCodeGroup{}, &entity.ShortCode{}, &entity.ShortcodeLog{}, entity.RoleApi{}, &entity.Api{}, &entity.Tenant{})
 	if config.Conf.DataBase.InitData {
 		initData()
 	}

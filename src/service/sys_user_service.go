@@ -141,10 +141,12 @@ func (svc *userServiceImpl) FindUserByEmailWithRegister(email string) (*dto.User
 }
 
 func (svc *userServiceImpl) createByEmail(email string) (*dto.UserDTO, error) {
-
+	s :=strings.Split(email, "@")
+	
+	username:= s[0]+strings.Split(s[1],".")[0]
 	user := entity.User{
 		Email:    email,
-		Username: strings.Split(email, "@")[0],
+		Username: username,
 		Password: "",
 	}
 

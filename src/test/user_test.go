@@ -21,7 +21,7 @@ func TestAddUser(t *testing.T) {
 	zap.L().Info("密码", zap.String("password", string(password)))
 	//context.WithValue(nil,"t","tttttttttttttt")
 	u := entity.User{
-		Username:  "aliyun_969392",
+		Username:  "aliyun_969393",
 		Password:  string(password),
 		Email:     "bingfengdev1@aliyun.com",
 		CreatedBy: 0,
@@ -76,4 +76,8 @@ func TestFindUser(t *testing.T){
 	}
 
 
+}
+
+func TestFindByEmailWithCreate(t testing.T){
+	
 }

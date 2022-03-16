@@ -3,7 +3,8 @@ package constants
 const (
   
   RedisCache = "redis"
-
+  LocalCache = "local"
+  L2Cache = "l2"
   
 )
 

@@ -80,6 +80,7 @@ func (receiver *redisCache) SetWithJson(key string, value interface{}, expiratio
 }
 
 func (receiver *redisCache) SetWithJsonAndDefaultExpiration(key string, value interface{}) (bool, string) {
+	
 	return receiver.SetWithJson(key, value, receiver.defaultExpiration)
 }
 
