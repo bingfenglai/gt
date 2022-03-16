@@ -3,10 +3,8 @@ module github.com/bingfenglai/gt
 go 1.16
 
 require (
-	github.com/cpuguy83/go-md2man/v2 v2.0.1 // indirect
 	github.com/fsnotify/fsnotify v1.5.1
 	github.com/gin-gonic/gin v1.7.7
-	github.com/go-oauth2/gin-server v1.0.0 // indirect
 	github.com/go-oauth2/oauth2/v4 v4.4.3
 	github.com/go-oauth2/redis/v4 v4.1.1
 	github.com/go-openapi/swag v0.21.1 // indirect
@@ -14,15 +12,15 @@ require (
 	github.com/go-redis/redis/v8 v8.11.4
 	github.com/go-sql-driver/mysql v1.6.0
 	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
-	github.com/google/uuid v1.3.0 // indirect
-	github.com/hako/branca v0.0.0-20200807062402-6052ac720505
+	github.com/google/uuid v1.3.0
 	github.com/jinzhu/gorm v1.9.16
-	github.com/jordan-wright/email v4.0.1-0.20210109023952-943e75fe5223+incompatible // indirect
+	github.com/jordan-wright/email v4.0.1-0.20210109023952-943e75fe5223+incompatible
 	//github.com/jinzhu/gorm v1.9.16
 	github.com/mailru/easyjson v0.7.7 // indirect
-	github.com/mileusna/useragent v1.0.2 // indirect
+	github.com/mileusna/useragent v1.0.2
 	github.com/natefinch/lumberjack v2.0.0+incompatible
-	github.com/patrickmn/go-cache v2.1.0+incompatible // indirect
+	github.com/patrickmn/go-cache v2.1.0+incompatible
+	github.com/rogpeppe/go-internal v1.8.0
 	github.com/spf13/viper v1.10.1
 	github.com/swaggo/gin-swagger v1.4.0
 	github.com/swaggo/swag v1.8.0
@@ -38,7 +36,6 @@ require (
 	golang.org/x/sys v0.0.0-20220227234510-4e6760a101f9 // indirect
 	golang.org/x/tools v0.1.9 // indirect
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0 // indirect
-	gopkg.in/oauth2.v3 v3.12.0 // indirect
 	gorm.io/driver/mysql v1.2.3
 	gorm.io/gorm v1.22.5
 

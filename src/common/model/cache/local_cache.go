@@ -4,6 +4,7 @@ import (
 	"encoding"
 	"encoding/json"
 	"fmt"
+	"go.uber.org/zap"
 	"strings"
 	"time"
 
@@ -42,20 +43,11 @@ func (lc *localCache) Set(key string, value interface{}, expiration time.Duratio
 	}
 }
 func (lc *localCache) SetWithDefaultExpiration(key string, value interface{}) error {
-
+	zap.L().Info("local cache  set key: "+key)
 	return lc.Set(key, value, lc.defaultExpiration)
 
 }
-func (lc *localCache) Get(key string, value interface{}) error {
 
-	ok, str := lc.GetWithJson(key)
-	if !ok {
-		return errors.New(str)
-	}
-
-	return lc.scan([]byte(str),value)
-
-}
 func (lc *localCache) SetWithJson(key string, value interface{}, expiration time.Duration) (bool, string) {
 
 	if key == "" {
@@ -78,6 +70,18 @@ func (lc *localCache) SetWithJsonAndDefaultExpiration(key string, value interfac
 	return lc.SetWithJson(key, value, lc.defaultExpiration)
 
 }
+
+func (lc *localCache) Get(key string, value interface{}) error {
+
+	ok, str := lc.GetWithJson(key)
+	if !ok {
+		return errors.New(str)
+	}
+
+	return lc.scan([]byte(str),value)
+
+}
+
 func (lc *localCache) GetWithJson(key string) (bool, string) {
 	val, ok := lc.cacheAdapter.Get(key)
 

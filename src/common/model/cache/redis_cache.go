@@ -43,18 +43,8 @@ func (receiver *redisCache) Set(key string, value interface{}, expiration time.D
 }
 
 func (receiver *redisCache) SetWithDefaultExpiration(key string, value interface{}) error {
-
+	zap.L().Info("redis set key: "+key)
 	return receiver.Set(key, value, receiver.defaultExpiration)
-}
-
-func (receiver *redisCache) Get(key string, value interface{}) error {
-	err := receiver.redisClient.Get(receiver.ctx, key).Scan(value)
-
-	if err != nil {
-		zap.L().Error("获取缓存值失败", zap.Error(err))
-	}
-
-	return err
 }
 
 func (receiver *redisCache) SetWithJson(key string, value interface{}, expiration time.Duration) (bool, string) {
@@ -73,8 +63,18 @@ func (receiver *redisCache) SetWithJson(key string, value interface{}, expiratio
 }
 
 func (receiver *redisCache) SetWithJsonAndDefaultExpiration(key string, value interface{}) (bool, string) {
-	
+
 	return receiver.SetWithJson(key, value, receiver.defaultExpiration)
+}
+
+func (receiver *redisCache) Get(key string, value interface{}) error {
+	err := receiver.redisClient.Get(receiver.ctx, key).Scan(value)
+
+	if err != nil {
+		zap.L().Error("获取缓存值失败", zap.Error(err))
+	}
+
+	return err
 }
 
 func (receiver *redisCache) GetWithJson(key string) (bool, string) {

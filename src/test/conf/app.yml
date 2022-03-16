@@ -12,7 +12,7 @@ database:
   maxOpen: 20
 
 Cache:
-  cacheType: local
+  cacheType: l2
   # 默认缓存秒数
   defaultCacheTime: 1800
 
