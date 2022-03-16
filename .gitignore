@@ -16,3 +16,5 @@
 /src/gt/log
 /src/gt/log/*.log
 /src/test/log
+/src/test/*.temp
+/src/*.dump
