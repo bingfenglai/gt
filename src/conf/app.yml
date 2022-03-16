@@ -16,7 +16,7 @@ database:
   InitSchema: false
 
 Cache:
-  cacheType: redis
+  cacheType: local
   # 默认缓存秒数
   defaultCacheTime: 1800
 

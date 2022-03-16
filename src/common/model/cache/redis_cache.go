@@ -28,9 +28,6 @@ func newRedisCache(redisClient *redis.Client, defaultExpiration time.Duration) *
 }
 
 func (receiver *redisCache) Set(key string, value interface{}, expiration time.Duration) error {
-	if &expiration == nil {
-		return receiver.SetWithDefaultExpiration(key, value)
-	}
 
 	if key == "" {
 		return errors.New("缓存key不能为空字符串")
@@ -61,10 +58,6 @@ func (receiver *redisCache) Get(key string, value interface{}) error {
 }
 
 func (receiver *redisCache) SetWithJson(key string, value interface{}, expiration time.Duration) (bool, string) {
-
-	if &expiration == nil {
-		return receiver.SetWithJsonAndDefaultExpiration(key, value)
-	}
 
 	value, _ = json.Marshal(value)
 

@@ -14,9 +14,6 @@ var redisCacheImpl Cache
 
 var localCacheImpl Cache
 
-// 二级缓存策略 本地加远程redis
-var l2CacheImpl Cache
-
 var cacheImpl Cache
 
 type Cache interface {

@@ -1,14 +1,16 @@
 package test
 
 import (
+	"testing"
+	"time"
+
 	"github.com/bingfenglai/gt/service"
 	"go.uber.org/zap"
-	"testing"
 )
 
-func TestSet(t *testing.T) {
+func TestSetWithJson(t *testing.T) {
 
-	ok, s := service.CacheService.SetWithJsonAndDefaultExpiration("11", 13)
+	ok, s := service.CacheService.SetWithJson("11", "Hello World!", time.Minute*18)
 
 	if !ok {
 		t.Log(s)
@@ -16,7 +18,7 @@ func TestSet(t *testing.T) {
 
 }
 
-func TestGet(t *testing.T) {
+func TestGetWithJson(t *testing.T) {
 	ok, s := service.CacheService.GetWithJson("11")
 
 	if ok {
@@ -26,3 +28,15 @@ func TestGet(t *testing.T) {
 	zap.L().Info(s, zap.Bool("flag", ok))
 
 }
+
+func TestGet(t *testing.T) {
+
+	s :=""
+	if err := service.CacheService.Get("11", &s); err != nil {
+		t.Error(err)
+	} else {
+		zap.L().Info("成功获取值", zap.Any("", s))
+	}
+
+}
+

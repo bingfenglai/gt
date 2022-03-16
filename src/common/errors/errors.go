@@ -26,3 +26,7 @@ var (
 
 	ErrTenantIdCannotBeEmpty = errors.New("租户标识不能为空")
 )
+
+func New(s string) error {
+	return errors.New(s)
+}

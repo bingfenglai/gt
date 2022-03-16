@@ -16,12 +16,14 @@ import (
 func initCacheConfig() {
 	b, _ := json.Marshal(config.Conf.Cache)
 	zap.L().Info("缓存配置" + string(b))
-	if config.Conf.Cache.CacheType == constants.RedisCache {
+	if config.Conf.Cache.CacheType == constants.RedisCache || constants.L2Cache == config.Conf.Cache.CacheType {
 		initRedisConfig()
-		cache.InitCache()
+		
 	} else {
 		zap.L().Warn("未配置缓存")
 	}
+
+	cache.InitCache()
 }
 
 func initRedisConfig() {
@@ -59,4 +61,7 @@ func initRedisConfig() {
 			break
 		}
 	}
+
+
+	
 }
