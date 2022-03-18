@@ -18,3 +18,4 @@
 /src/test/log
 /src/test/*.temp
 /src/*.dump
+/src/test/*.dump

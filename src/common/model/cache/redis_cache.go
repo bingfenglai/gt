@@ -4,9 +4,11 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"strconv"
 	"time"
 
 	"github.com/bingfenglai/gt/common/helper"
+	"github.com/bingfenglai/gt/config"
 
 	"github.com/go-redis/redis/v8"
 	"go.uber.org/zap"
@@ -43,7 +45,7 @@ func (receiver *redisCache) Set(key string, value interface{}, expiration time.D
 }
 
 func (receiver *redisCache) SetWithDefaultExpiration(key string, value interface{}) error {
-	zap.L().Info("redis set key: "+key)
+	zap.L().Info("redis set key: " + key)
 	return receiver.Set(key, value, receiver.defaultExpiration)
 }
 
@@ -105,5 +107,24 @@ func (receiver *redisCache) Delete(key ...string) (bool, int64) {
 	ok, _ := helper.CheckErr(err)
 
 	return ok, result
+
+}
+
+func (receiver *redisCache) GetKeyExpiredEventPubSub() *redis.PubSub{
+
+	redisConfig := config.Conf.Redis
+	return receiver.redisClient.Subscribe(receiver.ctx, "__keyevent@"+strconv.Itoa(redisConfig.DefaultDb)+"__:expired")
+
+}
+
+func(receiver *redisCache) GetKeySetEventPubSub()*redis.PubSub{
+	redisConfig := config.Conf.Redis
+	return receiver.redisClient.PSubscribe(receiver.ctx, "__keyevent@"+strconv.Itoa(redisConfig.DefaultDb)+"__:set")
+
+}
+
+func(receiver *redisCache) GetKeyDelEventPubSub()*redis.PubSub{
+	redisConfig := config.Conf.Redis
+	return receiver.redisClient.PSubscribe(receiver.ctx, "__keyevent@"+strconv.Itoa(redisConfig.DefaultDb)+"__:del")
 
 }
