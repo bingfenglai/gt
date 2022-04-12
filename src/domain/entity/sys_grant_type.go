@@ -1,6 +1,6 @@
 package entity
 
-import "github.com/jinzhu/gorm"
+import "gorm.io/gorm"
 
 // 系统授权模式
 type OAuthGrantType struct {

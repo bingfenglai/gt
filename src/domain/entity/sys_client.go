@@ -2,9 +2,8 @@ package entity
 
 import (
 	"github.com/bingfenglai/gt/global"
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 )
-
 type Client struct {
 	gorm.Model
 	// 客户端业务主键

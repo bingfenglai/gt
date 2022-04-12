@@ -12,7 +12,13 @@
 4. 访问统计
 ## 开发框架
 gin@v1.7.7
-
+go-oauth2@v4.4.3
+go-redis@v8.11.4
+gorm@v1.22.5
+jordan-wright/email@v4.0.1
+mileusna/useragent@v1.0.2
+patrickmn/go-cache@v2.1.0
+swag@v0.21.1
 ## 关于swagger的使用
 
 ```go

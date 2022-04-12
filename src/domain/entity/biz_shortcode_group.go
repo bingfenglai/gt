@@ -1,8 +1,7 @@
 package entity
 
 import (
-
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 )
 
 // GORM 倾向于约定，而不是配置。

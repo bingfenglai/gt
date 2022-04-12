@@ -4,8 +4,6 @@ import (
 	"github.com/go-redis/redis/v8"
 	"github.com/jordan-wright/email"
 	"gorm.io/gorm"
-
-	//"github.com/jinzhu/gorm"
 	"go.uber.org/zap"
 )
 

@@ -13,14 +13,11 @@ require (
 	github.com/go-sql-driver/mysql v1.6.0
 	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
 	github.com/google/uuid v1.3.0
-	github.com/jinzhu/gorm v1.9.16
 	github.com/jordan-wright/email v4.0.1-0.20210109023952-943e75fe5223+incompatible
-	//github.com/jinzhu/gorm v1.9.16
 	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/mileusna/useragent v1.0.2
 	github.com/natefinch/lumberjack v2.0.0+incompatible
 	github.com/patrickmn/go-cache v2.1.0+incompatible
-	github.com/rogpeppe/go-internal v1.8.0
 	github.com/spf13/viper v1.10.1
 	github.com/swaggo/gin-swagger v1.4.0
 	github.com/swaggo/swag v1.8.0

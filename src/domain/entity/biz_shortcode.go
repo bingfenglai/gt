@@ -2,7 +2,7 @@ package entity
 
 import (
 	"github.com/bingfenglai/gt/common/constants"
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 )
 
 type ShortCode struct {
