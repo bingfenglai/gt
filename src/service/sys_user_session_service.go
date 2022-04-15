@@ -5,6 +5,7 @@ import (
 	"github.com/bingfenglai/gt/common/model/session"
 	"github.com/go-oauth2/oauth2/v4/manage"
 	"go.uber.org/zap"
+	"strconv"
 )
 
 type IUserSessionService interface {
@@ -55,6 +56,14 @@ func (svc *userSessionServiceImpl) CreateWithAccessToken(uid, tenantId, accessTo
 
 	if err := svc.createRoleCheck(uid, tenantId, accessToken); err != nil {
 		return err
+	}
+
+	if tenantId == "" || tenantId == "-" {
+		id, _ := strconv.Atoi(uid)
+		if userDto, err := UserService.FindUserByUId(id); err == nil {
+			tenantId = strconv.Itoa(userDto.TenantId)
+		}
+
 	}
 
 	roles, err := RoleService.GetSessionRolesByUid(uid)

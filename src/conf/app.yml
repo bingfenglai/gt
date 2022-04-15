@@ -81,6 +81,6 @@ auth:
     - /oauth2/token
     - /swagger/*
     - /v1/captcha/*
-    - /v1/test/:name/print
+#    - /v1/test/*
     - /403.html
 
