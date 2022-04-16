@@ -1,6 +1,7 @@
 package storage
 
 import (
+	"context"
 	"errors"
 
 	"github.com/bingfenglai/gt/common/constants"
@@ -17,7 +18,7 @@ type IShortcodeStorage interface {
 	FindOriginalUrlByShortCode(shortcode string) (*entity.ShortCode, error)
 
 	// 存储或者更新
-	SaveOrUpdate(shortcode *entity.ShortCode) (bool, error)
+	SaveOrUpdate(ctx context.Context, shortcode *entity.ShortCode) (bool, error)
 }
 
 type ShortCodeDbStorage struct {
@@ -44,7 +45,7 @@ func (store *ShortCodeDbStorage) FindOriginalUrlByShortCode(code string) (*entit
 	return &shortcode, nil
 }
 
-func (store *ShortCodeDbStorage) SaveOrUpdate(shortcode *entity.ShortCode) (bool, error) {
+func (store *ShortCodeDbStorage) SaveOrUpdate(ctx context.Context, shortcode *entity.ShortCode) (bool, error) {
 
 	if shortcode == nil {
 		return false, errors.New("短码入参不能为空")
@@ -52,7 +53,7 @@ func (store *ShortCodeDbStorage) SaveOrUpdate(shortcode *entity.ShortCode) (bool
 
 	if shortcode.ID == 0 {
 
-		if err := global.DB.Create(shortcode).Error; err != nil {
+		if err := global.DB.WithContext(ctx).Create(shortcode).Error; err != nil {
 			return false, err
 		} else {
 			return true, nil

@@ -1,8 +1,13 @@
 package utils
 
 import (
+	"context"
+	"errors"
 	"github.com/bingfenglai/gt/common/model/session"
+	gtContext "github.com/bingfenglai/gt/context"
 	"github.com/bingfenglai/gt/oauth"
+	"github.com/gin-gonic/gin"
+	"strconv"
 
 	"github.com/bingfenglai/gt/service"
 
@@ -31,4 +36,34 @@ func GetCurrentUId(req *http.Request) (string, error) {
 	userID := tokenInfo.GetUserID()
 
 	return userID, nil
+}
+
+func GetCurrentUIdWithContext(ctx context.Context) (uid int64, err error) {
+
+	switch ctx.(type) {
+	case *gtContext.GtContext:
+		gtCtx := ctx.(*gtContext.GtContext)
+		uid = gtCtx.Value("uid").(int64)
+		return
+	case *gin.Context:
+		ginCtx := ctx.(*gin.Context)
+		id, err := GetCurrentUId(ginCtx.Request)
+		if err != nil {
+			return 0, err
+		}
+		idInt, err := strconv.Atoi(id)
+		uid = int64(idInt)
+		return
+	}
+
+	return uid, errors.New("context error")
+}
+
+func GetCurrentUserWithContext(ctx context.Context) (user *session.UserSessionInfo, err error) {
+	uid, err := GetCurrentUIdWithContext(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return service.UserSessionService.GetSession(strconv.FormatInt(uid, 10))
 }
