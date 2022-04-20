@@ -77,7 +77,7 @@ auth:
     - /favicon.ico
     - /v1/thread_callback
     - /v1/ping
-    - /v1/redirection
+    - /v1/redirection/:code
     - /oauth2/token
     - /swagger/*
     - /v1/captcha/*
