@@ -33,6 +33,8 @@ var ShortCodeLogService IShortCodeLogService
 
 var EmailService IEmailService
 
+var TenantService ITenantService
+
 func InitService() {
 
 	log.Default().Println("执行service初始化")
@@ -55,4 +57,6 @@ func InitService() {
 	RoleService = &roleServiceImpl{}
 
 	ApiSesvice = &apiServiceImpl{}
+
+	TenantService = &tenantService{}
 }

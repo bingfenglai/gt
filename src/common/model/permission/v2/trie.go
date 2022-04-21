@@ -70,6 +70,7 @@ func (node *TrieNode) InsertChild(paths []string)  {
 		if node.children[path]==nil{
 			n := new(TrieNode)
 			n.value = path
+			// 如果当前节点为插入链的最后一个节点，则设置为有效节点
 			if paths[len(paths)-1]==path {
 				n.wildChild = true
 			}else{
