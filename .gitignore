@@ -19,3 +19,6 @@
 /src/test/*.temp
 /src/*.dump
 /src/test/*.dump
+/backend/test/log
+/backend/test/cache.dump
+/backend/cache.dump
