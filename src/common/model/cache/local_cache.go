@@ -43,7 +43,7 @@ func (lc *localCache) Set(key string, value interface{}, expiration time.Duratio
 	}
 }
 func (lc *localCache) SetWithDefaultExpiration(key string, value interface{}) error {
-	zap.L().Info("local cache  set key: "+key)
+	zap.L().Info("local cache  set key: " + key)
 	return lc.Set(key, value, lc.defaultExpiration)
 
 }
@@ -74,11 +74,13 @@ func (lc *localCache) SetWithJsonAndDefaultExpiration(key string, value interfac
 func (lc *localCache) Get(key string, value interface{}) error {
 
 	ok, str := lc.GetWithJson(key)
-	if !ok {
+	if !ok || str == "null" {
 		return errors.New(str)
+	} else {
+		zap.L().Info("从本地缓存拿到数据", zap.Any(key, str))
 	}
 
-	return lc.scan([]byte(str),value)
+	return lc.scan([]byte(str), value)
 
 }
 
@@ -97,13 +99,13 @@ func (lc *localCache) GetWithJson(key string) (bool, string) {
 func (lc *localCache) Keys(keyPrefix string) (bool, []string) {
 	keys := make([]string, 0)
 	for k := range lc.cacheAdapter.Items() {
-		if strings.HasPrefix(k,keyPrefix) {
+		if strings.HasPrefix(k, keyPrefix) {
 			keys = append(keys, k)
 		}
 	}
 
-	if len(keys)==0 {
-		return false,nil
+	if len(keys) == 0 {
+		return false, nil
 	}
 
 	return true, keys
@@ -116,10 +118,10 @@ func (lc *localCache) Delete(key ...string) (bool, int64) {
 		lc.cacheAdapter.Delete(k)
 		count++
 	}
-	return true,int64(count)
+	return true, int64(count)
 }
 
-func (lc *localCache)scan(b []byte, v interface{}) error {
+func (lc *localCache) scan(b []byte, v interface{}) error {
 	switch v := v.(type) {
 	case nil:
 		return fmt.Errorf("local-cache: Scan(nil)")

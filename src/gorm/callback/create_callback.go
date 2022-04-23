@@ -10,14 +10,18 @@ import (
 
 func CreateWithTenantCallback(db *gorm.DB) {
 	ctx := db.Statement.Context
-	gCtx := ctx.(*gin.Context)
 	var tenantId = ""
 	var uid = -1
-	if gCtx != nil {
-		if user, err := utils.GetCurrentUser(gCtx.Request); err == nil {
-			tenantId = user.TenantId
-			uid, _ = strconv.Atoi(user.Uid)
-			zap.L().Info("当前用户", zap.Any("user", user))
+
+	switch ctx.(type) {
+	case *gin.Context:
+		gCtx := ctx.(*gin.Context)
+		if gCtx != nil {
+			if user, err := utils.GetCurrentUser(gCtx.Request); err == nil {
+				tenantId = user.TenantId
+				uid, _ = strconv.Atoi(user.Uid)
+				zap.L().Info("当前用户", zap.Any("user", user))
+			}
 		}
 	}
 

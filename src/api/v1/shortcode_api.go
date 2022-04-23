@@ -28,7 +28,7 @@ func GenShortCode(ctx *gin.Context) {
 
 	zap.L().Info("接收到参数", zap.Reflect("genParams", genParams))
 
-	sc, err := service.ShortCodeService.CreateShortCodeWithContext(genParams, ctx)
+	sc, err := service.ShortCodeService.CreateShortCodeWithContext(&genParams, ctx)
 
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, err)

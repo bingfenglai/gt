@@ -1,6 +1,7 @@
 package entity
 
 import (
+	"encoding/json"
 	"github.com/bingfenglai/gt/common/constants"
 	"gorm.io/gorm"
 )
@@ -37,4 +38,12 @@ func CreateShortCode(original, md5, shortCode string, codeType int) (*ShortCode,
 		Status:    constants.Normal_Status,
 	}, nil
 
+}
+
+func (i *ShortCode) MarshalBinary() ([]byte, error) {
+	return json.Marshal(i)
+}
+
+func (i *ShortCode) UnmarshalBinary(data []byte) error {
+	return json.Unmarshal(data, &i)
 }

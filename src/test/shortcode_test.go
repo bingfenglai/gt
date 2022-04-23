@@ -48,7 +48,7 @@ func TestCreate(t *testing.T) {
 }
 
 func TestFindLinkByCode(t *testing.T) {
-	if url, err := service.ShortCodeService.FindLinkByCode("D84Tyx"); err != nil {
+	if url, err := service.ShortCodeService.FindLinkByCode("JB29P5"); err != nil {
 		zap.L().Error(err.Error())
 	} else {
 		zap.L().Info("url", zap.Any("", url))

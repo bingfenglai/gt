@@ -44,6 +44,7 @@ func (receiver *l2Cache) Get(key string, value interface{}) (err error) {
 	if err == nil {
 		return
 	}
+	zap.L().Warn("本地缓存未获取到数据，将从远程获取")
 	err = receiver.l2CacheAdapter.Get(key, value)
 	if err == nil {
 		// TODO 这里应该先获取远端缓存key的过期时间，再设值
@@ -108,7 +109,7 @@ func (receiver *l2Cache) handleL2CacheKeyExpiredEvent() {
 	for {
 		zap.L().Info("wait...")
 		msg := <-pubSub.Channel()
-		zap.L().Info("收到expire消息\n",zap.Any("Pattern",msg.Pattern), zap.Any("payload",msg.Payload),zap.Any("Payload slice", msg.PayloadSlice))
+		zap.L().Info("收到expire消息\n", zap.Any("Pattern", msg.Pattern), zap.Any("payload", msg.Payload), zap.Any("Payload slice", msg.PayloadSlice))
 		receiver.l1CacheAdapter.Delete(msg.Payload)
 	}
 
@@ -123,13 +124,12 @@ func (receiver *l2Cache) handleL2CacheKeySetEvent() {
 	for {
 		zap.L().Info("wait...")
 		msg := <-pubSub.Channel()
-		zap.L().Info("收到set消息\n",zap.Any("Pattern",msg.Pattern), zap.Any("payload",msg.Payload),zap.Any("Payload slice", msg.PayloadSlice))
+		zap.L().Info("收到set消息\n", zap.Any("Pattern", msg.Pattern), zap.Any("payload", msg.Payload), zap.Any("Payload slice", msg.PayloadSlice))
 		receiver.l1CacheAdapter.Delete(msg.Payload)
 
 	}
 
 }
-
 
 func (receiver *l2Cache) handleL2CacheDelKeyEvent() {
 
@@ -140,12 +140,9 @@ func (receiver *l2Cache) handleL2CacheDelKeyEvent() {
 	for {
 		zap.L().Info("wait...")
 		msg := <-pubSub.Channel()
-		zap.L().Info("收到del消息\n",zap.Any("Pattern",msg.Pattern), zap.Any("payload",msg.Payload),zap.Any("Payload slice", msg.PayloadSlice))
+		zap.L().Info("收到del消息\n", zap.Any("Pattern", msg.Pattern), zap.Any("payload", msg.Payload), zap.Any("Payload slice", msg.PayloadSlice))
 		receiver.l1CacheAdapter.Delete(msg.Payload)
 
 	}
 
 }
-
-
-

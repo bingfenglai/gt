@@ -4,8 +4,8 @@ import (
 	"context"
 	"errors"
 	"github.com/bingfenglai/gt/domain/params"
-	// "github.com/bingfenglai/gt/oauth/utils"
 	"gorm.io/gorm"
+
 	"time"
 
 	"github.com/bingfenglai/gt/common/constants"
@@ -26,7 +26,7 @@ type IShortCodeService interface {
 	// 创建短码并保存
 	CreateShortCode(url string, isPerpetual, isMultiplex bool) (*entity.ShortCode, error)
 
-	CreateShortCodeWithContext(params params.GenShortCodeParams, ctx context.Context) (*entity.ShortCode, error)
+	CreateShortCodeWithContext(params *params.GenShortCodeParams, ctx context.Context) (*entity.ShortCode, error)
 	// 根据短码查找原链接
 	FindLinkByCode(code string) (*entity.ShortCode, error)
 
@@ -37,7 +37,7 @@ type IShortCodeService interface {
 type shortCodeServiceImpl struct {
 }
 
-func (svc *shortCodeServiceImpl) CreateShortCodeWithContext(params params.GenShortCodeParams, ctx context.Context) (sc *entity.ShortCode, err error) {
+func (svc *shortCodeServiceImpl) CreateShortCodeWithContext(params *params.GenShortCodeParams, ctx context.Context) (sc *entity.ShortCode, err error) {
 
 	if err = params.Check(); err != nil {
 		return
@@ -61,7 +61,7 @@ func (svc *shortCodeServiceImpl) CreateShortCodeWithContext(params params.GenSho
 
 	}
 
-	code, err := svc.genShortCode(params.OriginalLink, shortcodegen.Md5Gen)
+	code, err := svc.GenShortCode(params.OriginalLink, shortcodegen.Md5Gen)
 
 	if err != nil {
 		return nil, err
@@ -144,8 +144,11 @@ func (svc *shortCodeServiceImpl) FindLinkByCode(code string) (sc *entity.ShortCo
 
 	}
 
+	sc = &entity.ShortCode{}
 	if err = CacheService.Get(SHORTCODE_CACHE_PREFIX+code, sc); err != nil {
 		sc, err = storage.ShortCodeStorage.FindOriginalUrlByShortCode(code)
+	} else {
+		zap.L().Info("", zap.Any("", sc))
 	}
 
 	return
@@ -154,19 +157,21 @@ func (svc *shortCodeServiceImpl) FindLinkByCode(code string) (sc *entity.ShortCo
 
 func (svc *shortCodeServiceImpl) createPerpetual(url string) (sc *entity.ShortCode, err error) {
 	var code = ""
-	if code, err = svc.genShortCode(url, shortcodegen.MathRoundGen); err == nil {
+	if code, err = svc.GenShortCode(url, shortcodegen.MathRoundGen); err == nil {
 		urlMd5 := helper.ToMd5String32(url)
+		zap.L().Info("code", zap.Any("c", code))
 		sc, err = entity.CreateShortCode(url, urlMd5, code, constants.Anonymous_Code_Type)
 	}
 
 	if sc != nil {
-		CacheService.Set(SHORTCODE_CACHE_PREFIX+code, sc, time.Minute*30)
+		zap.L().Info("临时短码只存储于内存数据库")
+		err = CacheService.Set(SHORTCODE_CACHE_PREFIX+code, sc, time.Minute*30)
 	}
 
 	return
 }
 
-func (svc shortCodeServiceImpl) genShortCode(url, genMethod string) (code string, err error) {
+func (svc shortCodeServiceImpl) GenShortCode(url, genMethod string) (code string, err error) {
 
 	if gen, err := shortcodegen.GetShortCodeGeneratorByMethod(genMethod); err == nil {
 
@@ -174,19 +179,23 @@ func (svc shortCodeServiceImpl) genShortCode(url, genMethod string) (code string
 
 		if err != nil {
 			zap.L().Error(err.Error())
-			return "",err
+			return "", err
 		}
 		var code = ""
 		for _, c := range codes {
-			if _, err := svc.FindLinkByCode(code); err != nil {
+			zap.L().Info("验证当前code是否已被使用", zap.String("code", c))
+			if s, err := svc.FindLinkByCode(c); err != nil {
+				zap.L().Info("sc", zap.Any("sc", s))
+				zap.L().Error(err.Error())
 				if errors.Is(err, gorm.ErrRecordNotFound) {
 					code = c
+					return code, nil
 				}
 			}
 		}
 
 		if code == "" {
-			return svc.genShortCode(url, shortcodegen.MathRoundGen)
+			return svc.GenShortCode(url, shortcodegen.MathRoundGen)
 		}
 
 	}
