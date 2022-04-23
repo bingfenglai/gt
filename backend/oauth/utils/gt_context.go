@@ -1,8 +1,7 @@
-package context
+package utils
 
 import (
 	"github.com/bingfenglai/gt/common/model/session"
-	"github.com/bingfenglai/gt/oauth/utils"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/net/context"
 	"time"
@@ -13,7 +12,7 @@ type GtContext struct {
 }
 
 func NewGtContext(ctx *gin.Context) (context.Context, error) {
-	user, err := utils.GetCurrentUser(ctx.Request)
+	user, err := GetCurrentUser(ctx.Request)
 	if err != nil {
 		return nil, err
 	}

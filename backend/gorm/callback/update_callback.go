@@ -23,6 +23,10 @@ func UpdateWithTenantCallback(db *gorm.DB) {
 				zap.L().Info("当前用户", zap.Any("user", user))
 			}
 		}
+	case *utils.GtContext:
+		gtContext := ctx.(*utils.GtContext)
+		tenantId = gtContext.UserSession.TenantId
+		uid, _ = strconv.Atoi(gtContext.UserSession.Uid)
 	}
 
 	if db.Error == nil && db.Statement.Error == nil {

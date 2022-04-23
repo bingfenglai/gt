@@ -22,5 +22,5 @@ func (svc *tenantService) Create(param params.TenantCreateParams, ctx context.Co
 
 	tenant := entity.CreateTenant(param.Name, param.Remark)
 
-	return storage.TenantStorage.Insert(tenant)
+	return storage.TenantStorage.Insert(tenant, ctx)
 }

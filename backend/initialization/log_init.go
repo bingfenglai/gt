@@ -37,7 +37,7 @@ func getEncoder() zapcore.Encoder {
 	encoderConfig.EncodeDuration = zapcore.SecondsDurationEncoder
 	encoderConfig.EncodeCaller = zapcore.ShortCallerEncoder
 
-	if config.Conf.Server.Mode == gin.DebugMode {
+	if config.Conf.Server.Mode != gin.ReleaseMode {
 		return zapcore.NewConsoleEncoder(encoderConfig)
 	}
 

@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"github.com/bingfenglai/gt/common/model/session"
-	gtContext "github.com/bingfenglai/gt/context"
 	"github.com/bingfenglai/gt/oauth"
 	"github.com/gin-gonic/gin"
 	"strconv"
@@ -41,8 +40,8 @@ func GetCurrentUId(req *http.Request) (string, error) {
 func GetCurrentUIdWithContext(ctx context.Context) (uid int64, err error) {
 
 	switch ctx.(type) {
-	case *gtContext.GtContext:
-		gtCtx := ctx.(*gtContext.GtContext)
+	case *GtContext:
+		gtCtx := ctx.(*GtContext)
 		uid = gtCtx.Value("uid").(int64)
 		return
 	case *gin.Context:
@@ -53,7 +52,7 @@ func GetCurrentUIdWithContext(ctx context.Context) (uid int64, err error) {
 		}
 		idInt, err := strconv.Atoi(id)
 		uid = int64(idInt)
-		return uid,nil
+		return uid, nil
 	}
 
 	return uid, errors.New("context error")
