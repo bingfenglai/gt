@@ -78,4 +78,15 @@ paths:
       summary: 生成短链接
       tags:
       - 短链接API
+  /v1/tenant:
+    post:
+      description: 创建租户
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+      summary: 创建租户
+      tags:
+      - 租户API
 swagger: "2.0"

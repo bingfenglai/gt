@@ -10,6 +10,8 @@ type GenShortCodeParams struct {
 	OriginalLink string `json:"original_link" binding:"required"`
 	GroupId      int64  `json:"group_id"`
 	IsMultiplex  bool   `json:"is_multiplex"`
+	// true 临时链接 false 永久链接
+	IsPerpetual bool 	`json:"is_perpetual"`
 }
 
 func (param *GenShortCodeParams) Check() error {

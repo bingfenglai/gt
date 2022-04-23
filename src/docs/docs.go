@@ -134,6 +134,23 @@ var doc = `{
                     }
                 }
             }
+        },
+        "/v1/tenant": {
+            "post": {
+                "description": "创建租户",
+                "tags": [
+                    "租户API"
+                ],
+                "summary": "创建租户",
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
         }
     }
 }`

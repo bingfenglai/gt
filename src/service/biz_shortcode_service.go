@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 	"github.com/bingfenglai/gt/domain/params"
-	"github.com/bingfenglai/gt/oauth/utils"
+	// "github.com/bingfenglai/gt/oauth/utils"
 	"gorm.io/gorm"
 	"time"
 
@@ -43,7 +43,8 @@ func (svc *shortCodeServiceImpl) CreateShortCodeWithContext(params params.GenSho
 		return
 	}
 
-	if _, err := utils.GetCurrentUIdWithContext(ctx); err != nil {
+	// 游客访问
+	if params.IsPerpetual {
 		return svc.createPerpetual(params.OriginalLink)
 	}
 
@@ -173,7 +174,7 @@ func (svc shortCodeServiceImpl) genShortCode(url, genMethod string) (code string
 
 		if err != nil {
 			zap.L().Error(err.Error())
-			return
+			return "",err
 		}
 		var code = ""
 		for _, c := range codes {

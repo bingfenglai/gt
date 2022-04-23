@@ -53,7 +53,7 @@ func GetCurrentUIdWithContext(ctx context.Context) (uid int64, err error) {
 		}
 		idInt, err := strconv.Atoi(id)
 		uid = int64(idInt)
-		return
+		return uid,nil
 	}
 
 	return uid, errors.New("context error")

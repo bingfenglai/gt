@@ -19,7 +19,13 @@ import (
 // @Router /v1/shortCode [post]
 func GenShortCode(ctx *gin.Context) {
 	genParams := params.GenShortCodeParams{}
-	_ = ctx.ShouldBindBodyWith(&genParams, binding.JSON)
+	err := ctx.ShouldBindBodyWith(&genParams, binding.JSON)
+
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, err)
+		return
+	}
+
 	zap.L().Info("接收到参数", zap.Reflect("genParams", genParams))
 
 	sc, err := service.ShortCodeService.CreateShortCodeWithContext(genParams, ctx)
