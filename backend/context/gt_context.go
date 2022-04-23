@@ -1,15 +1,23 @@
 package context
 
 import (
+	"github.com/bingfenglai/gt/common/model/session"
+	"github.com/bingfenglai/gt/oauth/utils"
 	"github.com/gin-gonic/gin"
+	"golang.org/x/net/context"
 	"time"
 )
 
 type GtContext struct {
+	UserSession *session.UserSessionInfo
 }
 
-func NewGtContext(ctx *gin.Context) {
-
+func NewGtContext(ctx *gin.Context) (context.Context, error) {
+	user, err := utils.GetCurrentUser(ctx.Request)
+	if err != nil {
+		return nil, err
+	}
+	return &GtContext{UserSession: user}, nil
 }
 
 func (*GtContext) Deadline() (deadline time.Time, ok bool) {
