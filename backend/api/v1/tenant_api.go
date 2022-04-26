@@ -32,12 +32,24 @@ func CreateTenant(ctx *gin.Context) {
 	}else{
 		ctx.JSON(http.StatusOK,result.Ok(nil))
 	}
+}
 
 
-	
+// @Tags 租户API
+// @Summary 获取租户列表
+// @Description 获取租户列表
+// @Success 200 {string} string  "ok"
+// @Router /v1/tenant [post]
+func TenantList(ctx *gin.Context){
+	if list,err := service.TenantService.List();err==nil{
+		ctx.JSON(http.StatusOK,result.Ok(list))
+	}else{
+		ctx.JSON(http.StatusBadRequest,result.Fail(err))
+	}
 }
 
 func init()  {
 	
 	router.GetV1().POST("/tenant",CreateTenant)
+	router.GetV1().GET("/tenant/list",TenantList)
 }

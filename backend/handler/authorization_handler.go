@@ -58,9 +58,10 @@ func AuthorizationHandler(engine *gin.Engine) gin.HandlerFunc {
 			return
 		}
 		currentAccessToken, _ := oauth.OAuth2Server.BearerAuth(req)
+
 		if us.AccessToken != currentAccessToken {
+			context.JSON(http.StatusForbidden, result.Fail("您的账号在别处登录，如是密码泄露请修改密码"))
 			context.Abort()
-			context.JSON(http.StatusUnauthorized, result.FailWithMsg(err.Error(), "您的账号在别处登录，如是密码泄露请修改密码"))
 			return
 		}
 

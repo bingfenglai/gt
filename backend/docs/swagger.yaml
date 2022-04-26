@@ -69,24 +69,24 @@ paths:
       - 短链接API
   /v1/shortCode:
     post:
-      description: 生成短链接
+      description: 获取个人信息
       responses:
         "200":
           description: ok
           schema:
             type: string
-      summary: 生成短链接
+      summary: 获取个人信息
       tags:
-      - 短链接API
+      - 用户API
   /v1/tenant:
     post:
-      description: 创建租户
+      description: 获取租户列表
       responses:
         "200":
           description: ok
           schema:
             type: string
-      summary: 创建租户
+      summary: 获取租户列表
       tags:
       - 租户API
 swagger: "2.0"

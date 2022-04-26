@@ -1,11 +1,13 @@
 package test
 
 import (
+	"testing"
+
 	"github.com/bingfenglai/gt/common/model/session"
 	"github.com/bingfenglai/gt/domain/params"
 	"github.com/bingfenglai/gt/oauth/utils"
 	"github.com/bingfenglai/gt/service"
-	"testing"
+	"go.uber.org/zap"
 )
 
 func TestCreateTenant(t *testing.T) {
@@ -16,6 +18,17 @@ func TestCreateTenant(t *testing.T) {
 
 	ctx := utils.GtContext{UserSession: &session.UserSessionInfo{Uid: "13", TenantId: "13"}}
 	if err := service.TenantService.Create(createParams, &ctx); err != nil {
+		t.Error(err)
+	}
+}
+
+func TestList(t *testing.T){
+
+	if list,err := service.TenantService.List();err==nil{
+		for _, v := range list {
+			zap.L().Info("租户信息\n",zap.Any("tenant",v))
+		}
+	}else{
 		t.Error(err)
 	}
 }

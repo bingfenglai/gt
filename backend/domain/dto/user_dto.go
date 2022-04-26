@@ -5,10 +5,10 @@ import (
 )
 
 type UserDTO struct {
-	Uid int
-	TenantId int
-	Username string
-	Password string
+	Uid int `json:"uid"`
+	TenantId int `json:"tenant_id"`
+	Username string	`json:"username"`
+	Password string `json:"-"`
 }
 
 //func (user *UserDTO) GetUsername() string {
