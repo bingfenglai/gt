@@ -8,6 +8,7 @@ import (
 	"github.com/bingfenglai/gt/oauth/handler"
 
 	"github.com/bingfenglai/gt/oauth/server"
+	"github.com/go-oauth2/oauth2/v4"
 	"github.com/go-oauth2/oauth2/v4/errors"
 )
 
@@ -42,7 +43,6 @@ func initOAuth2Server() {
 		re = errors.NewResponse(errors.ErrInvalidRequest, http.StatusOK)
 		re.Description = err.Error()
 		re.ErrorCode = 1
-		// re.Header.Add("Content-Type","application/json; charset=utf-8")
 		return
 	})
 
@@ -52,11 +52,13 @@ func initOAuth2Server() {
 	})
 
 	// 设置认证成功后响应的扩展字段
-	// oauth.OAuth2Server.SetExtensionFieldsHandler( func(ti oauth2.TokenInfo) (fieldsValue map[string]interface{}) {
-	// 	fieldsValue = make(map[string]interface{})
-	// 	fieldsValue["error_code"] = constants.Normal_Status
-	// 	return
-	// })
+	oauth.OAuth2Server.SetExtensionFieldsHandler( func(ti oauth2.TokenInfo) (fieldsValue map[string]interface{}) {
+		
+		
+		fieldsValue = make(map[string]interface{})
+		fieldsValue["msg"] = "Welcome to gt. Here is a short link one-stop solution."
+		return
+	})
 
 	oauth.OAuth2Server.SetResponseTokenHandler(handler.ResponseTokenHandler)
 

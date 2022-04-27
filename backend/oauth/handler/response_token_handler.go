@@ -20,6 +20,7 @@ func ResponseTokenHandler(w http.ResponseWriter, data map[string]interface{}, he
 		r = result.FailWithMsg(m, nil)
 		data["error_code"] = 0
 		errFlag = false
+		w.WriteHeader(400)
 	}
 
 	w.Header().Add("Content-Type", "application/json; charset=utf-8")
