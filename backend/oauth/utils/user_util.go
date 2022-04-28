@@ -3,12 +3,11 @@ package utils
 import (
 	"context"
 	"errors"
+	"strconv"
+
 	"github.com/bingfenglai/gt/common/model/session"
 	"github.com/bingfenglai/gt/oauth"
 	"github.com/gin-gonic/gin"
-	"strconv"
-
-	"github.com/bingfenglai/gt/service"
 
 	"net/http"
 )
@@ -20,7 +19,7 @@ func GetCurrentUser(req *http.Request) (*session.UserSessionInfo, error) {
 		return nil, err
 	}
 
-	return service.UserSessionService.GetSession(uid)
+	return session.UserSessionService.GetSession(uid)
 
 }
 
@@ -64,5 +63,14 @@ func GetCurrentUserWithContext(ctx context.Context) (user *session.UserSessionIn
 		return nil, err
 	}
 
-	return service.UserSessionService.GetSession(strconv.FormatInt(uid, 10))
+	return session.UserSessionService.GetSession(strconv.FormatInt(uid, 10))
+}
+
+func GetCurrentTenantId(ctx context.Context)(tenantId int,err error){
+	if user,err := GetCurrentUserWithContext(ctx);err==nil&&user.TenantId!="-"{
+		
+		return strconv.Atoi(user.TenantId)
+		
+	}
+	return -1,err
 }

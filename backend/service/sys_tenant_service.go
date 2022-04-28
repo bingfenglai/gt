@@ -5,6 +5,8 @@ import (
 
 	"github.com/bingfenglai/gt/domain/entity"
 	"github.com/bingfenglai/gt/domain/response"
+	"go.uber.org/zap"
+
 	"github.com/bingfenglai/gt/storage"
 
 	"github.com/bingfenglai/gt/domain/params"
@@ -23,7 +25,9 @@ func (svc *tenantService) Create(param params.TenantCreateParams, ctx context.Co
 		return err
 	}
 
-	tenant := entity.CreateTenant(param.Name, param.Remark)
+	zap.L().Info("创建租户入参",zap.Any("param",param))
+	tenant := entity.CreateTenant(param.ParentId,param.Name, param.Remark)
+
 
 	return storage.TenantStorage.Insert(tenant, ctx)
 }

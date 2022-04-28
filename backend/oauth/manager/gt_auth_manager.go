@@ -3,9 +3,10 @@ package manager
 import (
 	"context"
 
+	"github.com/bingfenglai/gt/common/model/session"
 	"github.com/bingfenglai/gt/config"
 	"github.com/bingfenglai/gt/oauth/store"
-	"github.com/bingfenglai/gt/service"
+
 	"github.com/go-oauth2/oauth2/v4"
 	"github.com/go-oauth2/oauth2/v4/manage"
 	oredis "github.com/go-oauth2/redis/v4"
@@ -48,7 +49,7 @@ func (m *CustomOAuthManager) GenerateAccessToken(ctx context.Context, gt oauth2.
 	gt = oauth2.PasswordCredentials
 	accessToken,err = m.originalManager.GenerateAccessToken(ctx, gt, tgr)
 	if err==nil {
-		err = service.UserSessionService.CreateWithAccessToken(accessToken.GetUserID(),"-",accessToken.GetAccess())
+		err = session.UserSessionService.CreateWithAccessToken(accessToken.GetUserID(),"-",accessToken.GetAccess())
 	}
 	return 
 

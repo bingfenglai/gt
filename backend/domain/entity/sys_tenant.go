@@ -19,11 +19,12 @@ func (t *Tenant) TableName() string {
 	return "tb_sys_tenant"
 }
 
-func CreateTenant(tenantName, remark string) (tenant *Tenant) {
+func CreateTenant(parentId int,tenantName string, remark string) (tenant *Tenant) {
 	tenant = &Tenant{
 		Name:   tenantName,
 		Remark: remark,
 		Code:   "",
+		ParentId: uint(parentId),
 	}
 
 	return

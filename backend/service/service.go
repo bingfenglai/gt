@@ -16,9 +16,6 @@ var CacheService cache.Cache
 var CaptchaService ICaptchaService
 
 var UserService IUserService
-
-var UserSessionService IUserSessionService
-
 var RoleService IRoleService
 
 var ApiSesvice IApiService
@@ -51,8 +48,6 @@ func InitService() {
 	OAuthClientService = &oAuthClientServiceImpl{}
 
 	EmailService = &emailServiceImpl{}
-
-	UserSessionService = &userSessionServiceImpl{}
 
 	RoleService = &roleServiceImpl{}
 

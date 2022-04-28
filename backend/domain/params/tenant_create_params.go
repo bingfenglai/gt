@@ -3,8 +3,9 @@ package params
 import "errors"
 
 type TenantCreateParams struct {
-	Name   string
-	Remark string
+	Name   string `json:"name"`
+	Remark string `json:"remark"`
+	ParentId int `json:"-"`
 }
 
 func (p *TenantCreateParams) Check() error {

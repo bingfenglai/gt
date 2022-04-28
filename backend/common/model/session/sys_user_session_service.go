@@ -1,16 +1,18 @@
-package service
+package session
 
 import (
+	"strconv"
+
 	"github.com/bingfenglai/gt/common/errors"
-	"github.com/bingfenglai/gt/common/model/session"
+	"github.com/bingfenglai/gt/service"
+
 	"github.com/go-oauth2/oauth2/v4/manage"
 	"go.uber.org/zap"
-	"strconv"
 )
 
 type IUserSessionService interface {
 	// 跟据用户标识获取用户会话信息
-	GetSession(uid string) (*session.UserSessionInfo, error)
+	GetSession(uid string) (*UserSessionInfo, error)
 
 	Create(uid string) error
 
@@ -22,14 +24,14 @@ type IUserSessionService interface {
 type userSessionServiceImpl struct {
 }
 
-func (svc *userSessionServiceImpl) GetSession(uid string) (*session.UserSessionInfo, error) {
-
+func (svc *userSessionServiceImpl) GetSession(uid string) (*UserSessionInfo, error) {
+	
 	if uid == "" {
 		return nil, errors.ErrUserIDCannotBeEmpty
 	}
 
-	us := session.UserSessionInfo{}
-	if err := CacheService.Get(session.USER_SESSION_PREFIX+uid, &us); err != nil {
+	us := UserSessionInfo{}
+	if err := service.CacheService.Get(USER_SESSION_PREFIX+uid, &us); err != nil {
 		zap.L().Error(err.Error())
 		return nil, errors.ErrUserNotFound
 	}
@@ -60,13 +62,13 @@ func (svc *userSessionServiceImpl) CreateWithAccessToken(uid, tenantId, accessTo
 
 	if tenantId == "" || tenantId == "-" {
 		id, _ := strconv.Atoi(uid)
-		if userDto, err := UserService.FindUserByUId(id); err == nil {
+		if userDto, err := service.UserService.FindUserByUId(id); err == nil {
 			tenantId = strconv.Itoa(userDto.TenantId)
 		}
 
 	}
 
-	roles, err := RoleService.GetSessionRolesByUid(uid)
+	roles, err := service.RoleService.GetSessionRolesByUid(uid)
 
 	if err != nil {
 		return err
@@ -78,15 +80,15 @@ func (svc *userSessionServiceImpl) CreateWithAccessToken(uid, tenantId, accessTo
 		roleIds[i] = role.RoleId
 	}
 
-	apis, err := ApiSesvice.GetSessionApisByRoleIds(roleIds)
+	apis, err := service.ApiSesvice.GetSessionApisByRoleIds(roleIds)
 
 	if err != nil {
 		return err
 	}
 
-	us, _ := session.NewUserSession(uid, tenantId, accessToken, roles, apis)
+	us, _ := NewUserSession(uid, tenantId, accessToken, roles, apis)
 
-	err = CacheService.Set(session.USER_SESSION_PREFIX+uid, us, manage.DefaultPasswordTokenCfg.AccessTokenExp)
+	err = service.CacheService.Set(USER_SESSION_PREFIX+uid, us, manage.DefaultPasswordTokenCfg.AccessTokenExp)
 
 	return err
 }
@@ -106,3 +108,4 @@ func (svc *userSessionServiceImpl) createRoleCheck(uid, tenantId, accessToken st
 
 	return nil
 }
+
