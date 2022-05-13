@@ -57,7 +57,14 @@ func (s *CustomOAuthServer) ValidationTokenRequest(r *http.Request) (oauth2.Gran
 		(s.originalServer.Config.AllowGetAccessRequest && v == "GET")) {
 		return "", nil, errors.ErrInvalidRequest
 	}
+
+
 	gtStr := r.FormValue("grant_type")
+
+	if gtStr=="" {
+		gtStr = r.PostForm.Get("grant_type")
+	}
+
 	gt := oauth2.GrantType(gtStr)
 	// gt := gtStr.(oauth2.GrantType)
 	zap.L().Info("当前认证模式为", zap.Any("gtStr: ", gtStr))

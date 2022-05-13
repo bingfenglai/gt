@@ -19,12 +19,13 @@ service.interceptors.request.use(
       // let each request carry token
       // ['X-Token'] is a custom headers key
       // please modify it according to the actual situation
-      config.headers['X-Token'] = getToken()
+      config.headers['Authorization'] = "Bearer "+getToken()
     }
     return config
   },
   error => {
     // do something with request error
+    console.log("请求出错")
     console.log(error) // for debug
     return Promise.reject(error)
   }
@@ -44,9 +45,9 @@ service.interceptors.response.use(
    */
   response => {
     const res = response.data
-
+    console.log(res)
     // if the custom code is not 20000, it is judged as an error.
-    if (res.code !== 20000) {
+    if (res.code !== 0) {
       Message({
         message: res.message || 'Error',
         type: 'error',
@@ -73,8 +74,10 @@ service.interceptors.response.use(
   },
   error => {
     console.log('err' + error) // for debug
+    const {message} = error.response.data
+    console.log(message)
     Message({
-      message: error.message,
+      message: message||"内部服务错误，请联系管理员",
       type: 'error',
       duration: 5 * 1000
     })

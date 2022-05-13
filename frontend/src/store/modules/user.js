@@ -1,11 +1,12 @@
 import { login, logout, getInfo } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { resetRouter } from '@/router'
+import da from "element-ui/src/locale/lang/da";
 
 const getDefaultState = () => {
   return {
     token: getToken(),
-    name: '',
+    username: '',
     avatar: ''
   }
 }
@@ -20,7 +21,7 @@ const mutations = {
     state.token = token
   },
   SET_NAME: (state, name) => {
-    state.name = name
+    state.username = name
   },
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
@@ -30,12 +31,14 @@ const mutations = {
 const actions = {
   // user login
   login({ commit }, userInfo) {
-    const { username, password } = userInfo
+    const { username, password,grant_type,client } = userInfo
     return new Promise((resolve, reject) => {
-      login({ username: username.trim(), password: password }).then(response => {
+      login({ username: username.trim(), password: password,grant_type:grant_type,client:client }).then(response => {
+        console.log("登录ing")
         const { data } = response
-        commit('SET_TOKEN', data.token)
-        setToken(data.token)
+        console.log("认证响应",data)
+        commit('SET_TOKEN', data.access_token)
+        setToken(data.access_token)
         resolve()
       }).catch(error => {
         reject(error)
@@ -46,7 +49,7 @@ const actions = {
   // get user info
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
-      getInfo(state.token).then(response => {
+      getInfo().then(response => {
         const { data } = response
 
         if (!data) {

@@ -19,7 +19,7 @@ func GinZapLogger() gin.HandlerFunc {
 		ctx.Next()
 		// 请求之后执行
 		cost := time.Since(startTime)
-
+		//ctx.Header("Access-Control-Allow-Origin","*")
 		global.Log.Info(path,
 			zap.Int("status", ctx.Writer.Status()),
 			zap.String("ip", ctx.ClientIP()),
