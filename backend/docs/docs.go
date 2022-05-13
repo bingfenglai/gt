@@ -42,9 +42,9 @@ var doc = `{
                 "summary": "获取图片人机验证码",
                 "responses": {
                     "200": {
-                        "description": "ok",
+                        "description": "OK",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/result.Result"
                         }
                     }
                 }
@@ -59,9 +59,9 @@ var doc = `{
                 "summary": "校验图片人机验证码",
                 "responses": {
                     "200": {
-                        "description": "ok",
+                        "description": "OK",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/result.Result"
                         }
                     }
                 }
@@ -76,9 +76,9 @@ var doc = `{
                 "summary": "获取邮件验证码",
                 "responses": {
                     "200": {
-                        "description": "ok",
+                        "description": "OK",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/result.Result"
                         }
                     }
                 }
@@ -93,9 +93,9 @@ var doc = `{
                 "summary": "健康检查接口",
                 "responses": {
                     "200": {
-                        "description": "ok",
+                        "description": "OK",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/result.Result"
                         }
                     }
                 }
@@ -110,9 +110,9 @@ var doc = `{
                 "summary": "链接重定向接口",
                 "responses": {
                     "200": {
-                        "description": "ok",
+                        "description": "OK",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/result.Result"
                         }
                     }
                 }
@@ -120,16 +120,16 @@ var doc = `{
         },
         "/v1/shortCode": {
             "post": {
-                "description": "获取个人信息",
+                "description": "生成短链接",
                 "tags": [
-                    "用户API"
+                    "短链接API"
                 ],
-                "summary": "获取个人信息",
+                "summary": "生成短链接",
                 "responses": {
                     "200": {
-                        "description": "ok",
+                        "description": "OK",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/result.Result"
                         }
                     }
                 }
@@ -144,11 +144,73 @@ var doc = `{
                 "summary": "获取租户列表",
                 "responses": {
                     "200": {
-                        "description": "ok",
+                        "description": "OK",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/result.Result"
                         }
                     }
+                }
+            }
+        },
+        "/v1/user/info": {
+            "post": {
+                "description": "获取个人信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户API"
+                ],
+                "summary": "获取个人信息",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/result.Result"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/user/password": {
+            "put": {
+                "description": "更改密码",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户API"
+                ],
+                "summary": "更改密码",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/result.Result"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "result.Result": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "type": "object"
+                },
+                "message": {
+                    "type": "string"
                 }
             }
         }
@@ -167,7 +229,7 @@ type swaggerInfo struct {
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = swaggerInfo{
 	Version:     "1.0",
-	Host:        "api.gt.com",
+	Host:        "localhost:9527",
 	BasePath:    "",
 	Schemes:     []string{},
 	Title:       "GT API",

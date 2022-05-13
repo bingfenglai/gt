@@ -1,4 +1,14 @@
-host: api.gt.com
+definitions:
+  result.Result:
+    properties:
+      code:
+        type: integer
+      data:
+        type: object
+      message:
+        type: string
+    type: object
+host: localhost:9527
 info:
   contact:
     email: bingfenglai.dev@gmail.com
@@ -17,9 +27,9 @@ paths:
       description: 获取图片人机验证码
       responses:
         "200":
-          description: ok
+          description: OK
           schema:
-            type: string
+            $ref: '#/definitions/result.Result'
       summary: 获取图片人机验证码
       tags:
       - 验证码API
@@ -28,9 +38,9 @@ paths:
       description: 校验图片人机验证码
       responses:
         "200":
-          description: ok
+          description: OK
           schema:
-            type: string
+            $ref: '#/definitions/result.Result'
       summary: 校验图片人机验证码
       tags:
       - 验证码API
@@ -39,9 +49,9 @@ paths:
       description: 获取邮件验证码
       responses:
         "200":
-          description: ok
+          description: OK
           schema:
-            type: string
+            $ref: '#/definitions/result.Result'
       summary: 获取邮件验证码
       tags:
       - 验证码API
@@ -50,9 +60,9 @@ paths:
       description: 健康检查接口
       responses:
         "200":
-          description: ok
+          description: OK
           schema:
-            type: string
+            $ref: '#/definitions/result.Result'
       summary: 健康检查接口
       tags:
       - 健康检查接口
@@ -61,32 +71,62 @@ paths:
       description: 链接重定向接口
       responses:
         "200":
-          description: ok
+          description: OK
           schema:
-            type: string
+            $ref: '#/definitions/result.Result'
       summary: 链接重定向接口
       tags:
       - 短链接API
   /v1/shortCode:
     post:
-      description: 获取个人信息
+      description: 生成短链接
       responses:
         "200":
-          description: ok
+          description: OK
           schema:
-            type: string
-      summary: 获取个人信息
+            $ref: '#/definitions/result.Result'
+      summary: 生成短链接
       tags:
-      - 用户API
+      - 短链接API
   /v1/tenant:
     post:
       description: 获取租户列表
       responses:
         "200":
-          description: ok
+          description: OK
           schema:
-            type: string
+            $ref: '#/definitions/result.Result'
       summary: 获取租户列表
       tags:
       - 租户API
+  /v1/user/info:
+    post:
+      consumes:
+      - application/json
+      description: 获取个人信息
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/result.Result'
+      summary: 获取个人信息
+      tags:
+      - 用户API
+  /v1/user/password:
+    put:
+      consumes:
+      - application/json
+      description: 更改密码
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/result.Result'
+      summary: 更改密码
+      tags:
+      - 用户API
 swagger: "2.0"

@@ -14,7 +14,7 @@ import (
 // @Tags 验证码API
 // @Summary 获取邮件验证码
 // @Description 获取邮件验证码
-// @Success 200 {string} string  "ok"
+// @Success 200 {object} result.Result
 // @Router /v1/captcha/email [get]
 func GetEmailCode(ctx *gin.Context) {
 
