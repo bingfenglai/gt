@@ -42,6 +42,7 @@ func GetUserInfo(ctx *gin.Context) {
 // @Router /v1/user/password [put]
 func UpdatePassword(ctx *gin.Context) {
 
+
 }
 
 
