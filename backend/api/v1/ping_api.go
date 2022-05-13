@@ -14,7 +14,7 @@ import (
 // @Tags 健康检查接口
 // @Summary 健康检查接口
 // @Description 健康检查接口
-// @Success 200 {string} string  "ok"
+// @Success 200 {object} result.Result
 // @Router /v1/ping [get]
 func Ping(c *gin.Context) {
 	p := config.Conf.Server

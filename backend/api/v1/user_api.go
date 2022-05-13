@@ -10,11 +10,14 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+
 // @Tags 用户API
 // @Summary 获取个人信息
 // @Description 获取个人信息
-// @Success 200 {string} string  "ok"
-// @Router /v1/shortCode [post]
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} result.Result
+// @Router /v1/user/info [post]
 func GetUserInfo(ctx *gin.Context) {
 
 	if uid,err :=utils.GetCurrentUIdWithContext(ctx);err!=nil{
@@ -30,7 +33,21 @@ func GetUserInfo(ctx *gin.Context) {
 }
 
 
+// @Tags 用户API
+// @Summary 更改密码
+// @Description 更改密码
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} result.Result
+// @Router /v1/user/password [put]
+func UpdatePassword(ctx *gin.Context) {
+
+
+}
+
+
 func init(){
 
 	router.GetV1().GET("/user/info",GetUserInfo)
+	router.GetV1().PUT("/user/password",UpdatePassword)
 }

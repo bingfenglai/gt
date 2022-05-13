@@ -14,7 +14,7 @@ import (
 // @Tags 验证码API
 // @Summary 获取图片人机验证码
 // @Description 获取图片人机验证码
-// @Success 200 {string} string  "ok"
+// @Success 200 {object} result.Result
 // @Router /v1/captcha/behavioral/images [get]
 func GetImagesBehavioralCaptcha(ctx *gin.Context) {
 
@@ -32,7 +32,7 @@ func GetImagesBehavioralCaptcha(ctx *gin.Context) {
 // @Tags 验证码API
 // @Summary 校验图片人机验证码
 // @Description 校验图片人机验证码
-// @Success 200 {string} string  "ok"
+// @Success 200 {object} result.Result
 // @Router /v1/captcha/behavioral/images/verity [post]
 func Verity(ctx *gin.Context) {
 	p := params.VerityCaptchaParams{}

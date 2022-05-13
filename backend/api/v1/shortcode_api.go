@@ -15,7 +15,7 @@ import (
 // @Tags 短链接API
 // @Summary 生成短链接
 // @Description 生成短链接
-// @Success 200 {string} string  "ok"
+// @Success 200 {object} result.Result
 // @Router /v1/shortCode [post]
 func GenShortCode(ctx *gin.Context) {
 	genParams := params.GenShortCodeParams{}

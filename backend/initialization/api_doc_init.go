@@ -2,15 +2,15 @@ package initialization
 
 import (
 	"bytes"
-	"log"
-	"os"
-	"os/exec"
-
+	"github.com/bingfenglai/gt/config"
 	_ "github.com/bingfenglai/gt/docs"
 	"github.com/bingfenglai/gt/router"
 	"github.com/spf13/viper"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"
+	"log"
+	"os"
+	"os/exec"
 )
 
 func InitApiConfig() {
@@ -32,5 +32,7 @@ func RunSwagCmd() {
 		log.Default().Fatal(err)
 	}
 	log.Default().Println(out.String())
+
+	log.Default().Println("api doc link\n"+"http://"+config.Conf.Swagger.Host+"/swagger/index.html")
 
 }

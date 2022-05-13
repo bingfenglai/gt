@@ -13,7 +13,7 @@ import (
 // @Tags 短链接API
 // @Summary 链接重定向接口
 // @Description 链接重定向接口
-// @Success 200 {string} string  "ok"
+// @Success 200 {object} result.Result
 // @Router /v1/redirection [get]
 func Redirection(ctx *gin.Context) {
 	code := ctx.Params.ByName("code")

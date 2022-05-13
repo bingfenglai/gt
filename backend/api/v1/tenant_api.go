@@ -16,7 +16,7 @@ import (
 // @Tags 租户API
 // @Summary 创建租户
 // @Description 创建租户
-// @Success 200 {string} string  "ok"
+// @Success 200 {object} result.Result
 // @Router /v1/tenant [post]
 func CreateTenant(ctx *gin.Context) {
 	
@@ -46,7 +46,7 @@ func CreateTenant(ctx *gin.Context) {
 // @Tags 租户API
 // @Summary 获取租户列表
 // @Description 获取租户列表
-// @Success 200 {string} string  "ok"
+// @Success 200 {object} result.Result
 // @Router /v1/tenant [post]
 func TenantList(ctx *gin.Context){
 	if list,err := service.TenantService.List();err==nil{
