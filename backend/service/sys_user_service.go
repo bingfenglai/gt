@@ -1,7 +1,11 @@
 package service
 
 import (
+	"context"
 	"errors"
+	"github.com/bingfenglai/gt/config"
+	"github.com/bingfenglai/gt/domain/params"
+	"github.com/bingfenglai/gt/global"
 	"strconv"
 	"strings"
 	"time"
@@ -18,13 +22,16 @@ type IUserService interface {
 
 	FindUserByUId(uid int) (*dto.UserDTO, error)
 
-	// 先从缓存当中查找，找不到再走数据库并回写缓存
+	// FindUserByUIdWithCache 先从缓存当中查找，找不到再走数据库并回写缓存
 	FindUserByUIdWithCache(uid int) (*dto.UserDTO, error)
 
 	FindUserByEmail(email string) (*dto.UserDTO, error)
 
-	// 跟据邮箱查找用户信息，如果不存在则进行注册
+	// FindUserByEmailWithRegister 跟据邮箱查找用户信息，如果不存在则进行注册
 	FindUserByEmailWithRegister(email string) (*dto.UserDTO, error)
+
+	// UpdatePwd 更新密码
+	UpdatePwd(ctx context.Context, p *params.UpdatePasswordParams, uid int) error
 }
 
 type userServiceImpl struct {
@@ -163,4 +170,56 @@ func (svc *userServiceImpl) createByEmail(email string) (*dto.UserDTO, error) {
 		Password: user.Password,
 		TenantId: user.TenantId,
 	}, nil
+}
+
+func (svc *userServiceImpl) UpdatePwd(ctx context.Context, p *params.UpdatePasswordParams, uid int) (err error) {
+	zap.L().Debug("修改密码")
+
+	if err = p.Check();err!=nil{
+		return err
+	}
+	var op string
+	var np string
+	if config.Conf.Server.Encrypted {
+		key := config.Conf.Encrypt.AesKey
+		bk := []byte(key)
+		op, err = helper.AesDecryptCFB(p.OldPwd, bk)
+		if err != nil {
+			zap.L().Error(err.Error())
+			return errors.New("请使用密文传输凭证信息")
+		}
+		np, err = helper.AesDecryptCFB(p.NewPwd, bk)
+		if err != nil {
+			zap.L().Error(err.Error())
+			return err
+		}
+	}else {
+		op = p.OldPwd
+		np = p.NewPwd
+	}
+
+	user := entity.User{}
+
+	err = global.DB.First(&user).Where("id = ?", uid).Error
+	if err != nil {
+		zap.L().Error(err.Error())
+		return err
+	}
+
+	_, err = PasswordEncodeService.Check(op, user.Password)
+	if err != nil {
+		return errors.New("密码错误")
+	}
+
+	encodedPwd, err := PasswordEncodeService.Encode(np)
+	if err != nil {
+		zap.L().Error(err.Error())
+		return err
+	}
+
+	user.Password = encodedPwd
+	err = global.DB.WithContext(ctx).Updates(&user).Error
+
+	return
+
 }

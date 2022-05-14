@@ -6,4 +6,5 @@ type ServerConfig struct {
 	Mode       string
 	Url404     string
 	Urlfavicon string
+	Encrypted bool
 }
