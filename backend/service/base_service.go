@@ -5,23 +5,23 @@ import (
 	"github.com/bingfenglai/gt/global"
 )
 
-type BaseService struct {
+type baseService struct {
 }
 
-func (svc *BaseService) Save(ctx context.Context, val interface{}) error {
+func (svc *baseService) Save(ctx context.Context, val interface{}) error {
 	return global.DB.WithContext(ctx).Save(val).Error
 }
 
-func (svc BaseService) SaveBatch(ctx context.Context, val []interface{}) (err error) {
+func (svc baseService) SaveBatch(ctx context.Context, val []interface{}) (err error) {
 
 	return
 }
 
-func (svc BaseService) DeleteById(ctx context.Context, id uint64) (err error) {
+func (svc baseService) DeleteById(ctx context.Context, id uint64) (err error) {
 	return
 }
 
-func (svc BaseService) DeleteBatch(ctx context.Context, ids []interface{}) (err error) {
+func (svc baseService) DeleteBatch(ctx context.Context, ids []interface{}) (err error) {
 
 	return
 }

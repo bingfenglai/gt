@@ -13,7 +13,7 @@ import (
 )
 
 type tenantService struct {
-	BaseService
+	baseService
 }
 
 func (svc *tenantService) Create(param params.TenantCreateParams, ctx context.Context) (err error) {
@@ -41,5 +41,5 @@ func (svc *tenantService) List() (list []*response.TenantResponse, err error) {
 }
 
 func (svc tenantService) GetService() service_interfaces.Service {
-	return &svc.BaseService
+	return &svc.baseService
 }
