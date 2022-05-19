@@ -1,7 +1,7 @@
 package service
 
 import (
-	"github.com/bingfenglai/gt/interfaces"
+	"github.com/bingfenglai/gt/service_interfaces"
 	"log"
 
 	"github.com/bingfenglai/gt/common/model/cache"
@@ -9,24 +9,24 @@ import (
 
 var CacheService cache.Cache
 
-var CaptchaService interfaces.ICaptchaService
+var CaptchaService service_interfaces.ICaptchaService
 
-var UserService interfaces.IUserService
-var RoleService interfaces.IRoleService
+var UserService service_interfaces.IUserService
+var RoleService service_interfaces.IRoleService
 
-var ApiService interfaces.IApiService
+var ApiService service_interfaces.IApiService
 
-var PasswordEncodeService interfaces.IPasswordEncoder
+var PasswordEncodeService service_interfaces.IPasswordEncoder
 
-var OAuthClientService interfaces.IOAuthClientService
+var OAuthClientService service_interfaces.IOAuthClientService
 
-var ShortCodeService interfaces.IShortCodeService
+var ShortCodeService service_interfaces.IShortCodeService
 
-var ShortCodeLogService interfaces.IShortCodeLogService
+var ShortCodeLogService service_interfaces.IShortCodeLogService
 
-var EmailService interfaces.IEmailService
+var EmailService service_interfaces.IEmailService
 
-var TenantService interfaces.ITenantService
+var TenantService service_interfaces.ITenantService
 
 func InitService() {
 

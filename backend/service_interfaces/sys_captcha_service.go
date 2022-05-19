@@ -1,4 +1,4 @@
-package interfaces
+package service_interfaces
 
 import "github.com/bingfenglai/gt/domain/response"
 
