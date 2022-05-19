@@ -6,10 +6,6 @@ import (
 	"github.com/bingfenglai/gt/storage"
 )
 
-type IApiService interface {
-	GetSessionApisByRoleIds(roleIds []int) ([]*dto.ApiSessionDTO, error)
-}
-
 type apiServiceImpl struct {
 }
 

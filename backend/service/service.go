@@ -1,36 +1,32 @@
 package service
 
 import (
+	"github.com/bingfenglai/gt/interfaces"
 	"log"
-	
+
 	"github.com/bingfenglai/gt/common/model/cache"
 )
 
-type Service interface {
-	Save(val interface{}) (bool, error)
-	DeleteById(id uint64) (bool, error)
-}
-
 var CacheService cache.Cache
 
-var CaptchaService ICaptchaService
+var CaptchaService interfaces.ICaptchaService
 
-var UserService IUserService
-var RoleService IRoleService
+var UserService interfaces.IUserService
+var RoleService interfaces.IRoleService
 
-var ApiSesvice IApiService
+var ApiService interfaces.IApiService
 
-var PasswordEncodeService IPasswordEncoder
+var PasswordEncodeService interfaces.IPasswordEncoder
 
-var OAuthClientService IOAuthClientService
+var OAuthClientService interfaces.IOAuthClientService
 
-var ShortCodeService IShortCodeService
+var ShortCodeService interfaces.IShortCodeService
 
-var ShortCodeLogService IShortCodeLogService
+var ShortCodeLogService interfaces.IShortCodeLogService
 
-var EmailService IEmailService
+var EmailService interfaces.IEmailService
 
-var TenantService ITenantService
+var TenantService interfaces.ITenantService
 
 func InitService() {
 
@@ -51,7 +47,7 @@ func InitService() {
 
 	RoleService = &roleServiceImpl{}
 
-	ApiSesvice = &apiServiceImpl{}
+	ApiService = &apiServiceImpl{}
 
 	TenantService = &tenantService{}
 }

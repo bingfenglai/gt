@@ -8,14 +8,6 @@ import (
 	"go.uber.org/zap"
 )
 
-// oauth client service
-type IOAuthClientService interface {
-	GetDetailsByClientId(clientId string) (*entity.Client, error)
-
-	// 检查指定客户端是否允许指定的授权模式
-	CheckGrantType(clientId, grantType string) (bool, error)
-}
-
 type oAuthClientServiceImpl struct {
 }
 

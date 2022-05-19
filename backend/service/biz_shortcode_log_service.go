@@ -10,13 +10,6 @@ import (
 	"github.com/bingfenglai/gt/storage"
 )
 
-type IShortCodeLogService interface {
-	// 保存
-	Save(shortcodeLog *entity.ShortcodeLog) (bool, error)
-
-	Create(shorCodeId uint64, userAgent string, ip string) (bool, error)
-}
-
 type shortCodeLogServiceImpl struct {
 }
 

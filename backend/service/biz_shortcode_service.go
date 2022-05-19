@@ -21,19 +21,6 @@ import (
 
 const SHORTCODE_CACHE_PREFIX = "sc:"
 
-type IShortCodeService interface {
-
-	// 创建短码并保存
-	CreateShortCode(url string, isPerpetual, isMultiplex bool) (*entity.ShortCode, error)
-
-	CreateShortCodeWithContext(params *params.GenShortCodeParams, ctx context.Context) (*entity.ShortCode, error)
-	// 根据短码查找原链接
-	FindLinkByCode(code string) (*entity.ShortCode, error)
-
-	// 创建临时的短码
-	createPerpetual(url string) (*entity.ShortCode, error)
-}
-
 type shortCodeServiceImpl struct {
 }
 
@@ -45,7 +32,7 @@ func (svc *shortCodeServiceImpl) CreateShortCodeWithContext(params *params.GenSh
 
 	// 游客访问
 	if params.IsPerpetual {
-		return svc.createPerpetual(params.OriginalLink)
+		return svc.CreatePerpetual(params.OriginalLink)
 	}
 
 	urlMd5 := helper.ToMd5String32(params.OriginalLink)
@@ -92,7 +79,7 @@ func (svc *shortCodeServiceImpl) CreateShortCode(url string, isPerpetual, isMult
 	// 创建临时短码
 	if isPerpetual {
 
-		return svc.createPerpetual(url)
+		return svc.CreatePerpetual(url)
 
 	}
 
@@ -155,7 +142,7 @@ func (svc *shortCodeServiceImpl) FindLinkByCode(code string) (sc *entity.ShortCo
 
 }
 
-func (svc *shortCodeServiceImpl) createPerpetual(url string) (sc *entity.ShortCode, err error) {
+func (svc *shortCodeServiceImpl) CreatePerpetual(url string) (sc *entity.ShortCode, err error) {
 	var code = ""
 	if code, err = svc.GenShortCode(url, shortcodegen.MathRoundGen); err == nil {
 		urlMd5 := helper.ToMd5String32(url)

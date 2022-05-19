@@ -12,11 +12,6 @@ import (
 	"github.com/bingfenglai/gt/domain/params"
 )
 
-type ITenantService interface {
-	Create(param params.TenantCreateParams, ctx context.Context) error
-	List()([]*response.TenantResponse,error)
-}
-
 type tenantService struct {
 }
 
@@ -25,19 +20,18 @@ func (svc *tenantService) Create(param params.TenantCreateParams, ctx context.Co
 		return err
 	}
 
-	zap.L().Info("创建租户入参",zap.Any("param",param))
-	tenant := entity.CreateTenant(param.ParentId,param.Name, param.Remark)
-
+	zap.L().Info("创建租户入参", zap.Any("param", param))
+	tenant := entity.CreateTenant(param.ParentId, param.Name, param.Remark)
 
 	return storage.TenantStorage.Insert(tenant, ctx)
 }
 
-func(svc *tenantService)List()(list []*response.TenantResponse,err error){
+func (svc *tenantService) List() (list []*response.TenantResponse, err error) {
 
-	if tenants,err := storage.TenantStorage.SelectAll();err==nil{
+	if tenants, err := storage.TenantStorage.SelectAll(); err == nil {
 		list = make([]*response.TenantResponse, len(tenants))
 		for i, tenant := range tenants {
-			tr := &response.TenantResponse{Id:tenant.ID,Name: tenant.Name}
+			tr := &response.TenantResponse{Id: tenant.ID, Name: tenant.Name}
 			list[i] = tr
 		}
 	}

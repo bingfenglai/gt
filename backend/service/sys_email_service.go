@@ -10,13 +10,6 @@ import (
 	"github.com/jordan-wright/email"
 )
 
-// 邮件服务接口
-type IEmailService interface {
-
-	// 简要邮件发送方法，一般用于发送验证码等
-	SendSimpleEmail(params *params.EmailSimpleSendParams) error
-}
-
 type emailServiceImpl struct {
 }
 

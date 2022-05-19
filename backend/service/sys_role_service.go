@@ -7,10 +7,6 @@ import (
 	"github.com/bingfenglai/gt/storage"
 )
 
-type IRoleService interface {
-	GetSessionRolesByUid(uid string) ([]*dto.RoleSessionDTO, error)
-}
-
 type roleServiceImpl struct {
 }
 
@@ -22,5 +18,5 @@ func (svc *roleServiceImpl) GetSessionRolesByUid(uid string) ([]*dto.RoleSession
 
 	roles, err := storage.RoleStorage.GetRolesByUid(uid)
 
-	return convert.Role2RoleSessionDTOList(roles),err
+	return convert.Role2RoleSessionDTOList(roles), err
 }

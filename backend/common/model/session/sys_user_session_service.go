@@ -25,7 +25,7 @@ type userSessionServiceImpl struct {
 }
 
 func (svc *userSessionServiceImpl) GetSession(uid string) (*UserSessionInfo, error) {
-	
+
 	if uid == "" {
 		return nil, errors.ErrUserIDCannotBeEmpty
 	}
@@ -80,7 +80,7 @@ func (svc *userSessionServiceImpl) CreateWithAccessToken(uid, tenantId, accessTo
 		roleIds[i] = role.RoleId
 	}
 
-	apis, err := service.ApiSesvice.GetSessionApisByRoleIds(roleIds)
+	apis, err := service.ApiService.GetSessionApisByRoleIds(roleIds)
 
 	if err != nil {
 		return err
@@ -108,4 +108,3 @@ func (svc *userSessionServiceImpl) createRoleCheck(uid, tenantId, accessToken st
 
 	return nil
 }
-
