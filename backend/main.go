@@ -2,9 +2,8 @@ package main
 
 import (
 	"fmt"
-	"log"
-
 	"github.com/bingfenglai/gt/config"
+	"log"
 
 	"github.com/bingfenglai/gt/global"
 
@@ -34,12 +33,12 @@ import (
 // @license.url http://www.apache.org/licenses/LICENSE-2.0.html
 
 // @host localhost:9527
-// @BasePath 
+// @BasePath
 func main() {
 
 	//router.R.Run(fmt.Sprintf("%s:%d", viper.GetString("server.address"), viper.GetInt("server.port")))
 
-	log.Println(config.Conf.Server)
+	//log.Println(config.Conf.Server)
 	gin.SetMode(config.Conf.Server.Mode)
 	router.R.Run(fmt.Sprintf("%s:%d", config.Conf.Server.Address, config.Conf.Server.Port))
 
@@ -63,5 +62,6 @@ func init() {
 
 		}
 	}()
+	log.Default().Println("Application startup complete! 应用启动完成！")
 
 }

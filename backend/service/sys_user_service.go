@@ -37,19 +37,17 @@ type IUserService interface {
 type userServiceImpl struct {
 }
 
-
-func (svc *userServiceImpl)FindUserByUsername(username string) (*dto.UserDTO, error){
-	if username=="" {
-		return nil,errors.New("用户名不能为空")
+func (svc *userServiceImpl) FindUserByUsername(username string) (*dto.UserDTO, error) {
+	if username == "" {
+		return nil, errors.New("用户名不能为空")
 	}
 	var user *entity.User
 	var err error
-	if helper.VerifyEmailFormat(username)==nil {
-		user,err = storage.UserStorage.SelectOneByEmail(username)
-	}else{
-		user,err =storage.UserStorage.SelectOneByUsername(username)
+	if helper.VerifyEmailFormat(username) == nil {
+		user, err = storage.UserStorage.SelectOneByEmail(username)
+	} else {
+		user, err = storage.UserStorage.SelectOneByUsername(username)
 	}
-
 
 	if err != nil {
 		zap.L().Error("err", zap.Any("err:", err.Error()))
@@ -67,7 +65,7 @@ func (svc *userServiceImpl)FindUserByUsername(username string) (*dto.UserDTO, er
 
 }
 
-func (u *userServiceImpl) FindUserByUId(uid int) (*dto.UserDTO, error) {
+func (svc *userServiceImpl) FindUserByUId(uid int) (*dto.UserDTO, error) {
 
 	if uid == 0 {
 		return nil, errors.New("用户ID不能为空")
@@ -148,9 +146,9 @@ func (svc *userServiceImpl) FindUserByEmailWithRegister(email string) (*dto.User
 }
 
 func (svc *userServiceImpl) createByEmail(email string) (*dto.UserDTO, error) {
-	s :=strings.Split(email, "@")
-	
-	username:= s[0]+strings.Split(s[1],".")[0]
+	s := strings.Split(email, "@")
+
+	username := s[0] + strings.Split(s[1], ".")[0]
 	user := entity.User{
 		Email:    email,
 		Username: username,
@@ -175,7 +173,7 @@ func (svc *userServiceImpl) createByEmail(email string) (*dto.UserDTO, error) {
 func (svc *userServiceImpl) UpdatePwd(ctx context.Context, p *params.UpdatePasswordParams, uid int) (err error) {
 	zap.L().Debug("修改密码")
 
-	if err = p.Check();err!=nil{
+	if err = p.Check(); err != nil {
 		return err
 	}
 	var op string
@@ -193,14 +191,15 @@ func (svc *userServiceImpl) UpdatePwd(ctx context.Context, p *params.UpdatePassw
 			zap.L().Error(err.Error())
 			return err
 		}
-	}else {
+	} else {
 		op = p.OldPwd
 		np = p.NewPwd
 	}
 
-	user := entity.User{}
+	var user *entity.User
 
-	err = global.DB.First(&user).Where("id = ?", uid).Error
+	user, err = storage.UserStorage.SelectOneByUId(uid)
+	//err = global.DB.First(&user).Where("id = ?", uid).Error
 	if err != nil {
 		zap.L().Error(err.Error())
 		return err

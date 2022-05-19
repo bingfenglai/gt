@@ -9,6 +9,4 @@ func InitAll() {
 	initService()
 	initOAuth2Server()
 	initEmailPool()
-
-
 }

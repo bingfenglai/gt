@@ -190,9 +190,7 @@
                 "code": {
                     "type": "integer"
                 },
-                "data": {
-                    "type": "object"
-                },
+                "data": {},
                 "message": {
                     "type": "string"
                 }
