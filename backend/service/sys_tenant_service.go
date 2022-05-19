@@ -2,9 +2,9 @@ package service
 
 import (
 	"context"
-
 	"github.com/bingfenglai/gt/domain/entity"
 	"github.com/bingfenglai/gt/domain/response"
+	"github.com/bingfenglai/gt/service_interfaces"
 	"go.uber.org/zap"
 
 	"github.com/bingfenglai/gt/storage"
@@ -13,6 +13,7 @@ import (
 )
 
 type tenantService struct {
+	BaseService
 }
 
 func (svc *tenantService) Create(param params.TenantCreateParams, ctx context.Context) (err error) {
@@ -37,4 +38,8 @@ func (svc *tenantService) List() (list []*response.TenantResponse, err error) {
 	}
 
 	return
+}
+
+func (svc tenantService) GetService() service_interfaces.Service {
+	return &svc.BaseService
 }
