@@ -1,22 +1,25 @@
 package storage
 
-import "log"
+import (
+	"github.com/bingfenglai/gt/storage_interface"
+	"log"
+)
 
-var ShortCodeStorage IShortcodeStorage
+var ShortCodeStorage storage_interface.IShortcodeStorage
 
-var ShortCodeLogStorage IShortcodeLogStorage
+var ShortCodeLogStorage storage_interface.IShortcodeLogStorage
 
-var OAuthClientStorage IOAuthClientStorage
+var OAuthClientStorage storage_interface.IOAuthClientStorage
 
-var ClientGrantTypeStorage IClientGrantTypeStorage
+var ClientGrantTypeStorage storage_interface.IClientGrantTypeStorage
 
-var UserStorage IUserStorage
+var UserStorage storage_interface.IUserStorage
 
-var RoleStorage IRoleStorage
+var RoleStorage storage_interface.IRoleStorage
 
-var ApiStorage IApiStorage
+var ApiStorage storage_interface.IApiStorage
 
-var TenantStorage ITenantStorage
+var TenantStorage storage_interface.ITenantStorage
 
 func Initstorage() {
 	log.Default().Println("初始化 storage")
@@ -34,6 +37,6 @@ func Initstorage() {
 
 	ApiStorage = &apiStorage{}
 
-	TenantStorage = &tenantStorate{}
+	TenantStorage = &tenantStorage{}
 
 }

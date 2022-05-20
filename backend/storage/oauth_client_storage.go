@@ -5,10 +5,6 @@ import (
 	"github.com/bingfenglai/gt/global"
 )
 
-type IOAuthClientStorage interface {
-	SelectOneByClientId(clientId string) (*entity.Client, error)
-}
-
 type OAuthClientStorageImpl struct {
 }
 

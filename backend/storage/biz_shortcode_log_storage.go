@@ -5,10 +5,6 @@ import (
 	"github.com/bingfenglai/gt/global"
 )
 
-type IShortcodeLogStorage interface {
-	SaveOrUpdate(shortcodeLog *entity.ShortcodeLog) (bool, error)
-}
-
 type ShortCodeLogDbStorage struct {
 }
 

@@ -9,10 +9,6 @@ import (
 	"gorm.io/gorm"
 )
 
-type IRoleStorage interface {
-	GetRolesByUid(uid string) ([]*entity.Role, error)
-}
-
 type roleStorage struct {
 }
 

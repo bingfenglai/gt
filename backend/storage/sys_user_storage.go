@@ -10,13 +10,6 @@ import (
 	"gorm.io/gorm"
 )
 
-type IUserStorage interface {
-	SelectOneByUId(uid int) (*entity.User, error)
-	SelectOneByUsername(username string) (*entity.User, error)
-	SelectOneByEmail(email string) (*entity.User, error)
-	Insert(user *entity.User) (uint, error)
-}
-
 type userDbStorageImpl struct {
 }
 
@@ -34,7 +27,7 @@ func (store *userDbStorageImpl) SelectOneByUId(uid int) (*entity.User, error) {
 	return &user, err
 }
 
-func (store *userDbStorageImpl) SelectOneByUsername(username string) (*entity.User, error){
+func (store *userDbStorageImpl) SelectOneByUsername(username string) (*entity.User, error) {
 	user := entity.User{}
 
 	err := global.DB.Where("username = ?", username).First(&user).Error
