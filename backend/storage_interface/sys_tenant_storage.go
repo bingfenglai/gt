@@ -6,6 +6,7 @@ import (
 )
 
 type ITenantStorage interface {
+	IStorage
 	Insert(tenant *entity.Tenant, ctx context.Context) error
 
 	SelectAll() ([]*entity.Tenant, error)

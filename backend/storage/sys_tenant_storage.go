@@ -7,6 +7,7 @@ import (
 )
 
 type tenantStorage struct {
+	baseStorage
 }
 
 func (store *tenantStorage) Insert(tenant *entity.Tenant, ctx context.Context) error {

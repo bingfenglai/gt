@@ -7,6 +7,7 @@ import (
 )
 
 type ITenantService interface {
+	Service
 	GetService() Service
 	Create(param params.TenantCreateParams, ctx context.Context) error
 	List() ([]*response.TenantResponse, error)
