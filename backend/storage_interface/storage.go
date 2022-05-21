@@ -7,5 +7,5 @@ type IStorage interface {
 
 	Delete(ctx context.Context, val interface{}, id ...interface{}) error
 
-	Find(ctx context.Context, val interface{}, conds interface{}) error
+	FindOne(ctx context.Context, val interface{}, conds interface{}, fields []string) error
 }

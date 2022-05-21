@@ -16,10 +16,10 @@ const (
 
 // 权限节点
 type node struct {
-	path     string  // 节点路径值
-	fullPath string  // 原路径
-	perfix   string  // 公共前缀
-	children []*node // 子节点
+	path      string   // 节点路径值
+	fullPath  string   // 原路径
+	perfix    string   // 公共前缀
+	children  []*node  // 子节点
 	wildChild bool     // 是否有子节点
 	nType     nodeType // 子节点类型
 	priority  uint32   // 节点优先级
@@ -69,14 +69,14 @@ func (n *node) insertChild(path, fullPath string) {
 // 查找路径当中的第一个通配符, 如果没有找到则返回索引index=-1
 func findWildcard(path string) (wildcard string, index int, valid bool) {
 
-	// Find start
+	// FindOne start
 	for start, c := range []byte(path) {
 		// A wildcard starts with ':' (param) or '*' (catch-all)
 		if c != ':' && c != '*' {
 			continue
 		}
 
-		// Find end and check for invalid characters
+		// FindOne end and check for invalid characters
 		valid = true
 		for end, c := range []byte(path[start+1:]) {
 			switch c {
@@ -263,19 +263,19 @@ func isAuthoried(n *node, paths []string, matchChild bool) bool {
 }
 
 // 将链添加到树中
-func addLink(tree *node,link *node){
+func addLink(tree *node, link *node) {
 
-	if tree.nType==root {
+	if tree.nType == root {
 		for _, child := range tree.children {
-			if child.path==link.path {
-				
+			if child.path == link.path {
+
 				for _, ch := range child.children {
-					if ch.path==link.children[0].path {
-						
+					if ch.path == link.children[0].path {
+
 					}
 				}
 
-			}else{
+			} else {
 				tree.children = append(tree.children, link)
 				return
 			}

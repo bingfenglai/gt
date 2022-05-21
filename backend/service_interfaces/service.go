@@ -5,5 +5,7 @@ import "context"
 type Service interface {
 	Save(ctx context.Context, val interface{}) error
 
-	SaveBatch(ctx context.Context, val []interface{}) error
+	FindOne(ctx context.Context, val interface{}, conds interface{}, fields []string) error
+
+	Delete(ctx context.Context, val interface{}, id ...interface{}) error
 }

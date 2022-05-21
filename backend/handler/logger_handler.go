@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"github.com/bingfenglai/gt/common/helper"
 	"time"
 
 	"github.com/bingfenglai/gt/global"
@@ -30,6 +31,9 @@ func GinZapLogger() gin.HandlerFunc {
 			zap.String("errors", ctx.Errors.ByType(gin.ErrorTypePrivate).String()),
 			zap.Duration("cost", cost),
 		)
+		us := helper.ParseUserAgent(ctx.Request.UserAgent())
+
+		global.Log.Info("us", zap.Any("us", us))
 	}
 
 }

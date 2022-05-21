@@ -1,6 +1,8 @@
 package initialization
 
 import (
+	"github.com/bingfenglai/gt/global"
+	"go.uber.org/zap"
 	"log"
 	"net/http"
 
@@ -39,7 +41,8 @@ func initOAuth2Server() {
 
 	// 配置错误处理
 	oauth.OAuth2Server.SetInternalErrorHandler(func(err error) (re *errors.Response) {
-		log.Println("Internal Error:", err.Error())
+		global.Log.Error("Internal Error:", zap.Any("err", err))
+		//log.Println("Internal Error:", err.Error())
 		re = errors.NewResponse(errors.ErrInvalidRequest, http.StatusOK)
 		re.Description = err.Error()
 		re.ErrorCode = 1
@@ -47,14 +50,13 @@ func initOAuth2Server() {
 	})
 
 	oauth.OAuth2Server.SetResponseErrorHandler(func(re *errors.Response) {
-		log.Println("Response Error:", re.Error.Error(), re.ErrorCode, re.StatusCode, re.Description)
+		log.Default().Println("Response Error:", re.Error.Error(), re.ErrorCode, re.StatusCode, re.Description)
 
 	})
 
 	// 设置认证成功后响应的扩展字段
-	oauth.OAuth2Server.SetExtensionFieldsHandler( func(ti oauth2.TokenInfo) (fieldsValue map[string]interface{}) {
-		
-		
+	oauth.OAuth2Server.SetExtensionFieldsHandler(func(ti oauth2.TokenInfo) (fieldsValue map[string]interface{}) {
+
 		fieldsValue = make(map[string]interface{})
 		fieldsValue["msg"] = "Welcome to gt. Here is a short link one-stop solution."
 		return

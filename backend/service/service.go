@@ -28,6 +28,8 @@ var EmailService service_interfaces.IEmailService
 
 var TenantService service_interfaces.ITenantService
 
+var SysLogService service_interfaces.ISysLogService
+
 func InitService() {
 
 	log.Default().Println("执行service初始化")
@@ -50,4 +52,6 @@ func InitService() {
 	ApiService = &apiServiceImpl{}
 
 	TenantService = &tenantService{}
+
+	SysLogService = &sysLogService{}
 }

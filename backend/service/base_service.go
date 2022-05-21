@@ -3,7 +3,8 @@ package service
 import (
 	"context"
 	"errors"
-	"github.com/bingfenglai/gt/global"
+	"github.com/bingfenglai/gt/storage"
+	"go.uber.org/zap"
 )
 
 type baseService struct {
@@ -14,20 +15,29 @@ func (svc *baseService) Save(ctx context.Context, val interface{}) error {
 		return errors.New("参数不能为空")
 	}
 
-	return global.DB.WithContext(ctx).Save(val).Error
+	return storage.BaseStorage.Save(ctx, val)
 }
 
-func (svc baseService) SaveBatch(ctx context.Context, val []interface{}) (err error) {
+func (svc *baseService) FindOne(ctx context.Context, val interface{}, conds interface{}, fields []string) error {
 
-	if len(val) == 0 {
-		return errors.New("参数不能为空")
+	if val == nil {
+		return errors.New("参数val不能为空")
 	}
 
-	if len(val) == 1 {
-		return svc.Save(ctx, val[:1])
+	if fields == nil || len(fields) == 0 {
+		zap.L().Warn("建议声明要查询的具体字段，避免使用*通配符")
 	}
 
-	err = global.DB.WithContext(ctx).Save(val).Error
+	return storage.BaseStorage.FindOne(ctx, val, conds, fields)
 
-	return
+}
+
+func (svc *baseService) Delete(ctx context.Context, val interface{}, id ...interface{}) error {
+
+	if val == nil {
+		return errors.New("请指定类型")
+	}
+
+	return storage.BaseStorage.Delete(ctx, val, id...)
+
 }

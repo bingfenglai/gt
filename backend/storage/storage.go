@@ -5,6 +5,8 @@ import (
 	"log"
 )
 
+var BaseStorage storage_interface.IStorage
+
 var ShortCodeStorage storage_interface.IShortcodeStorage
 
 var ShortCodeLogStorage storage_interface.IShortcodeLogStorage
@@ -21,8 +23,13 @@ var ApiStorage storage_interface.IApiStorage
 
 var TenantStorage storage_interface.ITenantStorage
 
+var SysLogStorage storage_interface.ISysLogStorage
+
 func Initstorage() {
 	log.Default().Println("初始化 storage")
+
+	BaseStorage = &baseStorage{}
+
 	ShortCodeStorage = &ShortCodeDbStorage{}
 
 	ShortCodeLogStorage = &ShortCodeLogDbStorage{}
@@ -38,5 +45,7 @@ func Initstorage() {
 	ApiStorage = &apiStorage{}
 
 	TenantStorage = &tenantStorage{}
+
+	SysLogStorage = &sysLogStorage{}
 
 }

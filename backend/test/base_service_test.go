@@ -10,5 +10,10 @@ import (
 func TestBaseServiceSave(t *testing.T) {
 
 	tenant := entity.CreateTenant(0, "大中华区", "")
-	service.TenantService.GetService().Save(context.Background(), tenant)
+	tenant1 := entity.CreateTenant(0, "大中华区1", "")
+
+	err := service.TenantService.GetService().Save(context.Background(), []*entity.Tenant{tenant, tenant1})
+	if err != nil {
+		t.Error(err)
+	}
 }

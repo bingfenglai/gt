@@ -12,8 +12,9 @@ func TestFindOne(t *testing.T) {
 
 	te := &entity.Tenant{}
 	ma := make(map[string]interface{}, 0)
-	ma["id"] = 1
-	err := storage.TenantStorage.Find(context.Background(), te, ma)
+	ma["name"] = "亚洲信息中心"
+
+	err := storage.TenantStorage.FindOne(context.Background(), te, ma, []string{"name"})
 	if err != nil {
 		zap.L().Error("err", zap.Error(err))
 	}

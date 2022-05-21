@@ -12,7 +12,7 @@ database:
   maxConn: 20
   maxOpen: 20
   InitData: false
-  # InitSchema: true
+#  InitSchema: true
   InitSchema: false
 
 Cache:

@@ -32,7 +32,12 @@ func (store *baseStorage) Delete(ctx context.Context, val interface{}, conds ...
 	return
 }
 
-func (store *baseStorage) Find(ctx context.Context, val interface{}, conds interface{}) (err error) {
-	global.DB.WithContext(ctx).First(val, conds)
+func (store *baseStorage) FindOne(ctx context.Context, val interface{}, conds interface{}, fields []string) (err error) {
+	if fields == nil || len(fields) == 0 {
+		return global.DB.WithContext(ctx).First(val, conds).Error
+
+	}
+	err = global.DB.WithContext(ctx).Select(fields).First(val, conds).Error
+
 	return
 }
