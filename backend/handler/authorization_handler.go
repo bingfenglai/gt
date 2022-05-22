@@ -54,7 +54,7 @@ func AuthorizationHandler(engine *gin.Engine) gin.HandlerFunc {
 
 			// 校验不通过，不再调用后续函数
 			context.Abort()
-			context.JSON(http.StatusUnauthorized, result.FailWithMsg(err.Error(), "令牌已过期，请重新登录"))
+			context.JSON(http.StatusUnauthorized, result.FailWithMsg("令牌已过期，请重新登录", nil))
 			return
 		}
 		currentAccessToken, _ := oauth.OAuth2Server.BearerAuth(req)

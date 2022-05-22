@@ -7,7 +7,6 @@ import (
 
 var OAuth2Server *server.CustomOAuthServer
 
-
 func init() {
 	if OAuth2Server == nil {
 		zap.L().Error("oauth2 未初始化...")

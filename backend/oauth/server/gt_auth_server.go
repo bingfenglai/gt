@@ -14,18 +14,19 @@ import (
 
 // 增强server
 type CustomOAuthServer struct {
-	originalServer                       *server.Server
-	CustomOAuthManager           manager.CustomOAuthManager
+	*server.Server
+	//CustomOAuthManager           oauth2.Manager
 	emailVerificationCodeHandler EmailVerificationCodeHandler
 }
 
 // 工厂方法
 func NewDefaultCustomOAuthServer() *CustomOAuthServer {
 	customManager := manager.NewDefaultCustomManager()
-	return &CustomOAuthServer{
-		originalServer: server.NewDefaultServer(&customManager),
-		CustomOAuthManager: customManager,
-	}
+	customServer := CustomOAuthServer{}
+	customServer.Server = server.NewDefaultServer(customManager.Manager)
+	customServer.Manager = customManager
+	return &customServer
+
 }
 
 func (s *CustomOAuthServer) SetEmailVerificationCodeHandler(handler EmailVerificationCodeHandler) {
@@ -46,7 +47,7 @@ func (s *CustomOAuthServer) HandleTokenRequest(w http.ResponseWriter, r *http.Re
 		return s.tokenError(w, err)
 	}
 
-	return s.token(w, s.originalServer.GetTokenData(ti), nil)
+	return s.token(w, s.Server.GetTokenData(ti), nil)
 }
 
 // 校验认证请求
@@ -54,14 +55,13 @@ func (s *CustomOAuthServer) ValidationTokenRequest(r *http.Request) (oauth2.Gran
 	zap.L().Info("走代理认证流程")
 
 	if v := r.Method; !(v == "POST" ||
-		(s.originalServer.Config.AllowGetAccessRequest && v == "GET")) {
+		(s.Server.Config.AllowGetAccessRequest && v == "GET")) {
 		return "", nil, errors.ErrInvalidRequest
 	}
 
-
 	gtStr := r.FormValue("grant_type")
 
-	if gtStr=="" {
+	if gtStr == "" {
 		gtStr = r.PostForm.Get("grant_type")
 	}
 
@@ -69,16 +69,13 @@ func (s *CustomOAuthServer) ValidationTokenRequest(r *http.Request) (oauth2.Gran
 	// gt := gtStr.(oauth2.GrantType)
 	zap.L().Info("当前认证模式为", zap.Any("gtStr: ", gtStr))
 
-	
 	// gt := getGrantTypeByName(gtStr)
 
-	
-
 	if !s.CheckGrantType(gt) {
-		return s.originalServer.ValidationTokenRequest(r)
+		return s.Server.ValidationTokenRequest(r)
 	}
 
-	clientID, clientSecret, err := s.originalServer.ClientInfoHandler(r)
+	clientID, clientSecret, err := s.Server.ClientInfoHandler(r)
 	if err != nil {
 		return "", nil, err
 	}
@@ -88,7 +85,6 @@ func (s *CustomOAuthServer) ValidationTokenRequest(r *http.Request) (oauth2.Gran
 		ClientSecret: clientSecret,
 		Request:      r,
 	}
-	
 
 	switch gt {
 	case EmailCode:
@@ -109,7 +105,7 @@ func (s *CustomOAuthServer) ValidationTokenRequest(r *http.Request) (oauth2.Gran
 		// gt = oauth2.PasswordCredentials
 	default:
 		// 原始oauth2 支持的认证模式
-		return s.originalServer.ValidationTokenRequest(r)
+		return s.Server.ValidationTokenRequest(r)
 	}
 
 	return gt, tgr, nil
@@ -118,13 +114,13 @@ func (s *CustomOAuthServer) ValidationTokenRequest(r *http.Request) (oauth2.Gran
 
 // 处理 获取令牌错误
 func (s *CustomOAuthServer) tokenError(w http.ResponseWriter, err error) error {
-	data, statusCode, header := s.originalServer.GetErrorData(err)
+	data, statusCode, header := s.Server.GetErrorData(err)
 	return s.token(w, data, header, statusCode)
 }
 
 // 响应token数据
 func (s *CustomOAuthServer) token(w http.ResponseWriter, data map[string]interface{}, header http.Header, statusCode ...int) error {
-	if fn := s.originalServer.ResponseTokenHandler; fn != nil {
+	if fn := s.Server.ResponseTokenHandler; fn != nil {
 		return fn(w, data, header, statusCode...)
 	}
 	w.Header().Set("Content-Type", "application/json;charset=UTF-8")
@@ -147,13 +143,13 @@ func (s *CustomOAuthServer) token(w http.ResponseWriter, data map[string]interfa
 // GetAccessToken access token
 // 跟据gt 判断认证方式是否为自定义方式，不是则走默认的
 func (s *CustomOAuthServer) GetAccessToken(ctx context.Context, gt oauth2.GrantType, tgr *oauth2.TokenGenerateRequest) (oauth2.TokenInfo, error) {
-	
+
 	// 判断是否为扩展的认证模式
-	if !s.CheckGrantType(gt){
-		return s.originalServer.GetAccessToken(ctx,gt,tgr)
+	if !s.CheckGrantType(gt) {
+		return s.Server.GetAccessToken(ctx, gt, tgr)
 	}
 
-	if fn := s.originalServer.ClientAuthorizedHandler; fn != nil {
+	if fn := s.Server.ClientAuthorizedHandler; fn != nil {
 		allowed, err := fn(tgr.ClientID, gt)
 		if err != nil {
 			return nil, err
@@ -164,7 +160,7 @@ func (s *CustomOAuthServer) GetAccessToken(ctx context.Context, gt oauth2.GrantT
 
 	switch gt {
 	case EmailCode:
-		if fn := s.originalServer.ClientScopeHandler; fn != nil {
+		if fn := s.Server.ClientScopeHandler; fn != nil {
 			allowed, err := fn(tgr)
 			if err != nil {
 				return nil, err
@@ -173,33 +169,31 @@ func (s *CustomOAuthServer) GetAccessToken(ctx context.Context, gt oauth2.GrantT
 			}
 		}
 
-
-		return s.CustomOAuthManager.GenerateAccessToken(ctx,gt,tgr)
+		return s.Manager.GenerateAccessToken(ctx, gt, tgr)
 
 	}
 
-	return nil,errors.ErrUnsupportedGrantType
+	return nil, errors.ErrUnsupportedGrantType
 
 }
 
-func (s *CustomOAuthServer) HandleAuthorizeRequest(w http.ResponseWriter, r *http.Request) error {
-	return s.originalServer.HandleAuthorizeRequest(w, r)
-}
+//func (s *CustomOAuthServer) HandleAuthorizeRequest(w http.ResponseWriter, r *http.Request) error {
+//	return s.Server.HandleAuthorizeRequest(w, r)
+//}
 
-func (s *CustomOAuthServer) BearerAuth(r *http.Request) (string, bool) {
-	return s.originalServer.BearerAuth(r)
-}
-
-func (s *CustomOAuthServer) ValidationBearerToken(r *http.Request) (oauth2.TokenInfo, error) {
-	return s.originalServer.ValidationBearerToken(r)
-}
+//func (s *CustomOAuthServer) BearerAuth(r *http.Request) (string, bool) {
+//	return s.originalServer.BearerAuth(r)
+//}
+//
+//func (s *CustomOAuthServer) ValidationBearerToken(r *http.Request) (oauth2.TokenInfo, error) {
+//	return s.originalServer.ValidationBearerToken(r)
+//}
 
 func (s *CustomOAuthServer) CheckGrantType(gt oauth2.GrantType) bool {
 
 	return CheckGrantType(gt)
 
 }
-
 
 func CheckGrantType(gt oauth2.GrantType) bool {
 
@@ -212,8 +206,3 @@ func CheckGrantType(gt oauth2.GrantType) bool {
 	return false
 
 }
-
-
-
-
-

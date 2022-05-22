@@ -59,6 +59,8 @@ func initOAuth2Server() {
 
 		fieldsValue = make(map[string]interface{})
 		fieldsValue["msg"] = "Welcome to gt. Here is a short link one-stop solution."
+		fieldsValue["refresh_expires_in"] = ti.GetRefreshExpiresIn()
+		fieldsValue["expires_in"] = ti.GetAccessExpiresIn()
 		return
 	})
 

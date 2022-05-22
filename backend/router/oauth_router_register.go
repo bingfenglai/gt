@@ -18,13 +18,14 @@ func init() {
 
 	// 认证
 	groupOAuth2.Handle(http.MethodPost, "/token", func(ctx *gin.Context) {
-		err := oauth.OAuth2Server.HandleTokenRequest(ctx.Writer, ctx.Request)
+		_ = oauth.OAuth2Server.HandleTokenRequest(ctx.Writer, ctx.Request)
 
-		if err != nil {
-			ctx.Abort()
-			ctx.JSON(http.StatusOK, result.Fail(err.Error()))
-			return
-		}
+		//if err != nil {
+		//
+		//	ctx.JSON(http.StatusOK, result.Fail(err.Error()))
+		//	ctx.Abort()
+		//	//return
+		//}
 	})
 
 	// 授权
@@ -52,7 +53,7 @@ func init() {
 	groupOAuth2.Handle(http.MethodPost, "/logout", func(ctx *gin.Context) {
 		user, _ := utils.GetCurrentUser(ctx.Request)
 
-		err := oauth.OAuth2Server.CustomOAuthManager.RemoveAccessToken(ctx, user.AccessToken)
+		err := oauth.OAuth2Server.Manager.RemoveAccessToken(ctx, user.AccessToken)
 
 		if err != nil {
 			ctx.JSON(http.StatusBadRequest, result.FailWithErr(err))
