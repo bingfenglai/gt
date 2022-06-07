@@ -19,53 +19,103 @@
     "paths": {
         "/v1/captcha/behavioral/images": {
             "get": {
-                "description": "获取图片人机验证码",
-                "tags": [
-                    "验证码API"
-                ],
-                "summary": "获取图片人机验证码",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/result.Result"
+              "description": "获取图片人机验证码",
+              "consumes": [
+                "application/json"
+              ],
+              "produces": [
+                "application/json"
+              ],
+              "tags": [
+                "验证码API"
+              ],
+              "summary": "获取图片人机验证码",
+              "responses": {
+                "200": {
+                  "description": "图片验证码",
+                  "schema": {
+                    "allOf": [
+                      {
+                        "$ref": "#/definitions/result.Result"
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "data": {
+                            "$ref": "#/definitions/response.CaptchaResponse"
+                          }
                         }
-                    }
+                      }
+                    ]
+                  }
                 }
+              }
             }
         },
         "/v1/captcha/behavioral/images/verity": {
             "post": {
-                "description": "校验图片人机验证码",
-                "tags": [
-                    "验证码API"
-                ],
-                "summary": "校验图片人机验证码",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/result.Result"
-                        }
-                    }
+              "description": "校验图片人机验证码",
+              "consumes": [
+                "application/json"
+              ],
+              "produces": [
+                "application/json"
+              ],
+              "tags": [
+                "验证码API"
+              ],
+              "summary": "校验图片人机验证码",
+              "parameters": [
+                {
+                  "description": "pa",
+                  "name": "p",
+                  "in": "body",
+                  "required": true,
+                  "schema": {
+                    "$ref": "#/definitions/params.VerityCaptchaParams"
+                  }
                 }
+              ],
+              "responses": {
+                "200": {
+                  "description": "OK",
+                  "schema": {
+                    "$ref": "#/definitions/result.Result"
+                  }
+                }
+              }
             }
         },
         "/v1/captcha/email": {
             "get": {
-                "description": "获取邮件验证码",
-                "tags": [
-                    "验证码API"
-                ],
-                "summary": "获取邮件验证码",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/result.Result"
-                        }
-                    }
+              "description": "获取邮件验证码",
+              "consumes": [
+                "application/json"
+              ],
+              "produces": [
+                "application/json"
+              ],
+              "tags": [
+                "验证码API"
+              ],
+              "summary": "获取邮件验证码",
+              "parameters": [
+                {
+                  "type": "string",
+                  "description": "电子邮箱",
+                  "name": "email",
+                  "in": "formData",
+                  "required": true
                 }
+              ],
+              "responses": {
+                "200": {
+                  "description": "OK",
+                  "schema": {
+                    "$ref": "#/definitions/result.Result"
+                  }
+                }
+              }
             }
         },
         "/v1/ping": {
@@ -104,19 +154,30 @@
         },
         "/v1/shortCode": {
             "post": {
-                "description": "生成短链接",
-                "tags": [
-                    "短链接API"
-                ],
-                "summary": "生成短链接",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/result.Result"
-                        }
-                    }
+              "description": "生成短链接",
+              "tags": [
+                "短链接API"
+              ],
+              "summary": "生成短链接",
+              "parameters": [
+                {
+                  "description": "param",
+                  "name": "p",
+                  "in": "body",
+                  "required": true,
+                  "schema": {
+                    "$ref": "#/definitions/params.GenShortCodeParams"
+                  }
                 }
+              ],
+              "responses": {
+                "200": {
+                  "description": "OK",
+                  "schema": {
+                    "$ref": "#/definitions/result.Result"
+                  }
+                }
+              }
             }
         },
         "/v1/tenant": {
@@ -128,10 +189,22 @@
                 "summary": "获取租户列表",
                 "responses": {
                     "200": {
-                        "description": "OK",
-                        "schema": {
+                      "description": "desc",
+                      "schema": {
+                        "allOf": [
+                          {
                             "$ref": "#/definitions/result.Result"
-                        }
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "data": {
+                                "$ref": "#/definitions/response.TenantResponse"
+                              }
+                            }
+                          }
+                        ]
+                      }
                     }
                 }
             }
@@ -151,50 +224,249 @@
                 "summary": "获取个人信息",
                 "responses": {
                     "200": {
-                        "description": "OK",
-                        "schema": {
+                      "description": "用户信息",
+                      "schema": {
+                        "allOf": [
+                          {
                             "$ref": "#/definitions/result.Result"
-                        }
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "data": {
+                                "$ref": "#/definitions/dto.UserDTO"
+                              }
+                            }
+                          }
+                        ]
+                      }
                     }
                 }
             }
         },
-        "/v1/user/password": {
-            "put": {
-                "description": "更改密码",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "用户API"
-                ],
-                "summary": "更改密码",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/result.Result"
-                        }
-                    }
-                }
+      "/v1/user/password": {
+        "put": {
+          "description": "更改密码",
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "tags": [
+            "用户API"
+          ],
+          "summary": "更改密码",
+          "parameters": [
+            {
+              "description": "请求参数",
+              "name": "p",
+              "in": "body",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/params.UpdatePasswordParams"
+              }
             }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "schema": {
+                "$ref": "#/definitions/result.Result"
+              }
+            }
+          }
         }
+      },
+      "/v1/user/password/code": {
+        "get": {
+          "description": "获取重置密码的code",
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "tags": [
+            "用户API"
+          ],
+          "summary": "获取重置密码的code",
+          "parameters": [
+            {
+              "type": "string",
+              "description": "电子邮箱",
+              "name": "email",
+              "in": "query",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "schema": {
+                "$ref": "#/definitions/result.Result"
+              }
+            }
+          }
+        },
+        "put": {
+          "description": "重置密码",
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "tags": [
+            "用户API"
+          ],
+          "summary": "重置密码",
+          "parameters": [
+            {
+              "description": "请求参数",
+              "name": "p",
+              "in": "body",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/params.ResetPwdParam"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "schema": {
+                "$ref": "#/definitions/result.Result"
+              }
+            }
+          }
+        }
+      }
     },
     "definitions": {
-        "result.Result": {
-            "type": "object",
-            "properties": {
-                "code": {
-                    "type": "integer"
-                },
-                "data": {},
-                "message": {
-                    "type": "string"
-                }
-            }
+      "dto.UserDTO": {
+        "type": "object",
+        "properties": {
+          "tenant_id": {
+            "type": "integer"
+          },
+          "uid": {
+            "type": "integer"
+          },
+          "username": {
+            "type": "string"
+          }
         }
+      },
+      "params.GenShortCodeParams": {
+        "type": "object",
+        "required": [
+          "original_link"
+        ],
+        "properties": {
+          "group_id": {
+            "type": "integer"
+          },
+          "is_multiplex": {
+            "type": "boolean"
+          },
+          "is_perpetual": {
+            "description": "true 临时链接 false 永久链接",
+            "type": "boolean"
+          },
+          "original_link": {
+            "type": "string"
+          }
+        }
+      },
+      "params.ResetPwdParam": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "new_pwd": {
+            "type": "string"
+          }
+        }
+      },
+      "params.TenantCreateParams": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "remark": {
+            "type": "string"
+          }
+        }
+      },
+      "params.UpdatePasswordParams": {
+        "type": "object",
+        "properties": {
+          "new_pwd": {
+            "type": "string"
+          },
+          "old_pwd": {
+            "type": "string"
+          }
+        }
+      },
+      "params.VerityCaptchaParams": {
+        "type": "object",
+        "required": [
+          "captcha_id",
+          "dots"
+        ],
+        "properties": {
+          "captcha_id": {
+            "type": "string"
+          },
+          "dots": {
+            "type": "string"
+          }
+        }
+      },
+      "response.CaptchaResponse": {
+        "type": "object",
+        "properties": {
+          "captcha_id": {
+            "type": "string"
+          },
+          "image_base_64": {
+            "description": "主图",
+            "type": "string"
+          },
+          "thumb_base_64": {
+            "description": "略缩图",
+            "type": "string"
+          }
+        }
+      },
+      "response.TenantResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "result.Result": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "data": {
+            "type": "object"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      }
     }
 }

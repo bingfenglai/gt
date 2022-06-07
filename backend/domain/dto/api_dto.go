@@ -1,9 +1,7 @@
 package dto
 
-
 type ApiSessionDTO struct {
-	
-	Id int
-	Uri string
-	Method string
+	Id     int    `json:"id,omitempty"`
+	Uri    string `json:"uri,omitempty"`
+	Method string `json:"method,omitempty"`
 }

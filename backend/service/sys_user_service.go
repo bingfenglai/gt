@@ -205,3 +205,8 @@ func (svc *userServiceImpl) UpdatePwd(ctx context.Context, p *params.UpdatePassw
 	return
 
 }
+
+func (svc *userServiceImpl) UpdatePwdByCode(ctx context.Context, param params.ResetPwdParam) error {
+
+	panic("implement me")
+}

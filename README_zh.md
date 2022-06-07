@@ -35,9 +35,13 @@ swag@v0.21.1
 // @Tags 用户信息   //swagger API分类标签, 同一个tag为一组
 // @accept json  //浏览器可处理数据类型，浏览器默认发 Accept: */*
 // @Produce  json  //设置返回数据的类型和编码
+// @Param Authorization header string true  "访问令牌"
+// @Param req body listModel true  "相关信息"
+// @Param req formData listModel true  "相关信息"
 // @Param id path int true "ID"    //url参数：（name；参数类型[query(?id=),path(/123)]；数据类型；required；参数描述）
 // @Param name query string false "name"
 // @Success 200 {object} Res {"code":200,"data":null,"msg":""}  //成功返回的数据结构， 最后是示例
+// @success 200 {object} jsonresult.JSONResult{data=proto.Order} "desc"
 // @Failure 400 {object} Res {"code":200,"data":null,"msg":""}
 // @Router /test/{id} [get]    //路由信息，一定要写上
 ```

@@ -1,6 +1,10 @@
 package errors
 
-import "errors"
+import (
+	"errors"
+	"fmt"
+	"strings"
+)
 
 // 集中定义错误
 var (
@@ -16,6 +20,8 @@ var (
 
 	ErrParamsNotNull = errors.New("参数不能为空")
 
+	ErrParamsBindFailed = errors.New("参数绑定失败")
+
 	ErrEmailContentIsNull = errors.New("邮件内容不能为空")
 
 	ErrEmailFormat = errors.New("电子邮箱格式错误")
@@ -29,4 +35,9 @@ var (
 
 func New(s string) error {
 	return errors.New(s)
+}
+
+func NewErrParamsNotNull(paramName ...string) error {
+
+	return errors.New(fmt.Sprintf("参数%s不能为空", strings.Join(paramName[:], ",")))
 }

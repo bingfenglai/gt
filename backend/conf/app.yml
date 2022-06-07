@@ -84,4 +84,5 @@ auth:
     - /v1/shortCode
 #    - /v1/test/*
     - /403.html
+    - /v1/user/password/code
 

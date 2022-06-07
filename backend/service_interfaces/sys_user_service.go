@@ -21,4 +21,7 @@ type IUserService interface {
 
 	// UpdatePwd 更新密码
 	UpdatePwd(ctx context.Context, p *params.UpdatePasswordParams, uid int) error
+
+	// 跟据code更新对应的密码，用于忘记密码的场景
+	UpdatePwdByCode(ctx context.Context, param params.ResetPwdParam) error
 }

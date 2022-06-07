@@ -1,9 +1,82 @@
 definitions:
+  dto.UserDTO:
+    properties:
+      tenant_id:
+        type: integer
+      uid:
+        type: integer
+      username:
+        type: string
+    type: object
+  params.GenShortCodeParams:
+    properties:
+      group_id:
+        type: integer
+      is_multiplex:
+        type: boolean
+      is_perpetual:
+        description: true 临时链接 false 永久链接
+        type: boolean
+      original_link:
+        type: string
+    required:
+      - original_link
+    type: object
+  params.ResetPwdParam:
+    properties:
+      code:
+        type: string
+      new_pwd:
+        type: string
+    type: object
+  params.TenantCreateParams:
+    properties:
+      name:
+        type: string
+      remark:
+        type: string
+    type: object
+  params.UpdatePasswordParams:
+    properties:
+      new_pwd:
+        type: string
+      old_pwd:
+        type: string
+    type: object
+  params.VerityCaptchaParams:
+    properties:
+      captcha_id:
+        type: string
+      dots:
+        type: string
+    required:
+      - captcha_id
+      - dots
+    type: object
+  response.CaptchaResponse:
+    properties:
+      captcha_id:
+        type: string
+      image_base_64:
+        description: 主图
+        type: string
+      thumb_base_64:
+        description: 略缩图
+        type: string
+    type: object
+  response.TenantResponse:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
   result.Result:
     properties:
       code:
         type: integer
-      data: {}
+      data:
+        type: object
       message:
         type: string
     type: object
@@ -23,18 +96,38 @@ info:
 paths:
   /v1/captcha/behavioral/images:
     get:
+      consumes:
+        - application/json
       description: 获取图片人机验证码
+      produces:
+        - application/json
       responses:
         "200":
-          description: OK
+          description: 图片验证码
           schema:
-            $ref: '#/definitions/result.Result'
+            allOf:
+              - $ref: '#/definitions/result.Result'
+              - properties:
+                  data:
+                    $ref: '#/definitions/response.CaptchaResponse'
+                type: object
       summary: 获取图片人机验证码
       tags:
       - 验证码API
   /v1/captcha/behavioral/images/verity:
     post:
+      consumes:
+        - application/json
       description: 校验图片人机验证码
+      parameters:
+        - description: pa
+          in: body
+          name: p
+          required: true
+          schema:
+            $ref: '#/definitions/params.VerityCaptchaParams'
+      produces:
+        - application/json
       responses:
         "200":
           description: OK
@@ -42,10 +135,20 @@ paths:
             $ref: '#/definitions/result.Result'
       summary: 校验图片人机验证码
       tags:
-      - 验证码API
+        - 验证码API
   /v1/captcha/email:
     get:
+      consumes:
+        - application/json
       description: 获取邮件验证码
+      parameters:
+        - description: 电子邮箱
+          in: formData
+          name: email
+          required: true
+          type: string
+      produces:
+        - application/json
       responses:
         "200":
           description: OK
@@ -53,7 +156,7 @@ paths:
             $ref: '#/definitions/result.Result'
       summary: 获取邮件验证码
       tags:
-      - 验证码API
+        - 验证码API
   /v1/ping:
     get:
       description: 健康检查接口
@@ -79,6 +182,13 @@ paths:
   /v1/shortCode:
     post:
       description: 生成短链接
+      parameters:
+        - description: param
+          in: body
+          name: p
+          required: true
+          schema:
+            $ref: '#/definitions/params.GenShortCodeParams'
       responses:
         "200":
           description: OK
@@ -86,15 +196,20 @@ paths:
             $ref: '#/definitions/result.Result'
       summary: 生成短链接
       tags:
-      - 短链接API
+        - 短链接API
   /v1/tenant:
     post:
       description: 获取租户列表
       responses:
         "200":
-          description: OK
+          description: desc
           schema:
-            $ref: '#/definitions/result.Result'
+            allOf:
+              - $ref: '#/definitions/result.Result'
+              - properties:
+                  data:
+                    $ref: '#/definitions/response.TenantResponse'
+                type: object
       summary: 获取租户列表
       tags:
       - 租户API
@@ -107,19 +222,31 @@ paths:
       - application/json
       responses:
         "200":
-          description: OK
+          description: 用户信息
           schema:
-            $ref: '#/definitions/result.Result'
+            allOf:
+              - $ref: '#/definitions/result.Result'
+              - properties:
+                  data:
+                    $ref: '#/definitions/dto.UserDTO'
+                type: object
       summary: 获取个人信息
       tags:
       - 用户API
   /v1/user/password:
     put:
       consumes:
-      - application/json
+        - application/json
       description: 更改密码
+      parameters:
+        - description: 请求参数
+          in: body
+          name: p
+          required: true
+          schema:
+            $ref: '#/definitions/params.UpdatePasswordParams'
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
@@ -127,5 +254,47 @@ paths:
             $ref: '#/definitions/result.Result'
       summary: 更改密码
       tags:
-      - 用户API
+        - 用户API
+  /v1/user/password/code:
+    get:
+      consumes:
+        - application/json
+      description: 获取重置密码的code
+      parameters:
+        - description: 电子邮箱
+          in: query
+          name: email
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/result.Result'
+      summary: 获取重置密码的code
+      tags:
+        - 用户API
+    put:
+      consumes:
+        - application/json
+      description: 重置密码
+      parameters:
+        - description: 请求参数
+          in: body
+          name: p
+          required: true
+          schema:
+            $ref: '#/definitions/params.ResetPwdParam'
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/result.Result'
+      summary: 重置密码
+      tags:
+        - 用户API
 swagger: "2.0"
