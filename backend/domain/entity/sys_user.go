@@ -2,6 +2,7 @@ package entity
 
 import (
 	"gorm.io/gorm"
+	"gorm.io/plugin/optimisticlock"
 )
 
 type User struct {
@@ -14,6 +15,7 @@ type User struct {
 	UpdatedBy int64
 	Status    int `gorm:"default:0"`
 	TenantId  int
+	Revision  optimisticlock.Version
 }
 
 func (user *User) TableName() string {

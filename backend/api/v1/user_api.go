@@ -122,11 +122,24 @@ func UpdatePwdByCode(ctx *gin.Context) {
 
 	param := params.ResetPwdParam{}
 	err := ctx.BindJSON(&param)
+
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, result.FailWithErr(errors.ErrParamsBindFailed))
 		return
 	}
 
+	err = param.Check()
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, result.FailWithErr(errors.ErrParamsBindFailed))
+		return
+	}
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, result.FailWithErr(err))
+		return
+	}
+	if err != nil {
+		return
+	}
 	err = service.UserService.UpdatePwdByCode(ctx, param)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, result.FailWithErr(err))

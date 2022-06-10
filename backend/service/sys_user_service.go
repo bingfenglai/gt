@@ -23,6 +23,7 @@ import (
 const updatePwdCodeKeyPrefix = "user:pwd:code:"
 
 type userServiceImpl struct {
+	baseService
 }
 
 func (svc *userServiceImpl) FindUserByUsername(username string) (*dto.UserDTO, error) {
@@ -213,7 +214,39 @@ func (svc *userServiceImpl) UpdatePwd(ctx context.Context, p *params.UpdatePassw
 
 func (svc *userServiceImpl) UpdatePwdByCode(ctx context.Context, param params.ResetPwdParam) error {
 
-	panic("implement me")
+	id := -1
+	err := CacheService.Get(updatePwdCodeKeyPrefix+param.Code, &id)
+	if err != nil {
+		return err
+	}
+	var np = ""
+	if id != -1 {
+		if config.Conf.Server.Encrypted {
+			key := config.Conf.Encrypt.AesKey
+			bk := []byte(key)
+			np, err = helper.AesDecryptCFB(param.NewPwd, bk)
+			if err != nil {
+				zap.L().Error(err.Error())
+				return errors.New("请使用密文传输凭证信息")
+			}
+		} else {
+			np = param.NewPwd
+		}
+
+		encodePwd, err := PasswordEncodeService.Encode(np)
+		if err != nil {
+			return err
+		}
+		us, err := storage.UserStorage.SelectOneByUId(id)
+		if err != nil {
+			return err
+		}
+		us.Password = encodePwd
+		return svc.Save(ctx, us)
+	}
+
+	return custom_err.ErrUpdatedPwdLinkInvalid
+
 }
 
 func (svc *userServiceImpl) SendUpdatePwdLink(email string) error {
@@ -223,9 +256,10 @@ func (svc *userServiceImpl) SendUpdatePwdLink(email string) error {
 		return err
 	}
 	if user.ID != 0 {
-		key := updatePwdCodeKeyPrefix + strconv.Itoa(int(user.ID))
+
 		code := helper.GenUUIDStr()
-		err := CacheService.Set(key, code, time.Minute*30)
+		key := updatePwdCodeKeyPrefix + code
+		err := CacheService.Set(key, user.ID, time.Minute*30)
 		if err != nil {
 			return err
 		}
