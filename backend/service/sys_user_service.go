@@ -6,9 +6,12 @@ import (
 	"github.com/bingfenglai/gt/config"
 	"github.com/bingfenglai/gt/domain/params"
 	"github.com/bingfenglai/gt/global"
+	"log"
 	"strconv"
 	"strings"
 	"time"
+
+	custom_err "github.com/bingfenglai/gt/common/errors"
 
 	"github.com/bingfenglai/gt/common/helper"
 	"github.com/bingfenglai/gt/domain/dto"
@@ -16,6 +19,8 @@ import (
 	"github.com/bingfenglai/gt/storage"
 	"go.uber.org/zap"
 )
+
+const updatePwdCodeKeyPrefix = "user:pwd:code:"
 
 type userServiceImpl struct {
 }
@@ -209,4 +214,36 @@ func (svc *userServiceImpl) UpdatePwd(ctx context.Context, p *params.UpdatePassw
 func (svc *userServiceImpl) UpdatePwdByCode(ctx context.Context, param params.ResetPwdParam) error {
 
 	panic("implement me")
+}
+
+func (svc *userServiceImpl) SendUpdatePwdLink(email string) error {
+
+	user, err := storage.UserStorage.SelectOneByEmail(email)
+	if err != nil {
+		return err
+	}
+	if user.ID != 0 {
+		key := updatePwdCodeKeyPrefix + strconv.Itoa(int(user.ID))
+		code := helper.GenUUIDStr()
+		err := CacheService.Set(key, code, time.Minute*30)
+		if err != nil {
+			return err
+		}
+		emailContent := "请点击链接https://www.baidu.com?code=" + code + ">进行密码重置"
+		log.Default().Println(emailContent)
+		p := params.EmailSimpleSendParams{
+			Receivers: []string{email},
+			Subject:   "【gt】重置密码邮件",
+			Text:      []byte(emailContent),
+		}
+		err = EmailService.SendSimpleEmail(&p)
+		if err != nil {
+			return err
+		}
+
+		return nil
+	}
+
+	return custom_err.ErrUserNotFound
+
 }

@@ -2,6 +2,7 @@ package v1
 
 import (
 	"github.com/bingfenglai/gt/common/errors"
+	"github.com/bingfenglai/gt/common/helper"
 	"github.com/bingfenglai/gt/domain/params"
 	"go.uber.org/zap"
 	"net/http"
@@ -88,6 +89,20 @@ func GetUpdatePwdCode(ctx *gin.Context) {
 
 	if email == "" {
 		ctx.JSON(http.StatusBadRequest, result.FailWithErr(errors.NewErrParamsNotNull("email")))
+		return
+	}
+
+	err := helper.VerifyEmailFormat(email)
+
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, result.FailWithErr(err))
+		return
+	}
+
+	err = service.UserService.SendUpdatePwdLink(email)
+
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, result.FailWithErr(err))
 		return
 	}
 

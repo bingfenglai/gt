@@ -45,7 +45,7 @@ func CreateTenant(ctx *gin.Context) {
 // @Tags 租户API
 // @Summary 获取租户列表
 // @Description 获取租户列表
-// @Success 200 {object} result.Result{data=[response.TenantResponse]} "desc"
+// @Success 200 {object} result.Result{data=response.TenantResponse} "desc"
 // @Router /v1/tenant [post]
 func TenantList(ctx *gin.Context) {
 	if list, err := service.TenantService.List(); err == nil {

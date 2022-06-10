@@ -24,4 +24,7 @@ type IUserService interface {
 
 	// 跟据code更新对应的密码，用于忘记密码的场景
 	UpdatePwdByCode(ctx context.Context, param params.ResetPwdParam) error
+
+	// 发送密码重置邮件
+	SendUpdatePwdLink(email string) error
 }
