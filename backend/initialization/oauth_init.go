@@ -1,6 +1,7 @@
 package initialization
 
 import (
+	"github.com/bingfenglai/gt/config"
 	"github.com/bingfenglai/gt/global"
 	"go.uber.org/zap"
 	"log"
@@ -16,6 +17,10 @@ import (
 
 // 初始化oauth相关配置
 func initOAuth2Server() {
+
+	if !config.Conf.Server.EnableAuth {
+		return
+	}
 
 	// 设置oauth管理器
 	oauth.OAuth2Server = server.NewDefaultCustomOAuthServer()

@@ -1,19 +1,21 @@
 package router
 
 import (
+	"github.com/bingfenglai/gt/domain/result"
 	"github.com/bingfenglai/gt/handler"
+	"github.com/bingfenglai/gt/oauth"
 	"github.com/bingfenglai/gt/oauth/utils"
+	"github.com/gin-gonic/gin"
 	"net/http"
 	"strings"
-
-	"github.com/bingfenglai/gt/domain/result"
-	"github.com/bingfenglai/gt/oauth"
-	"github.com/gin-gonic/gin"
 )
 
 // oauth相关handler注册
 func init() {
+	registerAuth()
+}
 
+func registerAuth() {
 	groupOAuth2.Use(handler.GinZapRecovery(true), handler.GinZapLogger(), handler.AuthorizationHandler(R))
 
 	// 认证

@@ -38,7 +38,7 @@ func CreateWithTenantCallback(db *gorm.DB) {
 			if field != nil {
 				zap.L().Info("field name is TenantId")
 				tid, _ := strconv.Atoi(tenantId)
-				err := field.Set(db.Statement.ReflectValue, tid)
+				err := field.Set(ctx, db.Statement.ReflectValue, tid)
 
 				zap.Error(err)
 			}
@@ -46,7 +46,7 @@ func CreateWithTenantCallback(db *gorm.DB) {
 
 		if uid != -1 {
 			if createdByField := db.Statement.Schema.FieldsByName["CreatedBy"]; createdByField != nil {
-				_ = createdByField.Set(db.Statement.ReflectValue, uid)
+				_ = createdByField.Set(ctx, db.Statement.ReflectValue, uid)
 			}
 
 		}

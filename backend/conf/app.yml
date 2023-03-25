@@ -5,6 +5,7 @@ server:
   url404: https://volunteer.cdn-go.cn/404/latest/404.html
   urlfavicon: https://avatars.githubusercontent.com/u/65969632?v=4
   encrypted: true
+  enableAuth: false
 
 database:
   dbType: mysql

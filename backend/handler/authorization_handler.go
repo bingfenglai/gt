@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"github.com/bingfenglai/gt/global"
 	"log"
 	"net/http"
 	"sync"
@@ -22,6 +23,11 @@ var lock sync.RWMutex
 func AuthorizationHandler(engine *gin.Engine) gin.HandlerFunc {
 
 	return func(context *gin.Context) {
+
+		if !config.Conf.Server.EnableAuth {
+			global.Log.Warn("未启用Auth")
+			return
+		}
 
 		initHandlerNamePathMap(engine)
 

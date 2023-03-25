@@ -7,4 +7,5 @@ type ServerConfig struct {
 	Url404     string `json:"url_404,omitempty"`
 	Urlfavicon string `json:"url_favicon,omitempty"`
 	Encrypted  bool   `json:"encrypted,omitempty"`
+	EnableAuth bool
 }

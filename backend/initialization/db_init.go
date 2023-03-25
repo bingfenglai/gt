@@ -50,7 +50,8 @@ func initDbConfig() {
 			count++
 
 			if count > 3 {
-				panic("连接数据库失败")
+				//panic("连接数据库失败")
+				global.Log.Error("数据库连接失败！")
 			}
 
 			continue
