@@ -25,6 +25,8 @@ var TenantStorage storage_interface.ITenantStorage
 
 var SysLogStorage storage_interface.ISysLogStorage
 
+var SysFileStorage storage_interface.ISysFileStorage
+
 func Initstorage() {
 	log.Default().Println("初始化 storage")
 
@@ -47,5 +49,7 @@ func Initstorage() {
 	TenantStorage = &tenantStorage{}
 
 	SysLogStorage = &sysLogStorage{}
+
+	SysFileStorage = &SysFileStorageImpl{}
 
 }

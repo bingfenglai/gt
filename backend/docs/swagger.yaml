@@ -158,6 +158,8 @@ paths:
       - 验证码API
   /v1/oss:
     post:
+      consumes:
+      - multipart/form-data
       description: 上传文件
       responses:
         "200":

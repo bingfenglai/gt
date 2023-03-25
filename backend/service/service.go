@@ -1,6 +1,7 @@
 package service
 
 import (
+	"github.com/bingfenglai/gt/config"
 	"github.com/bingfenglai/gt/service_interfaces"
 	"log"
 
@@ -30,6 +31,8 @@ var TenantService service_interfaces.ITenantService
 
 var SysLogService service_interfaces.ISysLogService
 
+var SysFileServie service_interfaces.ISysFileService
+
 func InitService() {
 
 	log.Default().Println("执行service初始化")
@@ -54,4 +57,9 @@ func InitService() {
 	TenantService = &tenantService{}
 
 	SysLogService = &sysLogService{}
+
+	if "local" == config.Conf.FileConf.StorageType {
+		SysFileServie = &SysFileServiceLocalImpl{}
+	}
+
 }

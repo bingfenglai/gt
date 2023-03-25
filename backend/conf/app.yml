@@ -72,6 +72,10 @@ email:
   Address: smtp.163.com:25
   enable: true
 
+fileConf:
+  storageType: local
+  defaultNameSpace: temp
+
 auth:
   anonymousUrls:
     # - /api/print

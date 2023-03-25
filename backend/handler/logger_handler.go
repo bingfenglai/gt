@@ -34,6 +34,7 @@ func GinZapLogger() gin.HandlerFunc {
 		us := helper.ParseUserAgent(ctx.Request.UserAgent())
 
 		global.Log.Info("us", zap.Any("us", us))
+
 	}
 
 }

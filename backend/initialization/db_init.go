@@ -76,10 +76,9 @@ func initDbConfig() {
 	registerCallback()
 
 	if config.Conf.DataBase.InitSchema {
-		initSchema()
-
+		initAllSchema()
 	}
-
+	//initIncreaseSchema()
 }
 
 func registerCallback() {
@@ -97,13 +96,23 @@ func registerCallback() {
 	//_ = global.DB.Callback().Update().Replace("gorm:update_time_stamp", UpdatedTimeCallback)
 }
 
-func initSchema() {
+func initAllSchema() {
 	_ = global.DB.AutoMigrate(&entity.Role{}, &entity.Dict{}, &entity.DictItem{}, &entity.User{}, &entity.UserRole{},
 		&entity.Client{}, &entity.OAuthGrantType{}, &entity.ClientGrantType{},
 		&entity.ShortCodeGroup{}, &entity.ShortCode{}, &entity.ShortcodeLog{}, entity.RoleApi{}, &entity.Api{}, &entity.Tenant{},
-		&entity.SysLog{})
+		&entity.SysLog{}, &entity.SysFile{})
 	if config.Conf.DataBase.InitData {
 		initData()
+	}
+}
+
+func initIncreaseSchema() {
+	err := global.DB.AutoMigrate(&entity.SysFile{})
+
+	if err != nil {
+		log.Default().Fatal("初始化数据库脚本失败", err.Error())
+	} else {
+		log.Default().Println("初始化数据库脚本成功")
 	}
 }
 

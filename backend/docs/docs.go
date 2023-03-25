@@ -129,6 +129,9 @@ const docTemplate = `{
         "/v1/oss": {
             "post": {
                 "description": "上传文件",
+                "consumes": [
+                    "multipart/form-data"
+                ],
                 "tags": [
                     "文件API"
                 ],

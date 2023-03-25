@@ -22,8 +22,9 @@ type Config struct {
 	ShortCode ShortCodeConfig
 	Captcha   CaptchaConfig
 	Auth      OAuth2Config
-	Encrypt EncryptConfig
-	Email EmailConfig 
+	Encrypt   EncryptConfig
+	Email     EmailConfig
+	FileConf  FileConfig
 }
 
 func init() {
@@ -38,10 +39,6 @@ func init() {
 		//zap.L().Info("装载配置文件信息")
 		configRoleCheck()
 	})
-
-	
-
-
 
 }
 
@@ -59,8 +56,6 @@ func LoadConfig() {
 	replacer := strings.NewReplacer(".", "_")
 	viper.SetEnvKeyReplacer(replacer)
 
-	
-
 	err := viper.ReadInConfig()
 
 	if err != nil {
@@ -72,9 +67,8 @@ func LoadConfig() {
 	if err != nil {
 		log.Default().Println("读取配置信息失败\n", err.Error())
 	} else {
-		log.Default().Println("config info:\n", Conf.Redis, "\n", Conf.Server, "\nlog: ", Conf.Log,"\nemail",Conf.Email)
+		log.Default().Println("config info:\n", Conf.Redis, "\n", Conf.Server, "\nlog: ", Conf.Log, "\nemail", Conf.Email)
 	}
-	
 
 }
 
